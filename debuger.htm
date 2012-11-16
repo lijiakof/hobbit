@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>debug</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" />
+    <link href="hobbit.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div id="lb" style="clear: both;">
+    </div>
+    <div id="lb2" style="clear: both;">
+    </div>
+</body>
+<script src="jquip.js" type="text/javascript"></script>
+<script src="hobbit.js" type="text/javascript"></script>
+<script src="xhobbit.js" type="text/javascript"></script>
+<script src="hobbit.debuger.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+
+        $.debuger.console();
+
+        //        $.debuger.writeLine("hobbit.version:" + $.hobbit.version);
+        //        $.debuger.writeLine("hobbit.getBrowser():" + $.getBrowser().isChrome);
+        //        $.debuger.writeLine("hobbit.browser:" + $.browser.isSafari);
+        //        $.debuger.writeLine("hobbit.browser:" + $.browser.height);
+        //        $.debuger.writeLine("hobbit.browser.width:" + $.browser.width);
+        //        $.debuger.writeLine("hobbit.Url:" + $.Url);
+        var nvp = "name=lj&time=1";
+        json = $.jSon.parseFromNvp(nvp);
+        $.debuger.writeLine(json.name);
+
+        $.debuger.tryCatch(function () { a = 1 + 1; });
+
+        $.debuger.writeLine(1);
+        $.debuger.writeLine({ "name": "dd" });
+        $.debuger.writeLine(["an", "array"]);
+        $.debuger.writeLine(true);
+        $.debuger.writeLine(new Date());
+        $.debuger.writeLine(function () { });
+        //$.xTmpl();
+
+        var l1 = new $h.ui.lable("1");
+        var l2 = new $h.ui.lable("2");
+        $.debuger.writeLine(l1.id);
+        $.debuger.writeLine(l2.id);
+
+
+        var x = 0.3 - 0.2;
+        var y = 0.2 - 0.1;
+        alert(x);
+        alert(y);
+
+        var z = 2.0e400;
+        var zz = 5.0e-400;
+        var zzz = -(5.0e-400);
+        var zzzz = 1 / 0;
+        var zzzzz = 0 / 0;
+        alert(z); //Infinity
+        alert(zz);
+        alert(zzz);
+        alert(zzzz);
+        alert(zzzzz);
+		
+        //        var haha;
+        //        alert(haha);
+        //        alert(typeof (null));
+        //        alert(typeof (undefined) === "undefined");
+        //        alert(undefined);
+
+        //        func();
+    });
+    myname = "global";
+    var man = {
+        name: "lijia",
+        sex: "man",
+        say: function () { }
+    };
+    
+    function func() {
+        //alert(man.hasOwnProperty.call(man, "name"));
+        
+    }
+</script>
+</html>

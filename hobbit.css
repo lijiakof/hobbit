@@ -1,0 +1,84 @@
+﻿body {    
+	font-family: Helvetica,Arial,sans-serif;
+	text-shadow: 0 1px 0 #FFF;
+	margin: 0;
+	padding: 0;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	-webkit-text-size-adjust: none;
+}
+ul, li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	empty-cells: show;
+}
+
+/*Hobbit Ui Header*/
+header { }
+footer { }
+.ui_content { }
+
+.ui_loader {
+    z-index: 9999999;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	box-shadow: 0 1px 1px -1px white;
+	border: 1px solid #444;
+	background: #222;
+	color: white;
+	text-shadow: 0 1px 1px #111;
+	font-weight: normal;
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#444),to(#222));
+	background-image: -webkit-linear-gradient(#444,#222);
+	-webkit-border-radius: .6em;
+	border-radius: .6em;
+	width: 200px;
+	opacity: .88;
+	height: auto;
+	margin-left: -110px;
+	margin-top: -43px;
+	padding: 10px;
+	text-align: center; }
+.ui_loader .ui_loader_icon {
+	width: 44px;
+	height: 44px;
+	padding: 1px;
+	-webkit-border-radius: 36px;
+	-moz-border-radius: 36px;
+	border-radius: 36px;
+	margin: 0 auto 10px;
+	opacity: .75;
+}
+.ui_loader h1 {
+	font-size: 16px;
+	text-align: center;
+}
+/*Hobbit Form-Ui*/
+input[type="text"], 
+input[type="password"], 
+input[type="search"], 
+input[type="tel"], 
+input[type="number"], 
+textarea { }
+input[type="text"]:focus, 
+input[type="password"]:focus, 
+input[type="search"]:focus, 
+input[type="tel"]:focus, 
+input[type="number"]:focus, 
+textarea:focus { }
+
+.ui_radio { }
+.ui_checkbox { }
+.ui_select { }
+
+/*Hobbit Content-Ui*/
+.ui_tabs { }
+.ui_toolbar { }
+.ui_list { }
+.ui_accordion { }
+nav { }
