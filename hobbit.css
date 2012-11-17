@@ -1,4 +1,4 @@
-﻿body {    
+﻿body {
 	font-family: Helvetica,Arial,sans-serif;
 	text-shadow: 0 1px 0 #FFF;
 	margin: 0;
@@ -18,9 +18,55 @@ table {
 }
 
 /*Hobbit Ui Header*/
-header { }
+header { 
+	position: relative;
+	box-shadow: 0 2px 4px #999;
+	width: 100%;
+	height: 44px;
+	background-image: -webkit-linear-gradient(white,#D1D1D1);
+}
+header a {
+	float: left;
+	background-repeat: no-repeat;
+	height: 32px;
+	line-height: 32px;
+	width: 32px;
+	min-width: 32px;
+	margin: 6px 7px;
+	border-radius: 4px;
+	background-color: #F8F8F8;
+	-webkit-box-shadow: 1px 1px 1px #666;
+	box-shadow: 1px 1px 1px #666;
+	text-decoration: none;
+	color: #0F8BC8;
+	text-shadow: none;
+	text-align: center;
+}
+header h1 {
+	position: absolute;
+	right: 60px;
+	left: 60px;
+	height: 44px;
+	display: block;
+	margin: 0;
+	padding: 0;	
+	font-size: 16px;
+	text-align: center;
+	font-weight: bold;
+	line-height: 44px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 footer { }
+.ui_page { }
 .ui_content { }
+
+nav { }
+nav a{
+	width: 100%;
+	display:block;
+}
 
 .ui_loader {
     z-index: 9999999;
@@ -81,4 +127,3 @@ textarea:focus { }
 .ui_toolbar { }
 .ui_list { }
 .ui_accordion { }
-nav { }
