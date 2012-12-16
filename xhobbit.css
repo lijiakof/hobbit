@@ -5,6 +5,7 @@
 	padding: 0;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	-webkit-text-size-adjust: none;
+	position: relative;
 }
 ul, li {
 	list-style: none;
@@ -58,14 +59,47 @@ header h1 {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-footer { }
+footer {
+    position:absolute;
+    bottom: 0;
+}
 .ui_page { }
-.ui_content { }
+.ui_content {
+    padding: 5px 0;
+}
 
-nav { }
+nav { margin: 0 15px;}
 nav a{
+	position: relative;
 	width: 100%;
-	display:block;
+	height: 53px;
+	display: block;
+	line-height: 53px;
+	border-bottom: dotted 1px #666;
+	overflow: hidden;
+	font-weight: bold;
+	text-indent: 10px;
+	background-clip: padding;
+	text-decoration: none;
+}
+nav a .nav_arrow_r {
+    width:6px; 
+    height:6px; 
+    border-right: 3px solid #1387C3; 
+    border-top: 3px solid #1387C3;
+    -webkit-transform: rotate(45deg);
+    position:absolute;
+    right:6px;
+    top: 50%;
+    margin-top: -3px;
+    display: block;
+}
+a:link,a:visited {
+	color: #000;
+}
+nav a:active {
+	border-radius: 4px;
+	background-color: #DBDBDB;
 }
 
 .ui_loader {
@@ -90,20 +124,48 @@ nav a{
 	margin-top: -43px;
 	padding: 10px;
 	text-align: center; }
-.ui_loader .ui_loader_icon {
-	width: 44px;
-	height: 44px;
-	padding: 1px;
-	-webkit-border-radius: 36px;
-	-moz-border-radius: 36px;
-	border-radius: 36px;
-	margin: 0 auto 10px;
-	opacity: .75;
+.ui_loader .ui_loader_round {
+	width: 46px;
+	height: 46px;
+	-webkit-border-radius: 23px;
+	border-radius: 23px;
+	-webkit-animation: rotate 1s linear infinite;
+	animation: rotate 1s linear infinite;
+	background:#000;
+	margin:0 auto;
+	position: relative;
+}
+.ui_loader .ui_loader_ring {
+	position:absolute;
+	top: 7px;
+	left: 7px;
+    border: 6px solid transparent;
+    border-top: 6px solid #FFF;
+    border-left: 6px solid #FFF;
+    border-radius: 20px;
+    width: 20px;
+    height: 20px;
+}
+@-webkit-keyframes rotate{
+	0%{ -webkit-transform:rotate(0deg);}
+	100%{-webkit-transform:rotate(360deg);}
 }
 .ui_loader h1 {
 	font-size: 16px;
 	text-align: center;
 }
+
+.ui_drawer{
+	display:none;
+	margin: -1px -15px 1px -15px;
+	background-color:#F7F7F7;
+	padding:0 15px;
+	box-shadow: inset 0px -2px 9px #999;
+	-webkit-box-shadow: inset 0px -2px 9px #999;
+	border-bottom: none;
+	overflow:hidden;
+}
+
 /*Hobbit Form-Ui*/
 input[type="text"], 
 input[type="password"], 
