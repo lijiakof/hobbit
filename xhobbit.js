@@ -1,8 +1,11 @@
-﻿/// <reference path="jquip.js" />
+﻿/// <reference path="zepto.js" />
+
 $(function () {
     $H.autoPageHeight();
+    //ios a tag active style
+    $("a").bind("touchstart", function () { }).bind("touchend", function () { });
 });
-$("a").bind("touchstart", function () { }).bind("touchend", function () { });
+
 var $H = {
     conf:{
         version: "beta 2.0",
@@ -13,6 +16,7 @@ var $H = {
     },
     /**
     * Immediate Function pattern
+    * Browser informations
     */
     browser: (function(){
         var ua = navigator.userAgent.toLowerCase();
@@ -28,27 +32,49 @@ var $H = {
             width: window.innerWidth || $(window).width(),
         };
     })(),
+    /**
+     * loader
+     */
     loader: {
-        ui: $("<div class='ui_loader'>").html("<div class='ui_loader_round'><div class='ui_loader_ring'></div></div><h1>努力加载中...</h1>"),
+        ui: $("<div class='ui_loader'>").html("<div class='ui_loader_round'><div class='ui_loader_ring'></div></div>"),
+        txt: $("<h1>"),
         status: 0,
-        show: function () {
+        show: function (txt) {
             if ($H.loader.status == 0) {
+                $H.loader.ui.append($H.loader.txt);
+                if(txt)
+                    $H.loader.txt.text(txt);
+                else
+                    $H.loader.txt.text("努力加载中...");
                 $H.loader.ui.appendTo("body").show();
                 $H.loader.status = 1;
             }
         },
         hide: function () {
-            if ($H.loader.status == 1) {
+            if ($H.loader && $H.loader.status && $H.loader.status == 1) {
                 $H.loader.ui.remove();
                 $H.loader.status = 0;
             }
         }
     },
+    /**
+     * dialog
+     */
     dialog: {
         ui: $("<div>"),
         show: function(){ },
         submit: function(){ },
         cancle: function(){ }
+    },
+    /**
+     */
+    alert: function(message){
+        alert(message);
+    },
+    msgbox: {
+        ui: $("<div>"),
+        show: function(){ },
+        close: function(){ }
     },
     jSon: { 
         stringify: function(o, t){ },
@@ -61,47 +87,62 @@ var $H = {
     },
     /**
      * @param {String} url
-     * @param {Object} jSon
-     * @param {Function} fn
-     * @param {number} et seconds
-     * @param {number} to seconds
+     * @param {Object} data
+     * @param {Function} callback
+     * @param {number} expires seconds
+     * @param {number} timeout seconds
      * */ 
-    ajaxReq: function(url, jSon, fn, et, to){
+    ajax: function(options){
         $H.loader.show();
-        //Expires
-        et = (et && et > 0) ? et : 600;
-        to = (to && to > 0) ? to : 30;
-        var expires = parseInt(new Date().getTime() / (1000 * et), 10);
+        //Expires time
+        var expires = options.expires;
+        expires = (expires && expires > 0) ? expires : 600;
+        expires = parseInt(new Date().getTime() / (1000 * expires), 10);
+        //Time out
+        var timeout = options.timeout;
+        timeout = (timeout && timeout > 0) ? timeout : 30;
+        var type = options.type ? options.type : "GET";
+        var dataType = options.dataType ? options.dataType : "json";
         //jSon.expires = 
         $.ajax({
-            type: "GET",
-            url: url,
-            data: jSon,
-            dataType: "json",
+            type: type,
+            url: options.url,
+            data: options.data,
+            dataType: dataType,
             complete: function () { $H.loader.hide(); },
             success: function (data) {
-                fn(data);
+                if(options.callback)
+                    options.callback(data);
                 $H.loader.hide();
             },
-            error: function () { $H.loader.hide(); }
+            error: function () { 
+                $H.loader.hide();
+                $H.msgbox.show();
+            }
         });
     },
     /**
-     * Auto set page height，
+     * Auto set page height
      */
     autoPageHeight: function(){
-        //var body = $("body");
         var browserHeight = $H.browser.height;
         var bodyHeight = $("body").height();
         var footerHeight = $("footer").height() ? $("footer").height() : 0;
         $("body").height(browserHeight + 300);
         $H.scrollTop();
         browserHeight = $H.browser.height = window.innerHeight || $(window).height();
-        //footer style is "position:absolute; bottom:0"
-        bodyHeight = (bodyHeight + footerHeight < browserHeight) ? browserHeight : bodyHeight + footerHeight;
-        //bodyHeight = (bodyHeight < browserHeight) ? browserHeight : bodyHeight - footerHeight;
+
+        if(bodyHeight < browserHeight){
+            var fillHeight = browserHeight - bodyHeight;
+            var fillDiv = $("<div>").height(fillHeight).insertBefore("footer");
+        }
         $("body").height(bodyHeight);
     },
+    /**
+     * Scroll DOM element top
+     * @param {String} sel
+     * @param {Function} callback
+     */
     scrollTop: function(sel, callback){
         //todo 
         /*if($(sel).is("input") && $H.browser.isSafari){            
@@ -118,7 +159,7 @@ var $H = {
      */
     klass: function(parent, props){
         var Child, F, i;
-        
+        //new structor
         Child = function(){
             if(Child.uber && Child.uber.hasOwnProperty("struct")){
                 Child.uber.struct.apply(this, arguments);
@@ -127,14 +168,14 @@ var $H = {
                 Child.prototype.struct.apply(this, arguments);
             }
         };
-        
+        //inherit
         parent = parent || Object;
         F = function(){};
         F.prototype = parent.prototype;
         Child.prototype = new F();
         Child.uber = parent.prototype;
         Child.prototype.constructor = Child;
-
+        //add functions
         for(i in props){
             if(props.hasOwnProperty(i)){
                 Child.prototype[i] = props[i];
@@ -143,24 +184,50 @@ var $H = {
 
         return Child;
     },
-
+    loadScript: function(url, cb, async){
+        var doc = document,docEl = doc.documentElement;
+		var h = doc.head || doc.getElementsByTagName('head')[0] || docEl,
+			s = doc.createElement('script'), rs;
+		if (async) s.async = "async";
+	    s.onreadystatechange = function () {
+		    if (!(rs = s.readyState) || rs == "loaded" || rs == "complete"){
+			    s.onload = s.onreadystatechange = null;
+			    if (h && s.parentNode)
+			        h.removeChild(s);
+			    s = undefined;
+			    if (cb) cb();
+		    }
+	    };
+		s.onload = cb;
+		s.src = url;
+		h.insertBefore(s, h.firstChild);
+    },
+    loadCss: function(url, async){
+        var css = document.createElement('link')
+        //css.onreadystatechange
+    },
+    /**
+     * Lazyload function
+     * @param {String} url
+     * @param {Function} fn
+     */
     xfn: function(url, fn){
         $H.loader.show();
-        $.loadScript(url, function(){
+        $H.loadScript(url, function(){
             $H.loader.hide();
             if(fn) fn();
         }, true);
-    }
-}
-
-var ui = $H.klass(null, {
-    struct: function(id){
-        this.id = id;
     },
-    update: function(){}
+
+    ui: {}
+}
+$H.ui.nav = $H.klass(null, {
+    struct: function(sel){
+        $(sel).find("a").each(function(){ $(this).append("<span class='nav_arrow_r'></span>")});
+    }
 });
 
-var uiSpan = $H.klass(null,{
+$H.ui.span = $H.klass(null,{
     struct: function(id){
         this.id = id;
     },
@@ -169,16 +236,16 @@ var uiSpan = $H.klass(null,{
     }
  });
 
-var uiTabs = $H.klass(null, {
+$H.ui.tabs = $H.klass(null, {
     struct: function(id){
         this.id = id;
     },
     show: function(){
-    
+        
     }
 });
 
-var uiDrawer = $H.klass(null, {
+$H.ui.drawer = $H.klass(null, {
     struct: function(sel){
         this.sel = sel;
         this.status = 0;
@@ -197,11 +264,25 @@ var uiDrawer = $H.klass(null, {
     }
 });
 
-var uiNav = $H.klass(null, {
-    struct: function(sel){
-        $(sel).find("a").each(function(){ $(this).append("<span class='nav_arrow_r'></span>")});
-    }
+$H.ui.accordion = $H.klass(null, {
+    struct: function(id){ },
 });
+
+$H.ui.button = $H.klass();
+
+$H.ui.input = $H.klass();
+
+$H.ui.checkbox = $H.klass();
+
+$H.ui.radio = $H.klass();
+
+$H.ui.select = $H.klass();
+
+$H.ui.searcher = $H.klass();
+
+$H.ui.suggestion = $H.klass();
+
+$H.xui = $H.klass();
 
 
 

@@ -5,25 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" />
     <link href="../xhobbit.css" rel="stylesheet" type="text/css">
 </head>
-<body style="height:400px;">
+<body>
     <div class="ui_page">
         <header>
 			<a>H</a>
-			<h1>Loader</h1>
+			<h1>$H.loader</h1>
 			<a style="float:right">S</a>
 		</header>
         <div class="ui_content">
-            <div id="show">
-                show</div>
-            <div id="hide">
-                hide</div>
-                <div id="h">liulanqi</div>
+            <a class="btn" id="show">$H.loader.show()</a>
+            <a class="btn" id="hide">$H.loader.hide()</a>
         </div>
         <footer>
 			footer
 		</footer>
     </div>
-    <script src="../jquip.js" type="text/javascript"></script>
+    <script src="../zepto.js" type="text/javascript"></script>
     <script src="../xhobbit.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
@@ -33,11 +30,6 @@
             $("#hide").bind("click", function () {
                 $H.loader.hide();
             });
-            $("#h").bind("click", function () {
-                alert($H.browser.height);
-            });
-
-            //$H.autoPageHeight();
         });
     </script>
 </body>

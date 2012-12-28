@@ -4,10 +4,10 @@
 <head>
     <title>Hobbit</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" />
-    <link href="xhobbit.css" rel="stylesheet" type="text/css">
+    <link href="xhobbit.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<div class="ui_page">
+	 <div class="ui_page">
 		<header>
 			<a>H</a>
 			<h1>Hobbit</h1>
@@ -15,37 +15,43 @@
 		</header>
 		<div class="ui_content">
 			<nav id="navH">
-				<a id="navFx" href="#" data-ico="h_fx">$H.framework</a>
+				<a id="navFx" data-ico="h_fx">$H.framework</a>
                 <div id="drawerFx" class="ui_drawer">
 				    <a>$H.conf</a>
-				    <a>$H.browser</a>
+				    <a href="doc/browser.htm">$H.browser</a>
 				    <a href="doc/loader.htm">$H.loader</a>
+				    <a>$H.alert()</a>
 				    <a>$H.dialog</a>
 				    <a>$H.msgbox</a>
 				    <a>$H.JSON</a>
-				    <a>$H.ajaxReq</a>
-				    <a href="doc/autoPageHeight.htm">$H.autoPageHeight</a>
-				    <a>$H.scrollTop</a>
+				    <a>$H.ajax()</a>
+				    <a href="doc/autoPageHeight.htm">$H.autoPageHeight()</a>
+				    <a>$H.scrollTop()</a>
+				    <a>$H.url()</a>
 				    <a>$H.storage</a>
-				    <a>$H.klass</a>
-				    <a data-ico="h_xfn">$H.xfn</a>
+				    <a>$H.klass()</a>
+				    <a data-ico="h_xfn">$H.xfn()</a>
                 </div>
 				<a id="navUi" data-ico="h_ui">$H.ui</a>
                 <div id="drawerUi" class="ui_drawer">
-				    <a>$H.nav</a>
-				    <a>$H.span</a>
-				    <a>$H.tabs</a>
-				    <a>$H.drawer</a>
-				    <a>$H.accordion</a>
-				    <a>$H.button</a>
-				    <a>$H.input</a>
-				    <a>$H.checkbox</a>
-				    <a>$H.radio</a>
-				    <a>$H.select</a>
-				    <a>$H.searcher</a>
-				    <a>$H.suggestion</a>
-				    <a>$H.xui</a>
-				    <a>$H.xuiCalendar</a>
+				    <a>$H.ui.nav()</a>
+				    <a>$H.ui.span()</a>
+				    <a>$H.ui.tabs()</a>
+				    <a>$H.ui.drawer()</a>
+				    <a>$H.ui.accordion()</a>
+				    <a>$H.ui.button()</a>
+				    <a>$H.ui.input()</a>
+				    <a>$H.ui.checkbox()</a>
+				    <a>$H.ui.radio()</a>
+				    <a>$H.ui.select()</a>
+				    <a>$H.ui.searcher()</a>
+				    <a>$H.ui.suggestion()</a>
+				    <a>$H.xui()</a>
+                </div>
+				<a id="navPlus">$H.plus</a>
+                <div id="drawerPlus" class="ui_drawer">
+				    <a>$H.xfn.validator()</a>
+				    <a>$H.xui.calendar()</a>
                 </div>
 				<a id="navDg" data-ico="h_bug">$H.debuger</a>
                 <div id="drawerDg" class="ui_drawer">
@@ -55,25 +61,29 @@
 				<a data-ico="h_jqu">jquip</a>
 			</nav>
 		</div>
-		<!--<footer>
+		<footer>
 			&copy; 2012-2013 hobbit
-		</footer>-->
+		</footer>
 	</div>
 </body>
-<script src="jquip.js" type="text/javascript"></script>
+<script src="zepto.js" type="text/javascript"></script>
 <script src="xhobbit.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(function () {
-        var nav = new uiNav("#navH");
-        var drawerFx = new uiDrawer("#drawerFx");
+        var nav = new $H.ui.nav("#navH");
+        var drawerFx = new $H.ui.drawer("#drawerFx");
         $("#navFx").click(function () {
             drawerFx.toggle();
         });
-        var drawerUi = new uiDrawer("#drawerUi");
+        var drawerUi = new $H.ui.drawer("#drawerUi");
         $("#navUi").click(function () {
             drawerUi.toggle();
         });
-        var drawerDg = new uiDrawer("#drawerDg");
+        var drawerPlus = new $H.ui.drawer("#drawerPlus");
+        $("#navPlus").click(function () {
+            drawerPlus.toggle();
+        });
+        var drawerDg = new $H.ui.drawer("#drawerDg");
         $("#navDg").click(function () {
             drawerDg.toggle();
         });
