@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit mask</title>
+    <meta name="viewport" content="width=device-width,target-densitydpi=medium-dpi,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../hobbit.css" rel="stylesheet" />
+    <script src="../../zepto.js"></script>
+    <script src="../../hobbit.js"></script>
+    <script src="../../hobbit.ui.js"></script>
+    <link href="../doc.css" rel="stylesheet" />
+    <script src="../doc.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="back">
+            </div>
+            <h1>
+                mask</h1>
+            <div class="menu">
+            </div>
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4>
+                    $H.mask.show({options}) ⇒ return $</h4>
+                <p>
+                    描述：显示遮罩层
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width: 80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width: 40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>scrollable</td>
+                                <td>bool</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>clickMask</td>
+                                <td>function</td>
+                                <td>否</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：xxx
+                </p>
+                <pre class="doc-code">
+                    <script type="text/javascript">
+                        function code() {
+                            $H.mask.show({
+                                clickMask: function () {
+                                    alert("点击遮罩层");
+                                    $H.mask.close();
+                                },
+                                scrollable: false
+                            });
+                        }
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+            <section class="doc-section">
+                <h4>
+                    $H.loader.mask() ⇒ return $</h4>
+                <p>
+                    描述：关闭遮罩层
+                </p>
+                <p>
+                    备注：xxx
+                </p>
+                <pre class="doc-code">                    
+                    <script type="text/jscript">
+                        function code() {
+                            $H.mask.close();
+                        }
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+        </article>
+        <footer>
+        </footer>
+    </div>
+</body>
+</html>

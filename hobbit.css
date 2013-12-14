@@ -1,0 +1,663 @@
+﻿body {
+    font-family: Helvetica,Arial,sans-serif;
+    margin: 0;
+    padding: 0;
+    /*去除 ios safari <a>以及 <input> 选中时高亮显示，去除高亮后我们可以自定义样式*/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    color: #3c3c3c;
+    font-size: 16px;
+    font-weight: normal;
+}
+input {
+    /*webkit 浏览器 input 元素样式自定义*/
+    -webkit-appearance: none;
+    font-size: 16px;
+    outline-width: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+}
+input:focus {
+    outline-width: 0; 
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+}
+td {
+    padding: 0;
+}
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+h6 {
+}
+h5 {
+    margin: 6px 0;
+}
+h4 {
+    margin: 6px 0;
+}
+h3 {
+}
+h2 {
+}
+h1 {
+}
+/*Hobbit etc...*/
+.etc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/*Hobbit Content-Ui Page FAEEE3*/
+.page {
+    
+}
+/*Hobbit Content-Ui Header*/
+header {
+    height: 48px;
+    line-height: 48px;
+    position: relative;
+    background-color: #c40000;
+    color: #fff;
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+}
+header .back {
+    position:absolute;    
+    height:100%;
+    width:60px;
+    font-size:16px;
+    text-indent:25px;
+}
+header .back::after {   
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-right: 3px solid #FFF;
+    border-top: 3px solid #FFF;
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin-top: -7px;
+    display: block;
+}
+header h1 {
+    margin: 0;
+    font-size:20px;
+}
+header .menu {
+    position:absolute;    
+    height:100%;
+    width:60px;
+    right:0;
+    top:0;
+    font-size:16px;
+    text-indent:25px;
+}
+header .menu::before {
+    content: '';    
+    width: 22px;
+    height: 12px;
+    border-top: 2px solid #FFF;    
+    border-bottom: 2px solid #FFF;
+    position: absolute;
+    right:10px;
+    top: 50%;
+    margin-top: -9px;
+}
+header .menu::after { 
+    content: '';    
+    width: 22px;
+    border-top: 2px solid #FFF;    
+    position: absolute;
+    right:10px;
+    top: 50%;
+    margin-top: -2px;
+}
+/*Hobbit Content-Ui Content*/
+article {
+    padding: 6px;
+    display: block;
+}
+/*Hobbit Content-Ui Footer*/
+footer {
+
+}
+/*Hobbit Content-Ui Panel*/
+section {
+    /*margin: 10px 0 20px 0;*/
+    line-height: 14px;
+    font-size: 14px;
+    border: 1px solid #C8C7CC;
+    padding:6px;
+}
+
+.arrow {
+    position:relative;
+    display:block;
+}
+.arrow::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid #C7C7CC;
+    border-top: 2px solid #C7C7CC;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    margin-top: -4px;
+    display: block;
+}
+.arrow.up::after {
+    -webkit-transform: rotate(-45deg) !important;
+    transform: rotate(-45deg) !important;
+}
+.arrow.right::after {
+    -webkit-transform: rotate(45deg) !important;
+    transform: rotate(45deg) !important;
+}
+.arrow.down::after {
+    -webkit-transform: rotate(135deg) !important;
+    transform: rotate(135deg) !important;
+}
+.arrow.left::after {
+    -webkit-transform: rotate(-135deg) !important;
+    transform: rotate(-135deg) !important;
+}
+/*Hobbit Content-Ui ListView*/
+ul.listview {
+    margin: 0 -6px 30px -6px;
+    padding: 0;
+    border-top: 1px solid #C8C7CC;
+    background-color:#fff;
+}
+ul.listview li {
+    min-height:45px;
+    line-height:45px;
+    padding: 0 16px;
+    border-bottom: 1px solid #C8C7CC;
+    position:relative;
+    overflow:hidden;
+}
+ul.listview li.active {
+    background-color: #D9D9D9;
+}
+ul.listview li a {
+    width:100%;
+    height:100%;
+    display:block;
+    text-decoration:none;
+    color:#000;
+}
+ul.listview li.active {
+    background-color:#D9D9D9;    
+}
+ul.listview li .name {
+    padding: 0 6px;
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;  
+    width: 68px;  
+}
+ul.listview li .value {
+    padding: 0 6px;
+    position:absolute;
+    top:0;
+    right:0;
+    left:80px;
+    bottom:0;  
+}
+ul.listview li input[type="text"],
+ul.listview li input[type="tel"],
+ul.listview li input[type="number"],
+ul.listview li input[type="email"],
+ul.listview li input[type="password"]  {
+    padding:0;
+    margin:0;
+    border: none;
+    height:100%;
+    width:100%;
+    background-color:transparent;
+}
+ul.listview li .select {
+    height:45px !important;
+    line-height:45px !important;   
+}
+ul.listview li .select span {
+    text-align: right;
+    padding-right:35px;
+}
+ul.listview li .switch {
+    position:absolute;
+    top:50%;
+    right:12px;
+    margin-top:-16px;
+}
+/*Hobbit Form-Ui Button*/
+.btn {
+    display: block;
+    font-weight: bold;
+    font-size: 20px;
+    height: 52px;
+    line-height: 52px;
+    text-align: center;
+    text-decoration: none;
+    border: 0;
+    margin: 12px 0;
+    border-radius: 4px;
+    border: solid #007AFF 1px;
+    background-color: #fff;
+    color: #007AFF;
+}
+.btn:active {
+    background-color:#007AFF;
+    color:#fff;
+}
+.btn.orange {
+    background: #FF9C00;
+    color: #fff;
+    border:none;
+}
+.btn.blue {
+    background: #007AFF;
+    color: #fff;
+    border:none;
+}
+.btn.mini {
+    line-height:25px !important;
+    height:25px !important;  
+    font-size:14px !important;  
+}
+.btn.inline {
+    padding: 0 10px;
+    border-radius: 4px;
+    display:inline-block;
+    margin: 0 !important;
+}
+/*Hobbit Form-Ui Radio*/
+.radio {
+	border-radius: 10px;
+	height: 16px;
+	width: 16px;
+	display: inline-block;
+	border: 2px solid #CCC6BB;
+	position: relative;  
+    margin: 3px;
+    vertical-align: middle;
+}
+.radio.checked::after {
+	content: '';
+	border-radius: 10px;
+	height: 10px;
+	width: 10px;
+	background-color: #C40000;
+    position: absolute;
+    top:3px;
+    left:3px;
+}
+.radio input[type="radio"] {
+	display: none;
+}
+.radio.disabled {
+    background-color: #ccc;
+}
+/*Hobbit Form-Ui Checkbox*/
+.checkbox {
+	height: 16px;
+	width: 16px;
+	border: 2px solid #CCC6BB;
+    display:inline-block;
+    position: relative;
+    margin: 3px;
+    vertical-align: middle;
+}
+.checkbox.checked::after {
+	content: '';
+	width: 9px;
+	height: 5px;
+	border-left: 3px solid #C40000;
+	border-bottom: 3px solid #C40000;
+	-webkit-transform: rotate(-50deg);
+	transform: rotate(-50deg);
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	display: block;
+}
+.checkbox input[type="checkbox"] {
+	display: none;
+}
+.checkbox.disabled {
+    background-color: #ccc;
+}
+/*Hobbit Form-Ui Swich*/
+.switch {
+	height: 30px;
+	width: 50px;
+	border-radius: 20px;
+	border: 2px solid #C7C7CC;
+    display:inline-block;
+    position: relative;
+    margin: 3px;
+    vertical-align: middle;    
+}
+.switch.off {
+    background-color: #FFF;
+}
+.switch.off::after {
+	content: '';
+    height: 30px;
+    width: 30px;
+	border-radius: 20px;
+	border: 1px solid #C7C7CC;
+    display:block;
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    background-color: #FFF;
+    box-shadow: 0 0 10px #C7C7CC;
+}
+.switch.on {
+    background-color: #49D561;
+	border: 2px solid #49D561;
+}
+.switch.on::after {
+	content: '';
+    height: 31px;
+    width: 31px;
+	border-radius: 20px;
+	border: 1px solid #3bda58;
+    display:block;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background-color: #FFF;
+}
+/*Hobbit Form-Ui Select*/
+.select {
+	height: 52px;
+	line-height: 52px;
+	display: block;
+	position: relative;
+	text-align: center;
+}
+.select select {
+	opacity: 0.01;
+	position: absolute;
+    left: 0;
+	z-index: 2;
+    height:100%;
+    width:100%;
+}
+.select span {
+	position: absolute;
+	right: 0;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 1;
+}
+
+/*Hobbit Ui Tabs*/
+ul.tabs{
+    /*IE 10 不兼容*/
+    display: -webkit-box;
+    display: -ms-flexbox;
+    -ms-flex-pack:center;
+    margin:0 -6px;
+    padding:0;
+    line-height:40px;
+    background-color:#DDDDDD;
+}
+ul.tabs li {
+    box-flex: 1;
+    -webkit-box-flex: 1;
+    -ms-box-flex: 1;
+    border-right: solid #ccc 1px;
+    padding:0;
+    text-align:center;
+}
+ul.tabs li:last-child {
+    border-right: none;
+}
+ul.tabs li.active {
+    background-color:#FFF;
+}
+/*Hobbit Ui Toolbar*/
+ul.toolbar{
+    /*IE 10 不兼容*/
+    display: -webkit-box;
+    display: -ms-flexbox;
+    margin:6px;
+    padding:0;
+    line-height:27px;
+    height:27px;
+    background-color:#FFF;
+    border:solid #007AFF 1px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;  
+    overflow:hidden;
+    color:#007AFF;
+}
+ul.toolbar li {
+    box-flex: 1;
+    -webkit-box-flex: 1;
+    -ms-box-flex: 1;
+    border-right: solid #007AFF 1px;
+    padding:0;
+    text-align:center;
+}
+ul.toolbar li:last-child {
+    border-right: none;
+}
+ul.toolbar li.active {
+    background-color:#007AFF;
+    color:#FFF;
+}
+/*Hobbit Ui Loader*/
+.loader {
+    position:fixed;
+    height: 36px;
+    line-height: 36px;
+    min-width: 36px;
+    top: 40%;
+    left:50%;
+    margin-top:-18px;
+	z-index: 9999;
+	background: #FFF;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+    border: solid 1px #ccc;
+}
+.loader .text {
+    padding: 0 6px 0 36px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width:260px;
+}
+.loader .loading{
+    position:absolute;
+    top: 2px;
+    left:2px;
+}
+.loading {
+    display: inline-block;
+    min-height:32px;
+    min-width:32px;
+    position:relative;
+}
+.loading::before {
+    content:'';
+    background-image: url("data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAA3NCSVQICAjb4U/gAAAAPFBMVEX/ ///e3t7W1tbOzs7FxcW9vb21tbWtra2lpaWcnJyUlJSMjIyEhIR7e3tzc3Nra2tjY2NaWlpSUlJC QkIy4RnWAAAAFHRSTlMA/////////////////////////7rhY6kAAAAJcEhZcwAACxIAAAsSAdLd fvwAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAAAFnRFWHRDcmVhdGlv biBUaW1lADEwLzAzLzEzQNAo6wAAAZZJREFUSInNlFmygyAQRQUEB5Sh2f9eXyMiqA0v+cv9iQX3 0GNlGEgJ7wV905APwX8FBNT/LumcfAMKQDUAB+DeAIQADcACwPoEdGiXg8EB+B0Q8WtqFWEQ2O+A wQ/X8g88hpA1oOJHZyIaAVsDOI+wt/3YElTMGFKlMz2Pcd9z/ydIrT1XA7kw5yvv8zysc25L3Ymz sOWpsiHChjKPCDh3TmCvU2bGsHQac7uAMRGutQGpFPQXw5IIS9oZJL+uD7k+CE0B5rCb5zTGvQd4 Kl1lNzolBzN58TNi2pzSrOURPpzChdnMJbJHUZc/bspeALpJQ9rBC2BXiO2zlH5ao17oC04mzlet NbkzXAjBX6ez1j3giajDrlc6JZFUPZHseqT9byTZzz9Qpe7O9MtuRLTnBi3LUhUySpnD8grg65pL EggsJZBEXQvD3606AizxHTVNkWCRaFYWfTmjCXXmJHv7FgPwGhj6ISb0pyZdgJCl7pd4rrgCuiFm 9MsnwDshSoAK6IXgZ8V3YOg3lgA+0pQG94VUy/8HAgIajwCJBUUAAAAASUVORK5CYII=");  
+    background-size: 24px 24px;
+    -webkit-background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-animation: loading 1s linear infinite;
+	animation: loading 1s linear infinite;
+    height: 32px;
+    width: 32px;
+    display: block;
+    position:absolute;
+    top: 50%;
+    left:50%;
+    margin-top: -16px;
+    margin-left: -16px;
+}
+@-webkit-keyframes loading {
+	0% { -webkit-transform: rotate(0deg); }
+    8.32% { -webkit-transform: rotate(0deg); }
+    8.33% { -webkit-transform: rotate(30deg); }
+    16.65% { -webkit-transform: rotate(30deg); }
+    16.66% { -webkit-transform: rotate(60deg); }
+    24.99% { -webkit-transform: rotate(60deg); }
+    25% { -webkit-transform: rotate(90deg); }
+    33.32% { -webkit-transform: rotate(90deg); }
+    33.33% { -webkit-transform: rotate(120deg); }
+    41.65% { -webkit-transform: rotate(120deg); }
+    41.66% { -webkit-transform: rotate(150deg); }
+    49.99% { -webkit-transform: rotate(150deg); }
+    50% { -webkit-transform: rotate(180deg); }
+    58.32% { -webkit-transform: rotate(180deg); }
+    58.33% { -webkit-transform: rotate(210deg); }
+    66.65% { -webkit-transform: rotate(210deg); }
+    66.66% { -webkit-transform: rotate(240deg); }
+    74.99% { -webkit-transform: rotate(240deg); }
+    75% { -webkit-transform: rotate(270deg); }
+    83.32% { -webkit-transform: rotate(270deg); }
+    83.33% { -webkit-transform: rotate(300deg); }
+    91.65% { -webkit-transform: rotate(300deg); }
+    91.66% { -webkit-transform: rotate(330deg); }
+    99.99% { -webkit-transform: rotate(330deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes loading {
+    0% { transform: rotate(0deg); }
+    8.32% { transform: rotate(0deg); }
+    8.33% { transform: rotate(30deg); }
+    16.65% { transform: rotate(30deg); }
+    16.66% { transform: rotate(60deg); }
+    24.99% { transform: rotate(60deg); }
+    25% { transform: rotate(90deg); }
+    33.32% { transform: rotate(90deg); }
+    33.33% { transform: rotate(120deg); }
+    41.65% { transform: rotate(120deg); }
+    41.66% { transform: rotate(150deg); }
+    49.99% { transform: rotate(150deg); }
+    50% { transform: rotate(180deg); }
+    58.32% { transform: rotate(180deg); }
+    58.33% { transform: rotate(210deg); }
+    66.65% { transform: rotate(210deg); }
+    66.66% { transform: rotate(240deg); }
+    74.99% { transform: rotate(240deg); }
+    75% { transform: rotate(270deg); }
+    83.32% { transform: rotate(270deg); }
+    83.33% { transform: rotate(300deg); }
+    91.65% { transform: rotate(300deg); }
+    91.66% { transform: rotate(330deg); }
+    99.99% { transform: rotate(330deg); }
+    100% { transform: rotate(360deg); }
+}
+/*Hobbit Ui Dialog*/
+.dialog{
+    position:fixed;
+    width:280px;
+    left: 50%;
+    top: 45%;
+    margin-left: -140px;
+	z-index: 9999;
+	background: #FFF;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+    border: 1px #C8C8C8 solid;
+	
+	overflow:hidden;
+}
+.dialog .title {
+    padding:10px 10px 0px 10px;
+    font-weight:bold;
+}
+.dialog .content{
+    min-height: 50px;    
+    max-height:100px;
+    padding:6px 10px;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-size:14px;
+    word-wrap:break-word;
+}
+.dialog .btns {
+    position:relative;
+    bottom:0;
+    height:45px;
+    line-height:45px;
+    width:100%;
+	border-top: 1px #C8C8C8 solid;
+	color: #007AFF;
+	font-size:18px;
+	display: box;
+	display:-webkit-box;
+}
+.dialog .btns a {
+	text-align:center;
+	display:block;
+	-webkit-box-flex:1;
+    box-flex:1;
+	border-right: 1px #C8C8C8 solid;
+	height:100%;
+}
+.dialog .btns a:last-child{
+	border-right: none;    
+}
+.dialog .btns a:active{
+	background: #EEE;    
+}
+/*nav {
+    display:none;
+}*/
+/*
+    divice width
+    iphone:320px
+    sumsung-note:360px
+    */
+@media screen and (min-width:520px) {
+    .page {
+        width: 520px;
+        margin: 0 auto;
+        /*position:absolute;
+        top:0;
+        left:201px;
+        right:0;*/
+    }
+    /*nav {
+        position:absolute;
+        left:0;
+        top: 0;
+        width:200px;
+        height:100%;
+        display:block;
+	    border-right: 1px #000 solid;
+    }*/
+}

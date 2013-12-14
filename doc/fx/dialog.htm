@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit dialog</title>
+    <meta name="viewport" content="width=device-width,target-densitydpi=medium-dpi,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../hobbit.css" rel="stylesheet" />
+    <script src="../../zepto.js"></script>
+    <script src="../../hobbit.js"></script>
+    <script src="../../hobbit.ui.js"></script>
+
+    <link href="../doc.css" rel="stylesheet" />
+    <script src="../doc.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="back"></div>
+            <h1>dialog</h1>
+            <div class="menu"></div>  
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4>$H.dialog.show({options}) ⇒ return $</h4>
+                <p>
+                    描述：显示对话框
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>title</td>
+                                <td>string</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>content</td>
+                                <td>string</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>buttons</td>
+                                <td>array</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>mask</td>
+                                <td>bool</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>scrollable</td>
+                                <td>bool</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>clickMask</td>
+                                <td>function</td>
+                                <td>否</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：xxx
+                </p>
+                <pre class="doc-code">
+                    <script type="text/javascript">
+                        function code() {
+                            $H.dialog.show({
+                                title: "标题",
+                                content: "内容",
+                                clickMask: function () {
+                                    alert("点击遮罩层");
+                                },
+                                buttons: [{
+                                    text: "确定",
+                                    css: { "color": "red" },
+                                    callback: function () {
+                                        alert("点击确定");
+                                    }
+                                }, {
+                                    text: "取消",
+                                    callback: function () {
+                                        alert("点击取消");
+                                        $H.dialog.close();
+                                    }
+                                }],
+                                mask: false,
+                                scrollable: true
+                            });
+                        }
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+            <section class="doc-section">
+                <h4>button ⇒ Object</h4>
+                <p>
+                    描述：$H.dialog 的 button 对象。
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>text</td>
+                                <td>string</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>callback</td>
+                                <td>function</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>class</td>
+                                <td>string</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>css</td>
+                                <td>object</td>
+                                <td>否</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="doc-btn-wrap"></div>
+            </section>
+            <section class="doc-section">
+                <h4>$H.loader.close() ⇒ return $</h4>
+                <p>
+                    描述：隐藏对话框
+                </p>
+                <p>
+                    备注：xxx
+                </p>
+                <pre class="doc-code">                    
+                    <script type="text/jscript">
+                        function code() {
+                            $H.dialog.close();
+                        }
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+        </article>
+        <footer></footer>
+    </div>
+    <script type="text/jscript">
+        $(function () {
+        });
+    </script>
+</body>
+</html>
+

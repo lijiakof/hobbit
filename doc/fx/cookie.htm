@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit cookie</title>
+    <meta name="viewport" content="width=device-width,target-densitydpi=medium-dpi,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../hobbit.css" rel="stylesheet" />
+    <script src="../../zepto.js"></script>
+    <script src="../../hobbit.js"></script>
+    <script src="../../hobbit.ui.js"></script>
+
+    <link href="../doc.css" rel="stylesheet" />
+    <script src="../doc.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="back"></div>
+            <h1>cookie</h1>
+            <div class="menu"></div> 
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4>$H.cookie.set({options}) ⇒ undefined</h4>
+                <p>
+                    描述：向 cookie 存入值
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>key</td>
+                                <td>string</td>
+                                <td>是</td>
+                            </tr>
+                            <tr>
+                                <td>value</td>
+                                <td>object</td>
+                                <td>是</td>
+                            </tr>
+                            <tr>
+                                <td>expires</td>
+                                <td>number[秒]</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>path</td>
+                                <td>string</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>domain</td>
+                                <td>string</td>
+                                <td>否</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：
+                </p>
+                <pre class="doc-code">
+                <script type="text/javascript">
+                    function code() {
+                        var options = {
+                            "key": "test",
+                            "value": "test",
+                            "expires": 0,
+                            "path": "",
+                            "domain": ""
+                        };
+                        $H.cookie.set(options);
+                        alert($H.cookie.get("test"));
+                    }
+                    </script>                     
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+            <section class="doc-section">
+                <h4>$H.cookie.get(key) ⇒ string</h4>
+                <p>
+                    描述：通过 key 获取 cookie 值
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>key</td>
+                                <td>string</td>
+                                <td>是</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：
+                </p>
+                <pre class="doc-code">
+                    <script type="text/javascript">
+                        function code() {
+                            var test = $H.cookie.get("test");
+                            alert(test);
+                        }
+                    </script>                    
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+            <section class="doc-section">
+                <h4>$H.cookie.remove(key, path) ⇒ undefined</h4>
+                <p>
+                    描述：去除cookie中某一值
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>key</td>
+                                <td>string</td>
+                                <td>是</td>
+                            </tr>
+                            <tr>
+                                <td>path</td>
+                                <td>string</td>
+                                <td>是</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：
+                </p>
+                <div class="doc-demo">
+                    这里是DEMO
+                </div>
+                <pre class="doc-code">
+                    <script type="text/javascript">
+                        function code() {
+                            var options = {
+                                "key": "test",
+                                "path": "/",
+                                "domain": ""
+                            };
+                            $H.cookie.remove(options);
+                            alert($H.cookie.get("test"));
+                        }
+                    </script>                    
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+        </article>
+        <footer></footer>
+    </div>
+</body>
+</html>
+
