@@ -1,5 +1,0 @@
-﻿$.fn.extend({
-    uiCalendar: function () { 
-        
-    }
-});
