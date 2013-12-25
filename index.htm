@@ -2,9 +2,12 @@
 <html>
 <head>
     <title>hobbit.js</title>
-    <meta http-equiv="refresh" content="2; url=doc/index.htm" />
+    <!--<meta http-equiv="refresh" content="2; url=doc/index.htm" />-->
     <meta name="viewport" content="width=device-width,target-densitydpi=medium-dpi,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
     <link href="hobbit.css" rel="stylesheet" type="text/css" />
+    <script src="zepto.js"></script>
+    <script src="hobbit.js"></script>
+    <script src="hobbit.ui.js"></script>
     <style>
         .text {
             text-align: center;
@@ -14,7 +17,7 @@
             text-shadow: 1px 1px 2px #808080;
         }
         .logo {
-            background: url(doc/img/ico-red.png) no-repeat center center;
+            background: url(doc/img/logo-red.png) no-repeat center center;
             background-size: 32px 32px;
             -webkit-background-size: 32px 32px;
             width: 32px;
@@ -35,7 +38,6 @@
             top: 1px;
             left: 1px;
         }
-
         @-webkit-keyframes logo-loading {
             0% {
                 -webkit-transform: rotate(0deg);
@@ -45,7 +47,6 @@
                 -webkit-transform: rotate(360deg);
             }
         }
-
         @keyframes logo-loading {
             0% {
                 transform: rotate(0deg);
@@ -58,12 +59,27 @@
     </style>
 </head>
 <body>
-    <div class="page doc">
-        <div style="position:absolute; top:30%; left:0; right:0; text-align:center;">
+    <div class="page">
+        <!--<div style="position:absolute; top:30%; left:0; right:0; text-align:center;">
             <div class="logo"></div>
             <div class="text">hobbit.js</div>
-        </div>
+        </div>-->
+        <header>
+            <h1>hobbit.js</h1>
+        </header>
+        <article>
+            <ul class="listview">
+                <li class="arrow">简介</li>
+                <li class="arrow">如何使用</li>
+                <li class="arrow"><a href="doc/index.htm">文档</a></li>
+                <li class="arrow">下载</li>
+                <li class="arrow">团队</li>
+            </ul>
+        </article>
     </div>
+    <script type="text/javascript">
+
+    </script>
 </body>
 </html>
 

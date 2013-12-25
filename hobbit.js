@@ -21,7 +21,7 @@ var $H = {
         var match = function (k) {
             var t = "unknown", v = 0;
             for (var m, i = 0; i < k.length; i++)
-                if (m = u.match(new RegExp("(" + k[i][1] + ")" + vr), "i")) {
+                if (m = u.match(new RegExp("(" + k[i][1] + ")" + vr, "i"))) {
                     t = k[i][0];
                     v = parseFloat(m[2]);
                     v = isNaN(v) ? 0 : v;
@@ -29,8 +29,8 @@ var $H = {
                 }
             return { type: t, ver: v };
         };
-        os = match([["android", "Android"], ["ios ipad", "iPad.*OS"], ["ios ipod", "iPod.*OS"], ["ios iphone", "iPhone\\sOS"], ["windows mobile", "Windows\\s?Mobile"], ["windows phone", "Windows\\s?Phone|WPOS"], ["windows pc", "Windows"], ["symbian", "Series60|Symbian|Nokia"], ["blackberry", "BlackBerry"], ["mac os", "Macintosh|Mac\\s?OS"]]);
-        bs = match([["chrome", "Chrome|CriOS"], ["safari", "Mac\\s?OS.*Safari"], ["ie", "MSIE"], ["weixin", "MicroMessenger"], ["miuiyp", "MiuiYellowPage"], ["qq", "QQBrowser"], ["uc", "UCBrowser|UCWEB|JUC|\\sUC\\s"], ["firefox", "Firefox"], ["opera", "Opera"]]);
+        os = match([["android", "Android"], ["iosipad", "iPad"], ["iosipod", "iPod"], ["iosiphone", "iPhone\\sOS"], ["windowsmobile", "Windows\\s?Mobile"], ["windowsphone", "Windows\\s?Phone|WPOS"], ["windowspc", "Windows"], ["symbian", "Series60|Symbian|Nokia"], ["blackberry", "BlackBerry"], ["macpc", "Macintosh|Mac\\s?OS"]]);
+        bs = match([["chrome", "Chrome|CriOS"], ["ie", "MSIE"], ["weixin", "MicroMessenger"], ["miuiyp", "MiuiYellowPage"], ["qq", "QQBrowser"], ["uc", "UCBrowser|UCWEB|JUC|\\sUC\\s"], ["firefox", "Firefox"], ["opera", "Opera"], ["safari", "Mac\\s?OS.*Safari"], ["native", "Android.*WebKit"]]);
         uai = { os: os.type, ov: os.ver, bs: bs.type, bv: bs.ver };
         if (!ua)
             $H.storage.set({ key: "UAI", value: uai, expires: 3600 * 24 * 30 });
@@ -70,25 +70,14 @@ var $H = {
             e.preventDefault();
         }
     },
-    //触发 active 样式，todo：
-    active: function (selector) {
-        $(selector).each(function () {
-            if (!$(this).hasClass("active")) {
-                $(this).bind("touchstart mousedown", function () {
-                    var zpt = $(this);
-                    zpt.addClass("active");
-                    //if (!$H.browser.isIOS)
-                    //    setTimeout(function () { zpt.removeClass("active"); }, 800);
-                }).bind("touchcancel touchend mouseup", function () {
-                    $(this).removeClass("active");
-                });
-            }
-        });
-    },
     mask: {
         ui: $("<div>"),
         show: function (options) {
-            var options = options || {};
+            options = $.extend({
+                scrollable: true,
+                clickMask: function () {  }
+            }, options);
+            
             $H.mask.ui.css({
                 "background-color": "#333",
                 "position": "absolute",
@@ -101,9 +90,8 @@ var $H = {
             $H.mask.ui.appendTo($("body"));
 
             $H.mask.ui.unbind("click");
-            if (options.clickMask) {
-                $H.mask.ui.bind("click", options.clickMask);
-            }
+            
+            $H.mask.ui.bind("click", options.clickMask);
 
             if (!options.scrollable)
                 $H.browser.discrollable();
@@ -119,7 +107,13 @@ var $H = {
     loader: {
         ui: $("<div>").addClass("loader"),
         show: function (options) {
-            var options = options || {};
+            options = $.extend({
+                text: "",
+                mask: false,
+                scrollable: true,
+                clickMask: function () { },
+                timeout: -1
+            }, options);
 
             $H.loader.ui.empty();
             var text = $("<div>");
@@ -141,9 +135,9 @@ var $H = {
             $H.loader.ui.css("margin-left", -$H.loader.ui.width() / 2);
 
             //todo; 提炼出int解析方法
+            //如果不传timeout，则永久显示
             var timeout = parseInt(options.timeout, 10);
-            timeout = isNaN(timeout) ? 10 : timeout;
-            if (timeout >= 0)
+            if (!isNaN(timeout) && timeout >= 0)
                 setTimeout($H.loader.close, timeout * 1000);
 
             if (!options.scrollable)
@@ -162,7 +156,14 @@ var $H = {
     dialog: {
         ui: $("<div>").addClass("dialog"),
         show: function (options) {
-            options = options || {};
+            options = $.extend({
+                title: "",
+                content: "",
+                buttons: null,
+                mask: false,
+                scrollable: false,
+                clickMask: function () { }
+            }, options);
 
             $H.dialog.ui.empty();
             var title = $("<div>").addClass("title");
@@ -397,45 +398,53 @@ var $H = {
         return (hash & 0x7FFFFFFF);
     },
     geo: function (options) {
-        if (navigator.geolocation) {
-            options.expires = options.expires || 60;
-            options.timeout = options.timeout || 30;
+        options = $.extend({
+            expires: 60,
+            timeout: 30,
+            enableHighAccuracy: false,
+            before: function () { },
+            success: function () { },
+            error: function(){ },
+            complete: function () { }
+        }, options);
 
-            if (options.before)
-                options.before();
+        if (navigator.geolocation) {
+            options.before();
 
             navigator.geolocation.getCurrentPosition(
                 function (p) {
-                    if (options.success)
-                        options.success(p.coords);
-
-                    if (options.complete)
-                        options.complete();
+                    options.success(p.coords);
+                    options.complete();
                 },
                 function (code, msg) {
-                    if (options.error)
-                        options.error(code, msg);
+                    options.error(code, msg);
                     //1=PERMISSION_DENIED:表示没有权限使用地理定位API
                     //2=POSITION_UNAVAILABLE:表示无法确定设备的位置，例如一个或多个的用于定位采集程序报告了一个内部错误导致了全部过程的失败
                     //3=TIMEOUT:表示超时
 
-                    if (options.complete)
-                        options.complete();
+                    options.complete();
                 },
                 {
                     maximumAge: options.expires * 1000,
-                    enableHighAccuracy: options.enableHighAccuracy || false,
+                    enableHighAccuracy: options.enableHighAccuracy,
                     timeout: options.timeout * 1000
                 });
         }
     },
     //url, data, type, target
     submit: function (options) {
+        options = $.extend({
+            url: "",
+            data: null,
+            type: "POST",
+            target: "_self"
+        }, options);        
+
         var form = $("<form>").hide().attr({
-            method: options.type || "POST",
+            method: options.type,
             action: options.url,
             data: options.data,
-            target: options.target || "_self"
+            target: options.target
         }).appendTo(document.body);
 
         if (options.data)
@@ -450,22 +459,23 @@ var $H = {
         form.remove();
     },
     ajax: function (options) {
-        var options = options || {
+        options = $.extend({
             type: "GET",
             url: "",
             timeout: 30,
-            data: "",
+            data: null,
             dataType: "html",
             expires: 0,
-            beforeSend: new function () { },
-            complete: new function () { },
-            success: new function () { },
-            error: new function () { }
-        };
+            context: null,
+            beforeSend: function () { },
+            complete: function () { },
+            success: function () { },
+            error: function () { }
+        }, options);
 
         //Expires time（second，>0为过期时间，如果不设置或者<=0则没有缓存）
-        var t = new Date().getTime();
-        if (!options.expires || isNaN(options.expires) || (options.expires <= 0)) {
+        var t;
+        if (isNaN(options.expires) || (options.expires <= 0)) {
             t = new Date().getTime();
         }
         else {
@@ -479,53 +489,42 @@ var $H = {
 
         //dataType:"json", "jsonp", "xml", "html", or "text"
         $.ajax({
-            type: options.type ? options.type.toUpperCase() : "GET",
+            type: options.type.toUpperCase(),
             url: options.url,
             timeout: tout,
             data: options.data,
-            dataType: options.type ? options.type.toLowerCase() : "html",
-            beforeSend: function (xhr, settings) {
-                if (options.beforeSend)
-                    options.beforeSend(xhr, settings);
-            },
+            dataType: options.type.toLowerCase(),
+            context: options.context,
+            beforeSend: options.beforeSend,
             // status: "success", "notmodified", "error", "timeout", "abort", "parsererror"
-            complete: function (xhr, status) {
-                if (options.complete)
-                    options.complete(xhr, status);
-            },
-            success: function (data, status, xhr) {
-                if (options.success)
-                    options.success(data, status, xhr);
-            },
+            complete: options.complete,
+            success: options.success,
             // type: "timeout", "error", "abort", "parsererror"
-            error: function (xhr, errorType, error) {
-                if (options.error)
-                    options.error(xhr, errorType, error);
-            }
+            error: options.error
         });
-    },
-    getCss: function (url) {
-        var head = document.getElementsByTagName("head").item(0) || document.documentElement;
-        var s = document.createElement("link");
-        s.setAttribute("rel", "stylesheet");
-        s.setAttribute("type", "text/css");
-        s.setAttribute("href", url);
-        head.appendChild(s);
     },
     loadCss: function (options) {
-        //会有406错误     
-        $H.ajax({
-            type: 'GET',
-            url: options.url,
-            timeout: 300,
-            success: function (data) {
-                $("<style>").text(data).appendTo($("head"));
-                if (options.success)
-                    options.success(data);
-            }
-        });
+        options = $.extend({
+            url: "",
+            success: function () { },
+            error: function () { }
+        }, options);
+
+        var c = document.createElement("link");
+        c.rel = "stylesheet";
+        c.type = "text/css";
+        c.href = options.url;
+        document.querySelector("head").insertBefore(c, null);
+        c.onload = options.success;
+        c.onerror = options.error;
     },
     loadScript: function (options) {
+        options = $.extend({
+            url: "",
+            success: function () { },
+            error: function () { }
+        }, options);
+
         var h = document.head || document.getElementsByTagName('head')[0] || docEl,
 			s = document.createElement('script'), rs;
         if (options.async) s.async = "async";
@@ -535,14 +534,14 @@ var $H = {
                 if (h && s.parentNode)
                     h.removeChild(s);
                 s = undefined;
-                if (options.success) options.success();
+                options.success();
             }
         };
 
         s.onload = options.success;
         s.onerror = options.error;
         s.src = options.url;
-        h.insertBefore(s, h.firstChild);
+        h.insertBefore(s, null);
     },
     cookie: {
         get: function (key) {
@@ -559,23 +558,38 @@ var $H = {
             return null;
         },
         set: function (options) {
-            var options = options || { "key": "", "value": "", "expires": 0, "path": "", "domain": "" };
+            options = $.extend({
+                key: "",
+                value: "",
+                expires: 0,
+                path: "",
+                domain: document.domain
+            }, options);
+
             var ck = [options.key + "=" + escape(options.value)];
-            if (options.expires > 0) {//为0时不设定过期时间，浏览器关闭时cookie自动消失
+            //?todo：如果expires小于等于0怎么办
+            if (!isNaN(options.expires) && options.expires > 0) {//为0时不设定过期时间，浏览器关闭时cookie自动消失
                 var date = new Date();
                 date.setTime(date.getTime() + options.expires * 1000);
                 ck.push(";expires=" + date.toGMTString());
             }
+
             ck.push(";path=" + (options.path || "/"));
-            if (options.domain)
+            if (options.domain && options.domain.toLowerCase() !== "localhost")
                 ck.push(";domain=" + options.domain);
             document.cookie = ck.join("");
         },
         remove: function (options) {
-            var options = options || { "key": "", "path": "", "domain": "" };
+            options = $.extend({
+                key: "",
+                path: "",
+                domain: document.domain
+            }, options);
+            //todo: key 为空怎么存入
             var date = new Date();
             date.setTime(date.getTime() - 999999);
-            document.cookie = options.key + "=;expires=" + date.toGMTString() + ";path=" + (options.path || "/") + "domain=" + (options.domain || "");
+            var aaa = options.key + "=;expires=" + date.toGMTString() + ";path=" + (options.path || "/") + ";domain=" + ((options.domain) || document.domain);
+            document.cookie = aaa;
         }
     },
     storage: {
@@ -583,7 +597,8 @@ var $H = {
         setCnts: 0,
         get: function (key) {
             var ls = $H.storage.self;
-            if (ls) {
+            
+            if (key && ls) {
                 if (key.length > 64) key = $H.hash(key);
 
                 //浏览器关闭 localStorage
@@ -607,17 +622,21 @@ var $H = {
             return null;
         },
         set: function (options) {
+            options = $.extend({
+                key: null,
+                value: "",
+                expires: 360
+            }, options);
+
             var ls = $H.storage.self;
-            if (ls) {
+            if (options.key && ls) {
                 if (++$H.storage.setCnts % 20 == 0)
                     $H.storage.recycle();
 
                 options = options || {};
 
-                if (!options.expires || isNaN(!options.expires))
-                    options.expires = 60;
-
-                if (!options.value) options.value = "";
+                if (isNaN(options.expires))
+                    options.expires = 360;
 
                 if (options.key.length > 64)
                     options.key = $H.hash(options.key);
@@ -673,7 +692,7 @@ var $H = {
         self: window.sessionStorage,
         get: function (key) {
             var ss = $H.session.self;
-            if (ss) {
+            if (key && ss) {
                 if (key.length > 64) key = $H.hash(key);
 
                 //浏览器关闭 sessionStorage
@@ -690,12 +709,13 @@ var $H = {
             return null;
         },
         set: function (options) {
+            options = $.extend({
+                key: null,
+                value: ""
+            }, options);
+
             var ss = $H.session.self;
-            if (ss) {
-
-                options = options || {};
-
-                if (!options.value) options.value = "";
+            if (options.key && ss) {
 
                 if (options.key.length > 64)
                     options.key = $H.hash(options.key);
@@ -750,9 +770,13 @@ var $H = {
     *
     */
     throttle: function (options) {
-        var options = options || { "delay": 250, "fn": new function () { }, "debounce": true };
-        var last = 0,
-                timeId;
+        options = $.extend({
+            delay: 250,
+            fn: function () { },
+            debounce: undefined
+        }, options);
+
+        var last = 0, timeId;
 
         if (typeof options.fn !== 'function') {
             options.debounce = true;

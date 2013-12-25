@@ -1,186 +1,594 @@
 ﻿/// <reference path="zepto.js" />
 /// <reference path="hobbit.js" />
 $(function () {
-    $(window).bind("touchstart", function () { }).bind("touchend", function () { });
+    //$(window).bind("touchstart", function () { }).bind("touchend", function () { });
     //$H.browser.hideAddressBar();
-    $(".listview li").each(function () {
-        if (!$(this).hasClass("active")) {
-            $(this).bind("touchstart mousedown", function () {
-                var zpt = $(this);
-                zpt.addClass("active");
-                if (!$H.browser.isIOS)
-                    setTimeout(function () { zpt.removeClass("active"); }, 800);
-            }).bind("touchcancel touchend mouseup", function () {
-                $(this).removeClass("active");
-            });
-        }
-    });
+    $(".listview li").touchActive();
+    $(".btn").touchActive();
+    $("ul.toolbar li").touchActive();
+    $("a").touchActive();
 });
 
-
-$H.ui = {
-    base: $H.klass(null, {
-        struct: function (options) { }
-    }),
-    button: null,
-    checkbox: $H.klass($H.ui.base, {
-        struct: function (options) {
-            if ($(options.sel).length == 0)
-                return null;
-
-            this.ckb = $(options.sel);
-
-            this.box = $("<span></span>");
-            this.$ = this.ckb.parent().attr("for", this.ckb.attr("id")).append(this.box);
-            if (this.ckb.attr("disabled"))
-                this.$.addClass("disabled");
-            this.refresh();
-
-            var self = this;
-            //使用onchange事件，防止onclick事件将会引发事件冒泡
-            this.ckb.change(function () { self.refresh(); });
-            //绑定onclick事件，触屏设备才能激活change
-            this.$.bind("click", function () { });
-        },
-        refresh: function () {
-            if (this.ckb[0].checked)
-                this.box.addClass("checked");
-            else
-                this.box.removeClass("checked");
-        },
-        checked: function () {
-            if (!this.ckb[0].checked) {
-                this.ckb[0].checked = true;
-                this.ckb.trigger("change");
+; (function ($) {
+    $.extend($.fn, {
+        transferCssTo: function (elem) {
+            var className = this.attr("class");
+            var style = this.attr("style");
+            if (className != "") {
+                elem.addClass(className);
+                this.removeAttr("class");
+            }
+            if (style.length > 0) {
+                elem.attr("style", style);
+                this.removeAttr("style");
             }
         },
-        unchecked: function () {
-            if (this.ckb[0].checked) {
-                this.ckb[0].checked = false;
-                this.ckb.trigger("change");
-            }
-        },
-        val: function (v) {
-            return this.ckb.val(v);
-        },
-        ischecked: function () {
-            return this.ckb[0].checked;
-        }
-    }),
-    radio: $H.klass($H.ui.base, {
-        struct: function (selector) {
-            if ($(selector).length == 0)
-                return null;
+        touchActive: function (css) {
+            //touchstart>mouseover>mousedown>touchmove>mousemove>touchend>mouseup>click
+            var className = css == undefined ? "active" : css;
 
-            this.rad = $(selector);
-            this.circle = $("<span></span>");
-            this.$ = this.rad.parent().attr("for", this.rad.attr("id")).append(this.circle);
-            if (this.rad.attr("disabled"))
-                this.$.addClass("disabled");
-            this.name = this.rad.attr("name");
-            this.refresh();
-            var self = this;
-            //使用onchange事件，防止onclick事件将会引发事件冒泡
-            this.rad.change(function () { self.refresh(); });
-            //绑定onclick事件，触屏设备才能激活change
-            this.$.bind("click", function () { });
-        },
-        refresh: function () {
-            $("input[name=" + this.name + "]").each(function () {
-                if ($(this)[0].checked)
-                    $(this).next().addClass("checked");
-                else
-                    $(this).next().removeClass("checked");
-            });
-        },
-        checked: function () {
-            if (!this.rad[0].checked) {
-                this.rad[0].checked = true;
-                this.rad.trigger("change");
-            }
-        },
-        unchecked: function () {
-            if (this.rad[0].checked) {
-                this.rad[0].checked = false;
-                this.rad.trigger("change");
-            }
-        },
-        val: function (v) {
-            return this.rad.val(v);
-        },
-        ischecked: function () {
-            return this.rad[0].checked;
-        }
-    }),
-    select : $H.klass($H.ui.base, {
-        struct: function (selector) {
-            if ($(selector).length == 0)
-                return null;
-
-            this.sel = $(selector);
-            if (this.sel.parent("label").length == 0)
-                this.sel = $(selector).wrap("<label class='select'></label>");
-
-            this.$ = this.sel.parent();
-            this.txt = this.$.children("span");
-            if (this.txt.length == 0)
-                this.txt = $("<span>").appendTo(this.$);
-            this.refresh();
-            var self = this;
-            this.sel.change(function () { self.refresh(); });
-        },
-        refresh: function () {
-            this.txt.html(this.text());
-        },
-        addOption: function (key, value) {
-            this.sel.append("<option value='" + key + "'>" + value + "</option>");
-        },
-        clearAll: function () {
-            this.sel[0].options.length = 0;
-        },
-        index: function (v) {
-            var ov = this.sel[0].selectedIndex;
-            if (v !== undefined) {
-                if (ov != v) {
-                    this.sel[0].selectedIndex = v;
-                    this.sel.trigger("change");
+            this.bind("touchstart mousedown", function () {
+                $(this).addClass(className);
+                var This = $(this);
+                if ("android,windowsmobile,windowsphone,windowspc".indexOf($H.os.type()) != -1) {
+                    setTimeout(function () { This.removeClass(className); }, 800);
                 }
+            }).bind("touchcancel touchend mouseup click", function () {
+                $(this).removeClass(className);
+            })
+        }
+    })
+})(Zepto)
+
+; (function ($) {
+    $.extend($.fn, {
+        radio: function () {
+            var This = this;
+            var dom = this[0];
+            var ui = this.parent(".radio");
+
+            this.checked = function (checked) {
+                if (checked !== undefined) {
+                    dom.checked = checked;
+                }
+
+                $("input[name=" + dom.name + "]").each(function () {
+                    if ($(this)[0].checked)
+                        $(this).parent().addClass("checked");
+                    else
+                        $(this).parent().removeClass("checked");
+                });
+
+                return dom.checked;
             }
-            else
-                return ov;
-        },
-        text: function (v) {
-            var idx = this.index();
-            var ov = idx < 0 ? null : this.sel[0].options[idx].innerHTML;
-            if (v !== undefined) {
-                if (ov != v) {
-                    for (var i = 0; i < this.sel[0].options.length; i++) {
-                        if (this.sel[0].options[i].text == v) {
-                            this.sel[0].selectedIndex = i;
-                            this.sel.trigger("change");
-                            break;
+
+            this.disabled = function (disabled) {
+                if (disabled !== undefined) {
+                    dom.disabled = disabled;
+                }
+
+                if (dom.disabled)
+                    ui.addClass("disabled")
+                else
+                    ui.removeClass("disabled")
+
+                return dom.disabled;
+
+            }
+
+            var init = function () {
+                if (!ui || ui.length == 0) {
+                    This.wrap("<span class='radio'></span>");
+                    ui = This.parent(".radio");
+                }
+                This.checked();
+                This.disabled();
+
+                This.on("change", function (e) {
+                    This.checked();
+                });
+            }
+
+            init();
+
+            return this;
+        }
+    })
+})(Zepto)
+
+; (function ($) {
+    $.extend($.fn, {
+        checkbox: function () {
+            var This = this;
+            var dom = this[0];
+            var ui = this.parent(".checkbox");
+
+            this.checked = function (checked) {
+                if (checked !== undefined) {
+                    dom.checked = checked;
+                }
+
+                if (dom.checked)
+                    ui.addClass("checked");
+                else
+                    ui.removeClass("checked");
+
+                return dom.checked;
+            }
+
+            this.disabled = function (disabled) {
+                if (disabled !== undefined) {
+                    dom.disabled = disabled;
+                }
+
+                if (dom.disabled)
+                    ui.addClass("disabled")
+                else
+                    ui.removeClass("disabled")
+
+                return dom.disabled;
+            }
+
+            var init = function () {
+                if (!ui || ui.length == 0) {
+                    This.wrap("<span class='checkbox'></span>");
+                    ui = This.parent(".checkbox");
+                }
+
+                This.checked();
+                This.disabled();
+
+                This.on("change", function (e) {
+                    This.checked();
+                });
+            }
+
+            init();
+
+            return this;
+        }
+    })
+})(Zepto)
+
+; (function ($) {
+    $.extend($.fn, {
+        switch: function () {
+            var This = this;
+            var dom = this[0];
+            var ui = this.parent(".switch");
+
+            this.checked = function (checked) {
+                if (checked !== undefined) {
+                    dom.checked = checked;
+                }
+
+                if (dom.checked)
+                    ui.removeClass("off").addClass("on");
+                else
+                    ui.removeClass("on").addClass("off");
+
+                dom.value = dom.checked ? "on" : "off";
+
+                return dom.checked;
+            }
+
+            this.disabled = function (disabled) {
+                if (disabled !== undefined) {
+                    dom.disabled = disabled;
+                }
+
+                if (dom.disabled)
+                    ui.addClass("disabled")
+                else
+                    ui.removeClass("disabled")
+
+                return dom.disabled;
+            }
+
+            var init = function () {
+                if (!ui || ui.length == 0) {
+                    This.wrap("<span class='switch'></span>");
+                    ui = This.parent(".switch");
+                }
+
+                This.checked();
+                This.disabled();
+
+                This.on("change", function (e) {
+                    This.checked();
+                });
+            }
+
+            init();
+
+            return this;
+        }
+    })
+})(Zepto)
+
+; (function ($) {
+    $.extend($.fn, {
+        select: function (options) {
+            var This = this;
+            var dom = this[0];
+            var ui = this.parent(".select");
+            var text = ui.children("span");
+            options = $.extend({
+                displayText: function (opt) { return opt ? opt.text : ""; }
+            }, options);
+
+            this.count = function () {
+                return dom.options.length;
+            };
+
+            this.displayText = options.displayText;
+
+            //遵循原则：获取或操作只能针对dom元素进行
+            //保证options的顺序是通过index从小到大
+            this.options = function (opts) {
+                opts = (opts == undefined) ? null : ($.isArray(opts) ? opts : [opts]);
+
+                var selectedOptions = [], o, p;
+                for (var j = 0; j < dom.options.length; j++) {
+                    o = dom.options[j];
+                    if (opts == null)
+                        selectedOptions.push({ index: o.index, value: o.value, text: o.innerHTML, selected: o.selected });
+                    else
+                        for (var i = 0; i < opts.length; i++) {
+                            p = opts[i];
+                            //如果匹配到相应的option的属性
+                            if (opts.length == 0 ||
+                                (p.value == undefined || o.value == p.value) &&
+                                (p.index == undefined || o.index == p.index) &&
+                                (p.text == undefined || o.innerHTML == p.text) &&
+                                (p.selected == undefined || o.selected == p.selected)) {
+                                selectedOptions.push({ index: o.index, value: o.value, text: o.innerHTML, selected: o.selected });
+                                break;
+                            }
+                        }
+                }
+
+                return selectedOptions;
+            };
+
+            this.selected = function (opt) {
+                var selectedOpt;
+                if (opt === undefined) {
+                    if (dom.selectedIndex == -1) {
+                        selectedOpt = null;
+                    }
+                    else {
+                        var option = dom.options[dom.selectedIndex];
+                        selectedOpt = {
+                            index: dom.selectedIndex,
+                            value: option ? option.value : option,
+                            text: option ? option.innerHTML : option,
+                            selected: true
+                        };
+                    }
+                }
+                else {
+                    var opts = This.options(opt);
+                    if (opts.length >= 1) {
+                        selectedOpt = opts[opts.length - 1];
+                        if (dom.selectedIndex != selectedOpt.index) {
+                            selectedOpt.selected = true;
+                            dom.selectedIndex = selectedOpt.index;
+                            This.trigger("change");
                         }
                     }
                 }
+
+                return selectedOpt;
             }
-            else
-                return ov;
-        },
-        val: function (v) {
-            var ov = this.sel.val();
-            if (v !== undefined) {
-                if (ov != v) {
-                    this.sel.val(v);
-                    this.sel.trigger("change");
+
+            //按照index从小到大的insert，如果index超出select>options的长度范围则插入到最后
+            //如果设置了selected，控件会选中最后一次被设置了selected的选项，忽略它的顺序
+            this.insert = function (opts) {
+                if (opts != undefined) {
+                    //先排序
+                    opts = $.isArray(opts) ? opts : [opts];
+                    opts.sort(function (a, b) {
+                        return a.index - b.index;
+                    });
+                    var changed = false;
+                    for (var i = 0; i < opts.length; i++) {
+                        var insertOpt = $("<option>").val(opts[i].value || "").text(opts[i].text || "");
+                        if (This.count() == 0)
+                            insertOpt.appendTo(This);
+                        else {
+                            var insertIndex = opts[i].index || 0;
+                            if (insertIndex < This.count())
+                                $(dom.options[insertIndex]).before(insertOpt);
+                            else
+                                $(dom.options[This.count() - 1]).after(insertOpt);
+                        }
+
+                        if (opts[i].selected) {
+                            dom.selectedIndex = opts[i].index;
+                            changed = true;
+                        }
+                    }
+                    if (changed)
+                        This.trigger("change");
+                    return opts;
                 }
-            } else
-                return ov;
+            }
+            //按照index从大到小的remove
+            this.remove = function (opts) {
+                if (opts === undefined) {
+                    if (dom.options.length > 0) {
+                        This.empty();
+                        This.trigger("change");
+                    }
+                }
+                else {
+                    opts = This.options(opts);
+                    var selectedRemove = false;
+                    for (var i = opts.length - 1; i >= 0 ; i--) {
+                        if (opts[i].selected) selectedRemove = true;
+                        $(dom.options[i]).remove();
+                    }
+                    if (selectedRemove)
+                        This.trigger("change");
+                }
+                return opts;
+            }
+            //todo:本期不提供update
+            this.update = function (opt) {
+                if (opt !== undefined) {
+                }
+            }
+
+            var init = function () {
+                if (!ui || ui.length == 0) {
+                    This.wrap("<span class='select'></span>");
+                    ui = This.parent(".select");
+                    This.transferCssTo(ui);
+                    ui.touchActive();
+                }
+
+                if (!text || text.length == 0) {
+                    text = $("<span>");
+                    ui.append(text);
+                }
+                text.html(This.displayText(This.selected()));
+
+                This.on("change", function () {
+                    text.html(This.displayText(This.selected()));
+                });
+            }
+
+            init();
+            return this;
+        },
+
+        mupselect: function (args) {
+            var $this = this, wrap, dom, span, doChange = false;
+            args = $.extend({
+                displayText: function (opts) {
+                    if (opts.length == 0)
+                        return $this.attr("data-placeholder") || "";
+
+                    var txt = [];
+                    for (var i = 0; i < opts.length; i++)
+                        txt.push(opts[i].text);
+                    return txt.join(",").trim();
+                }
+            }, args);
+
+            var display = function () {
+                var selectedOptions = $this.options({ selected: true });
+                span.html($this.displayText(selectedOptions));
+                return selectedOptions;
+            };
+
+            this.displayText = args.displayText;
+
+            this.count = function () { return dom.options.length; };
+
+            this.options = function (opts) {
+                opts = (opts == undefined) ? null : ($.isArray(opts) ? opts : [opts]);
+                var selectedOptions = [], o, p;
+                for (var j = 0; j < dom.options.length; j++) {
+                    o = dom.options[j];
+                    if (opts == null)
+                        selectedOptions.push({ index: o.index, value: o.value, text: o.innerHTML, selected: o.selected });
+                    else
+                        for (var i = 0; i < opts.length; i++) {
+                            p = opts[i];
+                            //如果匹配到相应的option的属性
+                            if (opts.length == 0 ||
+                                (p.value == undefined || o.value == p.value) &&
+                                (p.index == undefined || o.index == p.index) &&
+                                (p.text == undefined || o.innerHTML == p.text) &&
+                                (p.selected == undefined || o.selected == p.selected)) {
+                                selectedOptions.push({ index: o.index, value: o.value, text: o.innerHTML, selected: o.selected });
+                                break;
+                            }
+                        }
+                }
+                return selectedOptions;
+            };
+
+            this.selected = function (opts) {
+                var selectedOptions = $this.options({ selected: true });
+                if (opts == undefined)
+                    return selectedOptions;
+
+                var selectingOptions = $this.options(opts);
+
+                for (var i = 0; i < dom.options.length; i++)
+                    dom.options[i].selected = false;
+
+                for (var i = 0; i < selectingOptions.length; i++)
+                    dom.options[selectingOptions[i].index].selected = true;
+
+                if (selectedOptions.length == selectingOptions.length) {
+                    var flag = false;
+                    for (var i = 0; i < selectingOptions.length; i++) {
+                        flag = false;
+                        for (var j = 0; j < selectingOptions.length; j++) {
+                            if (selectedOptions[i].index == selectingOptions[j].index)
+                                flag = true;
+                        }
+                        if (!flag) {
+                            doChange = true;
+                            $this.trigger("change");
+                            doChange = false;
+                            return selectingOptions;
+                        }
+                    }
+                } else {
+                    doChange = true;
+                    $this.trigger("change");
+                    doChange = false;
+                }
+
+                return selectingOptions;
+            };
+
+            this.remove = function (opts) {
+                if (opts === undefined) {
+                    if ($this.count() > 0) {
+                        $this.empty();
+                        doChange = true;
+                        $this.trigger("change");
+                        doChange = false;
+                    }
+                }
+                else {
+                    opts = $this.options(opts);
+                    var selectedRemove = false;
+                    for (var i = opts.length - 1; i >= 0 ; i--) {
+                        if (opts[i].selected)
+                            selectedRemove = true;
+                        $(dom.options[i]).remove();
+                    }
+                    if (selectedRemove) {
+                        doChange = true;
+                        $this.trigger("change");
+                        doChange = false;
+                    }
+                }
+                return opts;
+            };
+
+            this.insert = function (opts) {
+                if (opts != undefined) {
+                    opts = $.isArray(opts) ? opts : [opts];
+                    opts.sort(function (a, b) {
+                        return a.index - b.index;
+                    });
+                    var changed = false;
+                    for (var i = 0; i < opts.length; i++) {
+                        var insertOpt = $("<option>").val(opts[i].value || "").text(opts[i].text);
+                        if (opts[i].selected)
+                            insertOpt[0].selected = changed = true;
+                        if ($this.count() == 0)
+                            insertOpt.appendTo($this);
+                        else {
+                            var insertIndex = opts[i].index || 0;
+                            if (insertIndex < $this.count())
+                                $(dom.options[insertIndex]).before(insertOpt);
+                            else
+                                $(dom.options[$this.count() - 1]).after(insertOpt);
+                        }
+                    }
+                    if (changed) {
+                        doChange = true;
+                        $this.trigger("change");
+                        doChange = false;
+                    }
+                    return opts;
+                }
+            };
+
+            var init = function () {
+                if (!(wrap = $this.parent(".mupselect")) || wrap.length == 0)
+                    wrap = $this.wrap("<span class='mupselect'></span>").parent(".mupselect");
+
+                if (!(span = wrap.children("span")) || span.length == 0)
+                    span = $("<span>").appendTo(wrap);
+
+                //兼容PC上的多选
+                if ($H.os.type().indexOf("pc") != -1)
+                    $this.css("opacity", "1");
+
+                dom = $this[0];
+                display();
+
+                /*
+                解决ios7多选框的bug(https://discussions.apple.com/message/23745665#23745665)
+                ios7上的浏览器原生多选控件有2个bug：
+                1、点击多选控件时，如果第一个选项是选中状态，会将其显示为“非选中”，但其实内存中该选项实际是选中状态的。
+                2、当选完后，点击“完成”按钮后，会将当前已经滚动到中间的选项反选，即，若已选中则去掉选中，若未选则将其选中。
+                */
+                if ("iosiphone,iosipod".indexOf($H.os.type()) != -1 && $H.os.ver() >= 7) {
+                    var lastSelectedOptions = $this.options({ selected: true });
+                    $(dom.options[0]).before($("<option>").val("").text("").attr("disabled", "disabled"));
+                    $this.on("focusin", function () { doChange = true; });
+                    $this.on("focusout", function () { doChange = false; });
+                    $this.on("change", function () {
+                        if (doChange) {
+                            lastSelectedOptions = display();
+                            $this.trigger("changed");
+                        }
+                        else {
+                            setTimeout(function () {
+                                for (var i = 0; i < dom.options.length; i++)
+                                    dom.options[i].selected = false;
+
+                                for (var i = 0; i < lastSelectedOptions.length; i++)
+                                    dom.options[lastSelectedOptions[i].index].selected = true;
+                            }, 1);
+                        }
+                    });
+                } else {
+                    $this.on("change", function (e) {
+                        display();
+                        $this.trigger("changed");
+                    });
+                }
+            };
+
+            init();
+            return this;
         }
-    }),
-    input: null,
-    suggestion: null,
-    listview: null,
-    tabs: null
-};
+    })
+})(Zepto)
+
+; (function ($) {
+    $.extend($.fn, {
+        button: function () {
+            var This = this;
+            var dom = this[0];
+            var ui = this;
+            var disabled = this.attr("disabled");
+
+            this.disabled = function (disabled) {
+                if (disabled !== undefined) {
+                    dom.disabled = disabled;
+                }
+
+                if (dom.disabled)
+                    ui.addClass("disabled")
+                else
+                    ui.removeClass("disabled")
+
+                return dom.disabled;
+            }
+
+            var init = function () {
+                This.disabled();
+            }
+
+            init();
+
+            return this;
+        }
+    })
+})(Zepto)
+
 
 

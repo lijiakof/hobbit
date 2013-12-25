@@ -1,10 +1,15 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>hobbit demo</title>
+    <title>hobbit buttons</title>
     <meta name="viewport" content="width=device-width,target-densitydpi=medium-dpi,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
     <link href="../../hobbit.css" rel="stylesheet" />
+    <script src="../../zepto.js"></script>
+    <script src="../../hobbit.js"></script>
+    <script src="../../hobbit.ui.js"></script>
+
     <link href="../doc.css" rel="stylesheet" />
+    <script src="../doc.js"></script>
 </head>
 <body>
     <div class="page">
@@ -42,7 +47,7 @@
                 </p>
                 <div class="doc-demo">
                     <a class="btn">Default</a>
-                    <a class="btn orange">Orange</a>
+                    <a class="btn orange disabled">Orange</a>
                     <a class="btn blue">Blue</a>
                     <a class="btn mini">Mini</a>
                     <a class="btn mini orange">Mini Orange</a>
@@ -53,26 +58,23 @@
                     <a class="btn inline mini">Inline Mini</a>
                     <a class="btn inline mini orange">Inline Mini Orange</a>
                     <a class="btn inline mini blue">Inline Mini Blue</a>
+                    <button class="btn orange" id="btn1">button</button>
+                    <input type="button" class="btn orange" id="btn2" disabled="disabled" value="input" />
                 </div>
-                <pre class="doc-code">
-                    $H.function({
-                    })
+                <pre class="doc-code">                                       
+                    <script type="text/jscript">
+                        $(function () {
+                            $("#btn1").button();
+                            $("#btn2").button();
+                        })
+                    </script>
                 </pre>
                 <div class="doc-btn-wrap">
-                    <a class="btn inline mini">运行脚本</a>
                 </div>
             </section>
         </article>
         <footer></footer>
     </div>
-    <script src="../../zepto.js"></script>
-    <script src="../../hobbit.js"></script>
-    <script src="../../hobbit.ui.js"></script>
-    <script type="text/jscript">
-        $(function () {
-
-        });
-    </script>
 </body>
 </html>
 

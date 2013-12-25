@@ -71,9 +71,9 @@
                         var options = {
                             "key": "test",
                             "value": "test",
-                            "expires": 0,
+                            "expires": 200,
                             "path": "",
-                            "domain": ""
+                            "domain": document.domain
                         };
                         $H.cookie.set(options);
                         alert($H.cookie.get("test"));
@@ -162,7 +162,7 @@
                             var options = {
                                 "key": "test",
                                 "path": "/",
-                                "domain": ""
+                                "domain": document.domain
                             };
                             $H.cookie.remove(options);
                             alert($H.cookie.get("test"));

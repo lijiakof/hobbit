@@ -4,7 +4,12 @@
     <title>hobbit checkbox</title>
     <meta name="viewport" content="width=device-width,target-densitydpi=medium-dpi,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
     <link href="../../hobbit.css" rel="stylesheet" />
+    <script src="../../zepto.js"></script>
+    <script src="../../hobbit.js"></script>
+    <script src="../../hobbit.ui.js"></script>
+
     <link href="../doc.css" rel="stylesheet" />
+    <script src="../doc.js"></script>
 </head>
 <body>
     <div class="page">
@@ -15,9 +20,9 @@
         </header>
         <article class="doc">
             <section class="doc-section">
-                <h4>$H.function({options}) ⇒ return type</h4>
+                <h4>$(selector).checkbox() ⇒ $</h4>
                 <p>
-                    描述：xxx
+                    描述：初始化 checkbox 控件，现在只支持id筛选器。
                 </p>
                 <div class="doc-table">
                     <table>
@@ -31,8 +36,85 @@
                         <tbody>
                             <tr>
                                 <td>selector</td>
-                                <td>type</td>
+                                <td>string</td>
                                 <td>是</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：xxx
+                </p>
+                <div class="doc-demo">
+                    <input type="checkbox" checked="checked" name="checkbox" id="chk-5" />
+                    <input type="checkbox" name="checkbox" id="chk-6" />
+                    <input type="checkbox" name="checkbox" checked="checked" disabled="disabled" id="chk-7" />
+                    <input type="checkbox" name="checkbox" disabled="disabled" id="chk-8" />
+                    <ul class="listview">
+                        <li>
+                            <span class="name">checked</span>
+                            <span class="value">
+                                <input type="checkbox" checked="checked" name="checkbox" id="chk-1" />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">unchecked</span>
+                            <span class="value">
+                                <input type="checkbox" name="checkbox" id="chk-2" />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">disabled</span>
+                            <span class="value">
+                                <input type="checkbox" name="checkbox" checked="checked" disabled="disabled" id="chk-3" />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">disabled</span>
+                            <span class="value">
+                                <input type="checkbox" name="checkbox" disabled="disabled" id="chk-4" />
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <pre class="doc-code">
+                    <script type="text/jscript">
+                        $(function () {
+                            var chk = $("#chk-1").checkbox();
+                            var unChk = $("#chk-2").checkbox();
+                            var dis = $("#chk-3").checkbox();
+                            var chkDis = $("#chk-4").checkbox();
+
+                            var chkIl = $("#chk-5").checkbox();
+                            var unchkIl = $("#chk-6").checkbox();
+                            var disChkIl = $("#chk-7").checkbox();
+                            var disIl = $("#chk-8").checkbox();
+                        });
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    
+                </div>
+            </section>
+            <section class="doc-section">
+                <h4>$().checkbox().checked(checked) ⇒ bool</h4>
+                <p>
+                    描述：获取或设置是否被选中值。
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>checked</td>
+                                <td>bool</td>
+                                <td>否</td>
                             </tr>
                         </tbody>
                     </table>
@@ -43,51 +125,79 @@
                 <div class="doc-demo">
                     <ul class="listview">
                         <li>
-                            <span class="name">checked</span>
+                            <span class="name" id="demo-chk">checked</span>
                             <span class="value">
-                                <span class="checkbox checked">
-                                    <input type="checkbox" name="checkbox" id="checkbox-1" />
-                                </span>
-                            </span>
-                        </li>
-                        <li>
-                            <span class="name">default</span>
-                            <span class="value">
-                                <span class="checkbox">
-                                    <input type="checkbox" name="checkbox" id="checkbox-2" />
-                                </span>
-                            </span>
-                        </li>
-                        <li>
-                            <span class="name">disabled</span>
-                            <span class="value">
-                                <span class="checkbox disabled">
-                                    <input type="checkbox" name="checkbox" id="checkbox-3" />
-                                </span>
+                                <input type="checkbox" checked="checked" name="checkbox" id="chk-c" />
                             </span>
                         </li>
                     </ul>
                 </div>
                 <pre class="doc-code">
-                    $H.function({
-
-                    })
+                <script type="text/jscript">
+                    $(function () {
+                        var chkC = $("#chk-c").checkbox();
+                        chkC.on("change", function () {
+                            $("#demo-chk").text(chkC.checked());
+                        })
+                    });
+                    </script>
                 </pre>
                 <div class="doc-btn-wrap">
-                    <a class="btn inline mini">运行脚本</a>
+
+                </div>
+            </section>
+            <section class="doc-section">
+                <h4>$().checkbox().disabled(disabled) ⇒ bool</h4>
+                <p>
+                    描述：获取或设置是否为禁用状态。
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>disabled</td>
+                                <td>bool</td>
+                                <td>否</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：xxx
+                </p>
+                <div class="doc-demo">
+                    <ul class="listview">
+                        <li>
+                            <span class="name">disabled</span>
+                            <span class="value">
+                                <input type="checkbox" checked="checked" disabled="disabled" name="checkbox" id="chk-d" />
+                            </span>
+                        </li>
+                    </ul>
+                    <span id="demo-dis"></span>
+                </div>
+                <pre class="doc-code">
+                <script type="text/jscript">
+                    $(function () {
+                        var chkD = $("#chk-d").checkbox();
+                        $("#demo-dis").text(chkD.disabled());
+                    });
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+
                 </div>
             </section>
         </article>
         <footer></footer>
     </div>
-    <script src="../../zepto.js"></script>
-    <script src="../../hobbit.js"></script>
-    <script src="../../hobbit.ui.js"></script>
-    <script type="text/jscript">
-        $(function () {
-
-        });
-    </script>
 </body>
 </html>
 

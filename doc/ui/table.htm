@@ -4,46 +4,88 @@
     <title>hobbit demo</title>
     <meta name="viewport" content="width=device-width,target-densitydpi=medium-dpi,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
     <link href="../../hobbit.css" rel="stylesheet" />
+    <script src="../../zepto.js"></script>
+    <script src="../../hobbit.js"></script>
+    <script src="../../hobbit.ui.js"></script>
+
+    <link href="../doc.css" rel="stylesheet" />
+    <script src="../doc.js"></script>
 </head>
 <body>
     <div class="page">
         <header>
             <div class="back"></div>
-            <h1>forms</h1>
+            <h1>table</h1>
             <div class="menu"></div>
         </header>
-        <article>
-            <div style="-webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar; width: 80%; overflow-x: scroll; overflow-y: hidden; height: 70px; ">
-                <div style="width:600px; height:60px;background-color:#ff6a00">
-
-                    fdsalf;dsa
-                    fsda
-                    fsd
-                    af
-                    sd
+        <article class="doc">
+            <section class="doc-section">
+                <h4>样式控件</h4>
+                <p>
+                    描述：xxx
+                </p>
+                <p>
+                    备注：xxx
+                </p>
+                <div class="doc-demo">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>head1</td>
+                                <td>head2</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>body1<br/>body1</td>
+                                <td>body2</td>
+                            </tr>
+                            <tr>
+                                <td>body1</td>
+                                <td>body2</td>
+                            </tr>
+                            <tr>
+                                <td>body1</td>
+                                <td>body2</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>foot1</td>
+                                <td>foot2</td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-            </div>
-            <div style="-webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar; width: 80%; overflow-x: scroll; overflow-y: hidden; height: 70px; ">
-                <div style="width:600px; height:60px;background-color:#ff6a00">
-
-                    fdsalf;dsa
-                    fsda
-                    fsd
-                    af
-                    sd
+                <pre class="doc-code">
+                </pre>
+                <div class="doc-btn-wrap">
                 </div>
+            </section>
+
+            <!--<div style="-webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar; width: 80%; overflow-x: scroll; overflow-y: hidden; height: 70px; ">
+            <div style="width:600px; height:60px;background-color:#ff6a00">
+
+                fdsalf;dsa
+                fsda
+                fsd
+                af
+                sd
             </div>
+        </div>
+        <div style="-webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar; width: 80%; overflow-x: scroll; overflow-y: hidden; height: 70px; ">
+            <div style="width:600px; height:60px;background-color:#ff6a00">
+
+                fdsalf;dsa
+                fsda
+                fsd
+                af
+                sd
+            </div>
+        </div>-->
         </article>
         <footer></footer>
     </div>
-    <script src="../../zepto.js"></script>
-    <script src="../../hobbit.js"></script>
-    <script src="../../hobbit.ui.js"></script>
-    <script type="text/jscript">
-        $(function () {
-            //$H("").checkbox();
-        });
-    </script>
 </body>
 </html>
 

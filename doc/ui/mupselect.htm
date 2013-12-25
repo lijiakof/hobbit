@@ -1,51 +1,46 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>hobbit loadCss</title>
+    <title>hobbit demo</title>
     <meta name="viewport" content="width=device-width,target-densitydpi=medium-dpi,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
     <link href="../../hobbit.css" rel="stylesheet" />
     <script src="../../zepto.js"></script>
     <script src="../../hobbit.js"></script>
     <script src="../../hobbit.ui.js"></script>
-
     <link href="../doc.css" rel="stylesheet" />
     <script src="../doc.js"></script>
 </head>
 <body>
     <div class="page">
         <header>
-            <div class="back"></div>
-            <h1>loadCss</h1>
-            <div class="menu"></div>
+            <div class="back">
+            </div>
+            <h1>
+                mupselect
+            </h1>
+            <div class="menu">
+            </div>
         </header>
         <article class="doc">
             <section class="doc-section">
-                <h4>$H.loadCss(options) ⇒ undefined</h4>
+                <h4>
+                    $("selecter").mupselect({options}) ⇒ return zep
+                </h4>
                 <p>
-                    描述：异步向下载样式
+                    描述：多选控件
                 </p>
                 <div class="doc-table">
                     <table>
                         <thead>
                             <tr>
-                                <td style="width:80px;">参数</td>
+                                <td style="width: 80px;">参数</td>
                                 <td>类型</td>
-                                <td style="width:40px;">必需</td>
+                                <td style="width: 40px;">必需</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>url</td>
-                                <td>string</td>
-                                <td>是</td>
-                            </tr>
-                            <tr>
-                                <td>success</td>
-                                <td>function</td>
-                                <td>否</td>
-                            </tr>
-                            <tr>
-                                <td>error</td>
+                                <td>onchange</td>
                                 <td>function</td>
                                 <td>否</td>
                             </tr>
@@ -55,23 +50,29 @@
                 <p>
                     备注：
                 </p>
+                <div class="doc-demo">
+                    <span class="mupselect">
+                        <span></span>
+                        <select id="stars" name="stars" multiple="multiple" data-placeholder="星级不限">
+                            <option value="5">五星级</option>
+                            <option value="4" selected="selected">四星级</option>
+                            <option value="3" selected="selected">三星级</option>
+                            <option value="0">经济型</option>
+                        </select>
+                    </span>
+                </div>
                 <pre class="doc-code">
-                <script type="text/jscript">
-                    function code() {
-                        $H.loadCss({
-                            url: "getCss.css",
-                            success: function () {
-                                alert("success");
-                            },
-                            error: function () {
-                                alert("error");
-                            }
+                <script type="text/javascript">
+                    $(function () {
+                        var msel1 = $("#stars").mupselect();
+                        msel1.on("changed", function () {
+                            //dosomething
                         });
-                    }
-                    </script>                    
+                    });
+                </script>
                 </pre>
                 <div class="doc-btn-wrap">
-                    <a class="btn inline mini">运行脚本</a>
+
                 </div>
             </section>
         </article>
@@ -79,4 +80,3 @@
     </div>
 </body>
 </html>
-

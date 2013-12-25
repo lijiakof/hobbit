@@ -2,6 +2,8 @@
 /// <reference path="zepto.js" />
 /// <reference path="hobbit.js" />
 $(function () {
+    $("header .back").touchActive();
+    $("header .menu").touchActive();
     $("header > .back").bind("click", function () {
         history.back();
     });

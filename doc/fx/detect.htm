@@ -81,27 +81,27 @@
                                 <td>安卓</td>
                             </tr>
                             <tr>
-                                <td>ios ipad</td>
+                                <td>iosipad</td>
                                 <td>ios（iPad）</td>
                             </tr>
                             <tr>
-                                <td>ios ipod</td>
+                                <td>iosipod</td>
                                 <td>ios（iTouch、iPod）</td>
                             </tr>
                             <tr>
-                                <td>ios iphone</td>
+                                <td>iosiphone</td>
                                 <td>ios（iPhone）</td>
                             </tr>
                             <tr>
-                                <td>windows mobile</td>
+                                <td>windowsmobile</td>
                                 <td>Windows Mobile</td>
                             </tr>
                             <tr>
-                                <td>windows phone</td>
+                                <td>windowsphone</td>
                                 <td>Windows Phone</td>
                             </tr>
                             <tr>
-                                <td>windows pc</td>
+                                <td>windowspc</td>
                                 <td>Windows桌面</td>
                             </tr>
                             <tr>
@@ -113,7 +113,7 @@
                                 <td>黑莓</td>
                             </tr>
                             <tr>
-                                <td>mac os</td>
+                                <td>macpc</td>
                                 <td>苹果桌面</td>
                             </tr>
                         </tbody>
@@ -138,6 +138,10 @@
                             <tr>
                                 <td>chrome</td>
                                 <td>谷歌</td>
+                            </tr>
+                            <tr>
+                                <td>ie</td>
+                                <td>IE</td>
                             </tr>
                             <tr>
                                 <td>safari</td>
@@ -166,6 +170,10 @@
                             <tr>
                                 <td>opera</td>
                                 <td>欧朋</td>
+                            </tr>
+                            <tr>
+                                <td>native</td>
+                                <td>安卓原生</td>
                             </tr>
                         </tbody>
                     </table>
@@ -208,7 +216,7 @@
                             alert($H.json.stringify($H.detect()));
 
                             //检测指定UA的系统和浏览器的类型及版本
-                            alert($H.json.stringify($H.detect("Mozilla/5.0 (iPhone; CPU iPhone OS 5_1_1 like Mac OS X; en-us) AppleWebKit/534.46.0 (KHTML, like Gecko) CriOS/21.5.1180.80 Mobile/9B206 Safari/7534.48.3")));
+                            alert($H.json.stringify($H.detect("Mozilla/5.0 (Linux; U; Android 4.0.4; zh-cn; HTC_IncredibleS_S710e Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30")));
 
                             //获取系统类型
                             alert($H.detect().os);
