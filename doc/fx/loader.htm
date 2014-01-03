@@ -43,7 +43,7 @@
             </section>
             <section class="doc-section">
                 <h4>
-                    $H.loader.show({options}) ⇒ return $</h4>
+                    $H.loader.show({options}) ⇒ $</h4>
                 <p>
                     描述：显示 loader 控件。
                 </p>
@@ -98,6 +98,7 @@
                                 timeout: 15,
                                 clickMask: function () {
                                     alert("点击遮罩层");
+                                    $H.loader.close();
                                 }
                             });
                         }
@@ -109,7 +110,7 @@
             </section>
             <section class="doc-section">
                 <h4>
-                    $H.loader.close() ⇒ return $</h4>
+                    $H.loader.close() ⇒ undefined</h4>
                 <p>
                     描述：关闭 loader 控件。
                 </p>

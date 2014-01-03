@@ -3,10 +3,10 @@
 $(function () {
     //$(window).bind("touchstart", function () { }).bind("touchend", function () { });
     //$H.browser.hideAddressBar();
-    $(".listview li").touchActive();
-    $(".btn").touchActive();
-    $("ul.toolbar li").touchActive();
-    $("a").touchActive();
+    $(".listview li")
+        .add(".btn")
+        .add("ul.toolbar li")
+        .add("a").touchActive();
 });
 
 ; (function ($) {
@@ -27,13 +27,15 @@ $(function () {
             //touchstart>mouseover>mousedown>touchmove>mousemove>touchend>mouseup>click
             var className = css == undefined ? "active" : css;
 
-            this.bind("touchstart mousedown", function () {
-                $(this).addClass(className);
-                var This = $(this);
-                if ("android,windowsmobile,windowsphone,windowspc".indexOf($H.os.type()) != -1) {
-                    setTimeout(function () { This.removeClass(className); }, 800);
+            this.on("touchstart mousedown", function () {
+                if (!$(this).hasClass("disabled")) {
+                    $(this).addClass(className);
+                    var This = $(this);
+                    if ("android,windowsmobile,windowsphone,windowspc".indexOf($H.os.type()) != -1) {
+                        setTimeout(function () { This.removeClass(className); }, 800);
+                    }
                 }
-            }).bind("touchcancel touchend mouseup click", function () {
+            }).on("touchcancel touchend mouseup click", function () {
                 $(this).removeClass(className);
             })
         }
@@ -421,6 +423,8 @@ $(function () {
                 for (var i = 0; i < dom.options.length; i++)
                     dom.options[i].selected = false;
 
+                dom.value = null;
+
                 for (var i = 0; i < selectingOptions.length; i++)
                     dom.options[selectingOptions[i].index].selected = true;
 
@@ -511,8 +515,8 @@ $(function () {
                 if (!(span = wrap.children("span")) || span.length == 0)
                     span = $("<span>").appendTo(wrap);
 
-                //兼容PC上的多选
-                if ($H.os.type().indexOf("pc") != -1)
+                //兼容PC上的多选，macpc的多选与51返利的ua一致，不能显示！
+                if ($H.os.type() == "windowspc")
                     $this.css("opacity", "1");
 
                 dom = $this[0];
@@ -538,11 +542,25 @@ $(function () {
                             setTimeout(function () {
                                 for (var i = 0; i < dom.options.length; i++)
                                     dom.options[i].selected = false;
+                                
+                                dom.value = null;
 
                                 for (var i = 0; i < lastSelectedOptions.length; i++)
                                     dom.options[lastSelectedOptions[i].index].selected = true;
                             }, 1);
                         }
+                    });
+                } else if ("android" == $H.os.type() && "qq" == $H.browser.type()) {
+                    //解决安卓QQ浏览器多选控件BUG
+                    $this.on("touchstart", function (e) {
+                        $this.css({ "left": e.touches[0].clientX - $(window).width() + 10 + $this.offset().left });
+                    }).on("touchend", function (e) {
+                        setTimeout(function () {
+                            $this.css({ "left": 0 });
+                        }, 500);
+                    }).on("change", function (e) {
+                        display();
+                        $this.trigger("changed");
                     });
                 } else {
                     $this.on("change", function (e) {
@@ -560,35 +578,66 @@ $(function () {
 
 ; (function ($) {
     $.extend($.fn, {
-        button: function () {
-            var This = this;
-            var dom = this[0];
-            var ui = this;
-            var disabled = this.attr("disabled");
+        tabs: function (options) {
+            var args = {},
+                defaults = {
+                    selected: 0,
+                    disabled: [],
+                    callback: function (args) { }
+                },
+                opts = $.extend(defaults, options),
+                This = $(this);
 
-            this.disabled = function (disabled) {
-                if (disabled !== undefined) {
-                    dom.disabled = disabled;
-                }
+            this.init = function(opts){
+                if (!This.is("tabs")) {
+                    This.addClass("tabs");
+                };
+                var li = This.find("ul li"),
+                    num = li.length,
+                    width = (100/num).toFixed(2);
+                for (var i = 0; i < num; i++) {
+                    if (i != num-1) {
+                        li.eq(i).css({"width":width+"%"});
+                    } else{
+                        var lastWidth = 100-width*(num-1);
+                        li.eq(i).css({"width":lastWidth+"%"});
+                    };
+                };
 
-                if (dom.disabled)
-                    ui.addClass("disabled")
-                else
-                    ui.removeClass("disabled")
-
-                return dom.disabled;
+                This.find("ul li").eq(opts.selected).addClass("selected");
+                This.children("div").hide().eq(opts.selected).show();
+                This.find("ul li").on("click", function(e){
+                    e.stopPropagation();
+                    var index = $(this).index();
+                    for (var i = 0; i < opts.disabled.length; i++) {
+                        if (index == opts.disabled[i]) {
+                            return false;
+                        };
+                    };
+                    $(this).addClass("selected").siblings().removeClass("selected");
+                    This.children("div").eq(index).show().siblings("div").hide();
+                    opts.callback(args);
+                });
             }
 
-            var init = function () {
-                This.disabled();
+            this.index = function(index){
+                if (index == undefined) {
+                    var index = 0,
+                    index = $("li.selected").index();
+                    return index;   
+                } else{
+                    if (index>-1 && index<This.find("ul").length && index==parseInt(index)) {
+                        This.find("ul li").eq(index).trigger("click");
+                        opts.callback(args);
+                    };
+                };
             }
 
-            init();
+            this.init(opts);
 
-            return this;
+            return This;
         }
     })
 })(Zepto)
-
 
 

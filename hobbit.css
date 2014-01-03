@@ -392,7 +392,8 @@ ul.listview {
 	}
 
 	.btn.disabled {
-		background-color: #ECECEC;
+		background-color: #C8C7CC;
+        color:#666;
 	}
 
 button,
@@ -435,7 +436,7 @@ input[type="checkbox"] {
 	height: 18px;
 	width: 18px;
 	display: inline-block;
-	border: 1px solid #49D561;
+	border: 1px solid #2377E8;
 	position: relative;
 	margin: 3px;
 	vertical-align: middle;
@@ -444,12 +445,14 @@ input[type="checkbox"] {
 	.radio.checked::after {
 		content: '';
 		border-radius: 10px;
-		height: 10px;
-		width: 10px;
-		background-color: #49D561;
+		height: 12px;
+		width: 12px;
+		background-color: #2377E8;
 		position: absolute;
-		top: 4px;
-		left: 4px;
+		top: 3px;
+		left: 3px;
+
+		box-shadow: inset 0px 1px 1px #0D3B79;
 	}
 
 	.radio input[type="radio"] {
@@ -474,19 +477,24 @@ input[type="checkbox"] {
 .checkbox {
 	height: 18px;
 	width: 18px;
-	border: 1px solid #49D561;
+	border: 1px solid #2377E8;
 	display: inline-block;
 	position: relative;
 	margin: 3px;
 	vertical-align: middle;
-}
 
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+    .checkbox.checked {
+        background-color:#2377E8;
+    }
 	.checkbox.checked::after {
 		content: '';
 		width: 9px;
 		height: 5px;
-		border-left: 3px solid #49D561;
-		border-bottom: 3px solid #49D561;
+		border-left: 3px solid #fff;
+		border-bottom: 3px solid #fff;
 		-webkit-transform: rotate(-50deg);
 		transform: rotate(-50deg);
 		position: absolute;
@@ -638,36 +646,46 @@ select {
 		top: 0;
 		bottom: 0;
 	}
-
-
 /*Hobbit Ui Tabs*/
-ul.tabs {
-	/*IE 10 不兼容*/
-	display: -webkit-box;
-	display: -ms-flexbox;
-	-ms-flex-pack: center;
-	margin: 0 -6px;
-	padding: 0;
-	line-height: 40px;
-	background-color: #DDDDDD;
+.tabs { 
+    border: 1px solid #CCCCCC;  
+    background-color:#fff;  
+}
+.tabs ul { 
+    display: flexbox;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -ms-box;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.tabs li {
+    box-flex:1; 
+    -webkit-box-flex:1; 
+    -moz-box-flex:1;
+    flex:1;
+    -ms-flex:1;
+    text-align: center; 
+    height: 40px; 
+    line-height: 40px;
+    border-right:1px solid #CCCCCC;
+    background-color: #DDDDDD;
+	overflow: hidden;
+}
+.tabs li:last-child {
+    border-right: none;
+}
+.tabs .selected { 
+    color: #c40000; 
+    background-color: #FFFFFF; 
+    font-weight: bold; 
+}
+.tabs div { 
+    padding: 10px;
 }
 
-	ul.tabs li {
-		box-flex: 1;
-		-webkit-box-flex: 1;
-		-ms-box-flex: 1;
-		border-right: solid #ccc 1px;
-		padding: 0;
-		text-align: center;
-	}
-
-		ul.tabs li:last-child {
-			border-right: none;
-		}
-
-		ul.tabs li.active {
-			background-color: #FFF;
-		}
 /*Hobbit Ui Toolbar*/
 ul.toolbar {
 	/*IE 10 不兼容*/

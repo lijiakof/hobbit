@@ -77,24 +77,28 @@ var $H = {
                 scrollable: true,
                 clickMask: function () {  }
             }, options);
+
+            //var height = $(document).height();
+            //if ($H.browser.height() > height)
+            //    height = $H.browser.height();
             
             $H.mask.ui.css({
                 "background-color": "#333",
                 "position": "absolute",
                 "top": "0",
-                "height": $(document).height(),
+                "height": document.body.scrollHeight,
                 "width": "100%",
                 "z-index": "9998",
                 "opacity": ".4"
-            });
-            $H.mask.ui.appendTo($("body"));
+            }).appendTo($("body"));
 
-            $H.mask.ui.unbind("click");
-            
-            $H.mask.ui.bind("click", options.clickMask);
+            $H.mask.ui.off("click");            
+            $H.mask.ui.on("click", options.clickMask);
 
             if (!options.scrollable)
                 $H.browser.discrollable();
+
+            return $H.mask.ui;
         },
         close: function () {
             if ($H.mask.ui) {
@@ -143,12 +147,12 @@ var $H = {
             if (!options.scrollable)
                 $H.browser.discrollable();
 
-            return $H.dialog.ui;
+            return $H.loader.ui;
         },
         close: function () {
             $H.mask.close();
             if ($H.loader.ui) {
-                $H.dialog.ui.empty();
+                $H.loader.ui.empty();
                 $H.loader.ui.remove();
             }
         }
@@ -191,12 +195,23 @@ var $H = {
             if (options.buttons) {
                 $.each(options.buttons, function (index, item) {
                     var zepBtn = $("<a>").text(item.text);
+                    //todo: touchActive
+                    zepBtn.on("touchstart mousedown", function () {
+                        $(this).addClass("active");
+                        var This = $(this);
+                        if ("android,windowsmobile,windowsphone,windowspc".indexOf($H.os.type()) != -1) {
+                            setTimeout(function () { This.removeClass("active"); }, 800);
+                        }
+                    }).on("touchcancel touchend mouseup click", function () {
+                        $(this).removeClass("active");
+                    })
+
                     if (item.class)
                         zepBtn.addClass(item.class)
                     if (item.css)
                         zepBtn.css(item.css);
                     if (item.callback)
-                        zepBtn.bind("click", function () {
+                        zepBtn.on("click", function () {
                             item.callback();
                         });
                     btns.append(zepBtn);
@@ -430,6 +445,8 @@ var $H = {
                     timeout: options.timeout * 1000
                 });
         }
+
+        return navigator.geolocation;
     },
     //url, data, type, target
     submit: function (options) {
@@ -488,12 +505,12 @@ var $H = {
         tout = ((!isNaN(tout) && tout > 0) ? tout : 30) * 1000;
 
         //dataType:"json", "jsonp", "xml", "html", or "text"
-        $.ajax({
+        return $.ajax({
             type: options.type.toUpperCase(),
             url: options.url,
             timeout: tout,
             data: options.data,
-            dataType: options.type.toLowerCase(),
+            dataType: options.dataType.toLowerCase(),
             context: options.context,
             beforeSend: options.beforeSend,
             // status: "success", "notmodified", "error", "timeout", "abort", "parsererror"
@@ -834,6 +851,5 @@ var $H = {
             if (instantProps.hasOwnProperty(i))
                 child.prototype[i] = instantProps[i];
         return child;
-    },
-    ui: {}
+    }
 }
