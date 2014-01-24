@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>酒店搜索</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../hobbit.css" rel="stylesheet" />
+    <link href="../doc.css" rel="stylesheet" />
+    <script src="../../zepto.js"></script>
+    <script src="../../hobbit.js"></script>
+    <script src="../../hobbit.ui.js"></script>
+    <script src="../../plugin/webapp.js"></script>
+    <script src="hotel.js"></script>
+</head>
+<body>
+    <style>
+        ul.listview li {
+            height:52px;
+            line-height:52px;
+        } 
+        ul.listview li .name {
+            width: 100px !important;
+        }
+
+        ul.listview li .value {
+            left: 100px !important;
+        }
+    </style>
+    <div class="page">
+        <header>
+            <div class="back"></div>
+            <h1>酒店搜索</h1>
+            <div class="menu"></div>
+        </header>
+        <article>
+            <ul class="listview">
+                <li class="arrow">
+                    周边查询
+                </li>
+            </ul>
+            <ul class="listview">
+                <li class="arrow">
+                    <span class="name">城市</span>
+                    <span class="value">北京</span>
+                </li>
+                <li class="arrow">
+                    <span class="name">入住日期</span>
+                    <span class="value">02月02日</span>
+                </li>
+                <li class="arrow">
+                    <span class="name">离店日期</span>
+                    <span class="value">02月03日</span>
+                </li>
+                <li class="arrow">
+                    <span class="name">关键词</span>
+                    <span class="value"></span>
+                </li>
+            </ul>
+            <input id="search" type="submit" class="btn orange" value="搜索" />
+        </article>
+        <footer></footer>
+    </div>
+</body>
+</html>
+

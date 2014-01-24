@@ -1,12 +1,14 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>hobbit throttle</title>
+    <title>hobbit pager</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
     <link href="../../hobbit.css" rel="stylesheet" />
     <script src="../../zepto.js"></script>
     <script src="../../hobbit.js"></script>
     <script src="../../hobbit.ui.js"></script>
+    <link href="../../plugin/pager.css" rel="stylesheet" />
+    <script src="../../plugin/pager.js"></script>
 
     <link href="../doc.css" rel="stylesheet" />
     <script src="../doc.js"></script>
@@ -14,19 +16,15 @@
 <body>
     <div class="page">
         <header>
-            <div class="nav">
-                <span class="ico back"></span>
-            </div>
-            <div class="lable">throttle</div>
-            <div class="nav right">
-                <span class="ico menu"></span>
-            </div>
+            <div class="back"></div>
+            <h1>pager</h1>
+            <div class="menu"></div>
         </header>
         <article class="doc">
             <section class="doc-section">
-                <h4>$H.throttle({options}) ⇒ </h4>
+                <h4>$(selector).pager() ⇒ $</h4>
                 <p>
-                    描述：
+                    描述：xxx
                 </p>
                 <div class="doc-table">
                     <table>
@@ -39,44 +37,50 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>delay</td>
+                                <td>index</td>
                                 <td>number</td>
-                                <td>是</td>
+                                <td>否</td>
                             </tr>
                             <tr>
-                                <td>fn</td>
+                                <td>count</td>
+                                <td>number</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>displayText</td>
                                 <td>function</td>
-                                <td>是</td>
-                            </tr>
-                            <tr>
-                                <td>debounce</td>
-                                <td>bool</td>
                                 <td>否</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <p>
-                    备注：debounce参数需要注意，三种状态，true:事件触发立马执行, false:事件触发结束后执行； 如果不传此参数的按延时时间定时执行。
+                    备注：xxx
                 </p>
-                <pre class="doc-code">                                   
+                <div class="doc-demo">
+                    <div id="pager" class="pager">
+                    </div>
+
+                    <div id="pageIndex"></div>
+                </div>
+                <pre class="doc-code">
                     <script type="text/jscript">
-                        function code() {    
-                            $(document).bind("scroll",
-                                $H.throttle({
-                                    "delay": 1000,
-                                    "fn": touchmoveHander
-                                })
-                            );
-                        }
-                        var touchmoveHander = function () {
-                            console.debug("1");
-                        }
+                        $(function () {
+                            var pager = $("#pager").pager({
+                                count: 18,
+                                index: 2,
+                                displayText: function(state){
+                                	return "第" + (state.index +1) + "/共" + state.count;
+                                }
+                            });
+                            $("#pageIndex").text(pager.index());
+                            pager.on("changed", function (e, from, to) {
+                                $("#pageIndex").text("from:" + from.index + "to:" + to.index);
+                            });
+                        });
                     </script>
-                    
                 </pre>
                 <div class="doc-btn-wrap">
-                    <a class="btn inline mini">运行脚本</a>
                 </div>
             </section>
         </article>

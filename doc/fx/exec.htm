@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit exec</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../hobbit.css" rel="stylesheet" />
+    <script src="../../zepto.js"></script>
+    <script src="../../hobbit.js"></script>
+    <script src="../../hobbit.ui.js"></script>
+    <link href="../doc.css" rel="stylesheet" />
+    <script src="../doc.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="nav">
+                <span class="ico back"></span>
+            </div>
+            <div class="lable">exec</div>
+            <div class="nav right">
+                <span class="ico menu"></span>
+            </div>
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4>
+                    $H.exec ⇒ object
+                </h4>
+                <p>
+                    描述：尝试执行/获取或设置一个对象的方法/属性。
+                </p>
+                <p>
+                    备注：
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    object
+                                </td>
+                                <td>object</td>
+                                <td>是</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    member
+                                </td>
+                                <td>string</td>
+                                <td>是</td>
+                            </tr>
+                            <tr>
+                                <td>arguments</td>
+                                <td>array</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    returnValue
+                                </td>
+                                <td>object</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    success
+                                </td>
+                                <td>function</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>error</td>
+                                <td>function</td>
+                                <td>否</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pre class="doc-code">
+                <script type="text/javascript">
+                    function code() {
+                        var obj = {
+                            fun: function (a, b) { return a + b; },
+                            attr: "abc"
+                        };
+                        
+                        alert("尝试执行obj的fun方法")
+                        var funResult = $H.exec({
+                            object: obj,
+                            member: "fun",
+                            arguments: [1, 2],
+                            returnValue: 0,
+                            success: function (options) {
+                                alert("执行成功的回调");
+                            },
+                            error: function (options) {
+                                alert("没有找到" + options.member);
+                            }
+                        });
+                        alert("执行的结果是：" + funResult);
+
+                        alert("尝试执行obj的fun2方法");
+                        funResult = $H.exec({
+                            object: obj,
+                            member: "fun2",
+                            arguments: [1, 2],
+                            returnValue: "执行失败的默认值",
+                            success: function (options) {
+                                alert("ok");
+                            },
+                            error: function (options) {
+                                alert("执行失败的回调：没有找到方法" + options.member);
+                            }
+                        });
+                        alert("执行的结果是：" + funResult);
+
+                        alert("尝试获取obj的attr属性值");
+                        funResult = $H.exec({
+                            object: obj,
+                            member: "attr",
+                            arguments: undefined,
+                            returnValue: 0,
+                            success: function (options) {
+                                alert("获取属性成功的回调");
+                            },
+                            error: function (options) {
+                                alert("没有找到属性" + options.member);
+                            }
+                        });
+                        alert("获取到的属性值是：" + funResult);
+
+                        alert("尝试设置obj的attr属性值");
+                        funResult = $H.exec({
+                            object: obj,
+                            member: "attr",
+                            arguments: "def",
+                            returnValue: 0,
+                            success: function (options) {
+                                alert("设置属性成功后的回调");
+                            },
+                            error: function (options) {
+                                alert("没有找到属性" + options.member);
+                            }
+                        });
+                        alert("设置并获取的属性值是：" + funResult);
+
+                        alert("尝试设置并获取obj的attr2属性值");
+                        funResult = $H.exec({
+                            object: obj,
+                            member: "attr2",
+                            arguments: "def",
+                            returnValue: "默认返回值",
+                            success: function (options) {
+                                alert("ok");
+                            },
+                            error: function (options) {
+                                alert("没有找到属性：" + options.member);
+                            }
+                        });
+                        alert("获取的属性值是：" + funResult);
+                    }
+</script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+        </article>
+        <footer></footer>
+    </div>
+</body>
+</html>

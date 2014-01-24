@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>hobbit loadScript</title>
+    <title>hobbit tap</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
     <link href="../../hobbit.css" rel="stylesheet" />
     <script src="../../zepto.js"></script>
@@ -17,16 +17,16 @@
             <div class="nav">
                 <span class="ico back"></span>
             </div>
-            <div class="lable">loadScript</div>
+            <div class="lable">tap</div>
             <div class="nav right">
                 <span class="ico menu"></span>
             </div>
         </header>
         <article class="doc">
             <section class="doc-section">
-                <h4>$H.loadScript({options}) ⇒ undefined</h4>
+                <h4>touch</h4>
                 <p>
-                    描述：动态的加载脚本
+                    描述：
                 </p>
                 <div class="doc-table">
                     <table>
@@ -39,18 +39,8 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>url</td>
-                                <td>array</td>
-                                <td>是</td>
-                            </tr>
-                            <tr>
-                                <td>success</td>
-                                <td>function</td>
-                                <td>否</td>
-                            </tr>
-                            <tr>
-                                <td>error</td>
-                                <td>function</td>
+                                <td>type</td>
+                                <td>string</td>
                                 <td>否</td>
                             </tr>
                         </tbody>
@@ -59,26 +49,40 @@
                 <p>
                     备注：
                 </p>
+                <div class="doc-demo">
+                    <a id="touchTest" class="btn">tap test</a>
+                    <div id="console"></div>
+                </div>
                 <pre class="doc-code">
-                <script type="text/jscript">
-                    function code() {
-                        $H.loadScript({
-                            url: [
-                                "loadscript1.js",
-                                "loadscript2.js"
-                            ],
-                            success: function () {
-                                alert("成功加载回调");
-                            },
-                            error: function (s) {
-                                alert("失败加载回调：" + s.src);
+                    <script type="text/javascript">
+                        $(function () {
+                            var now;
+                            $("#touchTest").on("touchstart", function (e) {
+                                now = new Date().getTime();
+                                writLine("touchstart");
+                            }).on("touchend", function (e) {
+                                writLine("touchend");
+                            }).on("mousedown", function (e) {
+                            	if(now == undefined)
+                            		now = new Date().getTime();
+                                writLine("mousedown");
+                            }).on("mouseup", function (e) {
+                                writLine("mouseup");
+                            }).on("click", function (e) {
+                                writLine("click");
+                            }).on("tap", function (e) {
+                                writLine("tap");
+                            });
+
+                            function writLine(txt) {
+                            
+                                var text = $("#console").html() + txt + " time:" + (new Date().getTime() - now) + "ms" + "<br/>";
+                                $("#console").html(text);
                             }
                         });
-                    }
-</script>  
+                    </script>
                 </pre>
                 <div class="doc-btn-wrap">
-                    <a class="btn inline mini">运行脚本</a>
                 </div>
             </section>
         </article>

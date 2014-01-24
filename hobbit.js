@@ -1,6 +1,12 @@
 ﻿/// <reference path="zepto.js" />
-var $H = {
-    config: {},
+
+var Hobbit = window.Hobbit = window.$H = (function () {
+    var $H = $H || function () {
+        for (var i = 0; i < arguments.length; i++)
+            $(arguments[i]);
+    };
+
+    $H.config = {};
     /**
     * @desc 检测设备系统和浏览器的类型及版本。
     *
@@ -9,7 +15,7 @@ var $H = {
     *
     * @备注：该函数依赖$H.storage用于缓存结果，类型为字符串类型（全部类型参见系统类型表），版本为浮点数字类型（忽略第二个点之后的版本号）
     */
-    detect: function (ua) {
+    $H.detect = function (ua) {
         var uai, u;
         if (!ua) {
             uai = $H.storage.get("UAI");
@@ -35,13 +41,13 @@ var $H = {
         if (!ua)
             $H.storage.set({ key: "UAI", value: uai, expires: 3600 * 24 * 30 });
         return uai;
-    },
-    os: {
+    };
+    $H.os = {
         type: function () { return $H.detect().os; },
         ver: function () { return $H.detect().ov; },
         online: function () { return navigator.onLine; }
-    },
-    browser: {
+    };
+    $H.browser = {
         ua: navigator.userAgent,
         type: function () { return $H.detect().bs; },
         ver: function () { return $H.detect().bv; },
@@ -64,24 +70,24 @@ var $H = {
         scrollable: function (selector) {
             var zep = selector ? $(selector) : $(window);
             zep.unbind("touchmove", $H.browser.preventEvent);
-            var s = document.body.style; s.overflowX = s.overflowY = "auto";
+            var s = document.body.style; s.overflowX = s.overflowY = null;
         },
         preventEvent: function (e) {
             e.preventDefault();
         }
-    },
-    mask: {
+    };
+    $H.mask = {
         ui: $("<div>"),
         show: function (options) {
             options = $.extend({
                 scrollable: true,
-                clickMask: function () {  }
+                clickMask: function () { }
             }, options);
 
             //var height = $(document).height();
             //if ($H.browser.height() > height)
             //    height = $H.browser.height();
-            
+
             $H.mask.ui.css({
                 "background-color": "#333",
                 "position": "absolute",
@@ -92,7 +98,7 @@ var $H = {
                 "opacity": ".4"
             }).appendTo($("body"));
 
-            $H.mask.ui.off("click");            
+            $H.mask.ui.off("click");
             $H.mask.ui.on("click", options.clickMask);
 
             if (!options.scrollable)
@@ -107,8 +113,8 @@ var $H = {
             }
             $H.browser.scrollable();
         }
-    },
-    loader: {
+    };
+    $H.loader = {
         ui: $("<div>").addClass("loader"),
         show: function (options) {
             options = $.extend({
@@ -156,8 +162,8 @@ var $H = {
                 $H.loader.ui.remove();
             }
         }
-    },
-    dialog: {
+    };
+    $H.dialog = {
         ui: $("<div>").addClass("dialog"),
         show: function (options) {
             options = $.extend({
@@ -183,7 +189,7 @@ var $H = {
 
             if (options.title) {
                 title.html(options.title);
-                $H.dialog.ui.append(title)
+                $H.dialog.ui.append(title);
             }
 
             $H.dialog.ui.append(content);
@@ -191,7 +197,7 @@ var $H = {
                 content.html(options.content).css("max-height", $H.browser.height() - 180);
             }
 
-            //btn = {text:"",callback:""}
+            //btn = {text:"",callback:"",className:"",css:{}}
             if (options.buttons) {
                 $.each(options.buttons, function (index, item) {
                     var zepBtn = $("<a>").text(item.text);
@@ -204,10 +210,10 @@ var $H = {
                         }
                     }).on("touchcancel touchend mouseup click", function () {
                         $(this).removeClass("active");
-                    })
+                    });
 
-                    if (item.class)
-                        zepBtn.addClass(item.class)
+                    if (item.className)
+                        zepBtn.addClass(item.className);
                     if (item.css)
                         zepBtn.css(item.css);
                     if (item.callback)
@@ -238,15 +244,15 @@ var $H = {
 
             $H.browser.scrollable();
         }
-    },
-    json: {
+    };
+    $H.json = {
         stringify: function (json) {
             var s = null;
             try {
                 s = window.JSON.stringify(json);
             }
             catch (e) {
-                console.error(e)
+                console.error(e);
             }
 
             return s;
@@ -257,13 +263,13 @@ var $H = {
                 j = window.JSON.parse(string);
             }
             catch (e) {
-                console.error(e)
+                console.error(e);
             }
 
             return j;
         }
-    },
-    url: {
+    };
+    $H.url = {
         parse: function (href) {
             var data = {
                 href: "",
@@ -347,7 +353,6 @@ var $H = {
 
             return data;
         },
-
         href: function (url, query, hash) {
             var url = url ? url : window.location.href,
                 query = query || {},
@@ -356,21 +361,32 @@ var $H = {
                 newQuery = "",
                 newHash = "";
 
-            for (var i in query) {
-                for (var j in currQuery) {
-                    if (i == j) {
-                        currQuery[j] = query[i];
-                    } else {
-                        currQuery[i] = query[i];
-                    };
+            function isEmpty(obj) {
+                for (var i in obj) {
+                    return false;
                 }
+                return true;
             }
+            if (!isEmpty(currQuery)) {
+                for (var i in query) {
+                    for (var j in currQuery) {
+                        if (i == j) {
+                            currQuery[j] = query[i];
+                        } else {
+                            currQuery[i] = query[i];
+                        };
+                    }
+                }
+            } else {
+                currQuery = query;
+            };
             for (var k in currQuery) {
                 currQuery[k] = currQuery[k] || "";
                 newQuery += k + "=" + currQuery[k] + "&";
             }
             newQuery = newQuery.substring(0, newQuery.length - 1);
-            newUrl = newQuery ? url.split("?")[0] + "?" + newQuery : url.split("?")[0];
+            newUrl = newQuery ? url.split(/\?|\#/)[0] + "?" + newQuery : url.split("?")[0];
+
             if (typeof (hash) == undefined) {
                 newHash = url.split("#")[1] ? "#" + url.split("#")[1] : "";
                 newUrl = newUrl + newHash;
@@ -381,7 +397,6 @@ var $H = {
 
             return newUrl;
         },
-
         query: function (href) {
 
             var args = {},
@@ -403,23 +418,23 @@ var $H = {
                 return args;
             };
         }
-    },
-    hash: function (string) {
+    };
+    $H.hash = function (string) {
         var hash = 1315423911, i, ch;
         for (i = string.length - 1; i >= 0; i--) {
             ch = string.charCodeAt(i);
             hash ^= ((hash << 5) + ch + (hash >> 2));
         }
         return (hash & 0x7FFFFFFF);
-    },
-    geo: function (options) {
+    };
+    $H.geo = function (options) {
         options = $.extend({
             expires: 60,
             timeout: 30,
             enableHighAccuracy: false,
             before: function () { },
             success: function () { },
-            error: function(){ },
+            error: function () { },
             complete: function () { }
         }, options);
 
@@ -447,15 +462,15 @@ var $H = {
         }
 
         return navigator.geolocation;
-    },
+    };
     //url, data, type, target
-    submit: function (options) {
+    $H.submit = function (options) {
         options = $.extend({
             url: "",
             data: null,
             type: "POST",
             target: "_self"
-        }, options);        
+        }, options);
 
         var form = $("<form>").hide().attr({
             method: options.type,
@@ -474,8 +489,8 @@ var $H = {
 
         form[0].submit();
         form.remove();
-    },
-    ajax: function (options) {
+    };
+    $H.ajax = function (options) {
         options = $.extend({
             type: "GET",
             url: "",
@@ -519,48 +534,102 @@ var $H = {
             // type: "timeout", "error", "abort", "parsererror"
             error: options.error
         });
-    },
-    loadCss: function (options) {
+    };
+    $H.loadCss = function (options) {
         options = $.extend({
-            url: "",
+            url: [],
             success: function () { },
             error: function () { }
         }, options);
-
-        var c = document.createElement("link");
-        c.rel = "stylesheet";
-        c.type = "text/css";
-        c.href = options.url;
-        document.querySelector("head").insertBefore(c, null);
-        c.onload = options.success;
-        c.onerror = options.error;
-    },
-    loadScript: function (options) {
-        options = $.extend({
-            url: "",
-            success: function () { },
-            error: function () { }
-        }, options);
-
-        var h = document.head || document.getElementsByTagName('head')[0] || docEl,
-			s = document.createElement('script'), rs;
-        if (options.async) s.async = "async";
-        s.onreadystatechange = function () {//兼容IE
-            if (!(rs = s.readyState) || rs == "loaded" || rs == "complete") {
-                s.onload = s.onreadystatechange = null;
-                if (h && s.parentNode)
-                    h.removeChild(s);
-                s = undefined;
-                options.success();
-            }
+        options.url = $.isArray(options.url) ? options.url : [options.url];
+        var count = 0, load = function (url, success, error) {
+            var c = document.createElement("link");
+            c.rel = "stylesheet";
+            c.type = "text/css";
+            c.onload = function () {
+                if (++count >= options.url.length)
+                    options.success();
+            };
+            c.onerror = function () {
+                count--;
+                options.error(c);
+            };
+            c.href = url;
+            document.head.insertBefore(c, null);
         };
+        for (var i = 0; i < options.url.length; i++)
+            load(options.url[i]);
+    };
+    $H.loadScript = function (options) {
+        options = $.extend({
+            url: [],
+            success: function () { },
+            error: function () { }
+        }, options);
+        options.url = $.isArray(options.url) ? options.url : [options.url];
 
-        s.onload = options.success;
-        s.onerror = options.error;
-        s.src = options.url;
-        h.insertBefore(s, null);
-    },
-    cookie: {
+        var count = 0, load = function (url, success, error) {
+            var s = document.createElement("script");
+            s.type = 'text/javascript';
+            if (options.async)
+                s.async = "async";
+            s.onreadystatechange = function () {
+                if (!s.readyState || "loaded|complete".indexOf(s.readyState) != -1) {
+                    s.onload = s.onreadystatechange = null;
+                    if (++count >= options.url.length)
+                        options.success();
+                }
+            };
+            s.onload = function () {
+                s.onload = s.onreadystatechange = null;
+                if (++count >= options.url.length)
+                    options.success();
+            };
+            s.onerror = function () {
+                count--;
+                options.error(s);
+            };
+            s.src = url;
+            document.head.insertBefore(s, null);
+        };
+        for (var i = 0; i < options.url.length; i++)
+            load(options.url[i]);
+    };
+    $H.load = function (options) {
+        options = $.extend({
+            resource: [],
+            success: function () { },
+            error: function () { }
+        }, options);
+        options.resource = $.isArray(options.resource) ? options.resource : [options.resource];
+        var count = 0, onsuccess = function () {
+            if (++count >= options.resource.length)
+                options.success();
+        }, onerror = function (r) {
+            count--;
+            options.error(r);
+        };
+        for (var i = 0; i < options.resource.length; i++) {
+            switch (options.resource[i].type) {
+                case "script":
+                    $H.loadScript({
+                        url: options.resource[i].url,
+                        success: onsuccess,
+                        error: onerror
+                    });
+                    break;
+                case "css":
+                    $H.loadCss({
+                        url: options.resource[i].url,
+                        success: onsuccess,
+                        error: onerror
+                    });
+                    break;
+                    //img,html
+            }
+        }
+    };
+    $H.cookie = {
         get: function (key) {
             if (!key)
                 return null;
@@ -608,13 +677,13 @@ var $H = {
             var aaa = options.key + "=;expires=" + date.toGMTString() + ";path=" + (options.path || "/") + ";domain=" + ((options.domain) || document.domain);
             document.cookie = aaa;
         }
-    },
-    storage: {
+    };
+    $H.storage = {
         self: window.localStorage,
         setCnts: 0,
         get: function (key) {
             var ls = $H.storage.self;
-            
+
             if (key && ls) {
                 if (key.length > 64) key = $H.hash(key);
 
@@ -624,7 +693,7 @@ var $H = {
                     value = ls.getItem(key);
                 }
                 catch (e) {
-                    console.error(e)
+                    console.error(e);
                 }
 
                 var item = $H.json.parse(value);
@@ -666,7 +735,7 @@ var $H = {
                 try {
                     ls.setItem(options.key, $H.json.stringify(item));
                 }
-                catch (e) { console.error(e) }
+                catch (e) { console.error(e); }
             }
         },
         remove: function (key) {
@@ -678,7 +747,7 @@ var $H = {
                 try {
                     ls.removeItem(key);
                 }
-                catch (e) { console.error(e) }
+                catch (e) { console.error(e); }
             }
         },
         recycle: function () {
@@ -701,11 +770,11 @@ var $H = {
                 try {
                     ls.clear();
                 }
-                catch (e) { console.error(e) }
+                catch (e) { console.error(e); }
             }
         }
-    },
-    session: {
+    };
+    $H.session = {
         self: window.sessionStorage,
         get: function (key) {
             var ss = $H.session.self;
@@ -718,7 +787,7 @@ var $H = {
                     value = ss.getItem(key);
                 }
                 catch (e) {
-                    console.error(e)
+                    console.error(e);
                 }
 
                 return value;
@@ -741,7 +810,7 @@ var $H = {
                 try {
                     ss.setItem(options.key, options.value);
                 }
-                catch (e) { console.error(e) }
+                catch (e) { console.error(e); }
             }
         },
         remove: function (key) {
@@ -753,7 +822,7 @@ var $H = {
                 try {
                     ss.removeItem(key);
                 }
-                catch (e) { console.error(e) }
+                catch (e) { console.error(e); }
             }
         },
         clear: function () {
@@ -761,9 +830,9 @@ var $H = {
             try {
                 $H.session.self.clear();
             }
-            catch (e) { console.error(e) }
+            catch (e) { console.error(e); }
         }
-    },
+    };
     /**
     * @desc 减少执行频率, 多次调用，在指定的时间内，只会执行一次。
     * **options:**
@@ -786,7 +855,7 @@ var $H = {
     * $(document).unbind('touchmove', touchmoveHander);//注意这里面unbind还是touchmoveHander,而不是$.throttle返回的function, 当然unbind那个也是一样的效果
     *
     */
-    throttle: function (options) {
+    $H.throttle = function (options) {
         options = $.extend({
             delay: 250,
             fn: function () { },
@@ -832,8 +901,9 @@ var $H = {
         // for event bind | unbind
         wrapper._zid = options.fn._zid = options.fn._zid || $.proxy(options.fn)._zid;
         return wrapper;
-    },
-    klass: function (parent, instantProps) {
+    };
+
+    $H.klass = function (parent, instantProps) {
         var child, F, i;
         child = function () {
             if (child.uber && child.uber.hasOwnProperty("struct"))
@@ -851,5 +921,28 @@ var $H = {
             if (instantProps.hasOwnProperty(i))
                 child.prototype[i] = instantProps[i];
         return child;
-    }
-}
+    };
+
+    return $H;
+})();
+
+//精简版的tap事件
+(function () {
+    var touchTarget, enable = 'ontouchstart' in document,
+        tap = { start: enable ? 'touchstart' : 'mousedown', end: enable ? 'touchend' : 'mouseup' },
+        cancelTap = function () { touchTarget = undefined; };
+
+    $(document).on(tap.start, function (e) {
+        touchTarget = e.target;
+    }).on(tap.end, function (e) {
+        if (e.target == touchTarget) {
+            setTimeout(function () {
+                $(touchTarget).trigger("tap");
+                cancelTap();
+            }, 0);
+            e.stopPropagation();
+        }
+    }).on('touchcancel', cancelTap);
+    //$(window).on('scroll', cancelTap);
+    $.fn.tap = function (fn) { return this.on("tap", fn); };
+})();
