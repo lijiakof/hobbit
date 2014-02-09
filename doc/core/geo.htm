@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit geo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../ui/hobbit.ui.css" rel="stylesheet" />
+    <link href="../doc.css" rel="stylesheet" />
+
+    <script src="../../core/zepto.js"></script>
+    <script src="../../core/hobbit.js"></script>
+    <script src="../../ui/hobbit.ui.js"></script>
+    <script src="../doc.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-btn">
+                <span class="ico ico-back"></span>
+            </div>
+            <div class="header-lable">geo</div>
+            <div class="header-btn right">
+                <span class="ico ico-menu"></span>
+            </div>
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4>$H.geo({options}) ⇒ geolocation</h4>
+                <p>
+                    描述：获取地理位置信息
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>timeout</td>
+                                <td>number[秒]</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>expires</td>
+                                <td>number[秒]</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>before</td>
+                                <td>function</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>success</td>
+                                <td>function</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>error</td>
+                                <td>function</td>
+                                <td>否</td>
+                            </tr>
+                            <tr>
+                                <td>complete</td>
+                                <td>function</td>
+                                <td>否</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：
+                </p>
+                <pre class="doc-code">
+                    <script type="text/jscript">
+                        function code() {
+                            $H.geo({
+                                timeout: 20,
+                                expires: 100,
+                                before: function () {
+                                    $H.loader.show();
+                                },
+                                success: function (coords) {
+                                    var geoInfo = $H.json.stringify(coords)
+                                    alert(geoInfo);
+                                },
+                                error: function (code, msg) {
+                                    alert(code + ":" + msg);
+                                },
+                                complete: function () {
+                                    $H.loader.close();
+                                }
+                            });
+                        }
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+        </article>
+        <footer></footer>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,339 @@
+﻿.calendar {
+	display: none;
+	position: relative;
+	min-height: 375px;
+}
+
+	.calendar.show {
+		display: block;
+	}
+
+	.calendar .card {
+		width: 100%;
+	}
+
+		.calendar .card.animate {
+			position: absolute;
+			top: 0;
+			transition: left 500ms ease;
+			-webkit-transition: left 500ms ease;
+		}
+
+		.calendar .card.precard {
+			display: none;
+		}
+
+		.calendar .card.sufcard {
+			display: none;
+		}
+
+		.calendar .card.actcard {
+			display: block;
+		}
+
+		.calendar .card.animate.precard {
+			left: -100%;
+			display: block;
+		}
+
+		.calendar .card.animate.sufcard {
+			left: 100%;
+			display: block;
+		}
+
+		.calendar .card.animate.actcard {
+			left: 0%;
+			display: block;
+		}
+
+		.calendar .card .head {
+			/*border-top: 2px solid #D95B5B;*/
+			position: relative;
+			background: #e9eced;
+			overflow: hidden;
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+
+			.calendar .card .head .title {
+				line-height: 50px;
+				text-align: center;
+				font-size: 16px;
+				font-weight: bold;
+			}
+
+			.calendar .card .head .prev, .calendar .card .head .next {
+				position: absolute;
+				width: 80px;
+				height: 40px;
+				top: 4px;
+				line-height: 40px;
+				text-align: center;
+				font-size: 16px;
+			}
+
+			.calendar .card .head .prev {
+				left: 2%;
+			}
+
+				.calendar .card .head .prev:active, .calendar .card .head .prev.active {
+					border: 1px solid #666;
+				}
+
+				.calendar .card .head .prev.disabled {
+					display: none;
+				}
+
+					.calendar .card .head .prev.disabled:active, .calendar .card .head .prev.disabled.active {
+					}
+
+			.calendar .card .head .next {
+				right: 2%;
+			}
+
+				.calendar .card .head .next:active {
+					border: 1px solid #666;
+				}
+
+				.calendar .card .head .next.disabled {
+					display: none;
+				}
+
+					.calendar .card .head .next.disabled:active, .calendar .card .head .next.disabled.active {
+					}
+
+			.calendar .card .head .week {
+				width: 100%;
+				text-align: center;
+				font-size: 12px;
+				line-height: 20px;
+				color: #666;
+				background: #E9ECED;
+			}
+
+		.calendar .card .body {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+
+			.calendar .card .body td {
+				height: 36px;
+				text-align: center;
+				border: none;
+				width: 14%;
+				color: #555;
+				padding: 6px 0;
+				border: 1px solid #F1F1F1;
+				position: relative;
+			}
+
+				.calendar .card .body td.w0 {
+				}
+
+				.calendar .card .body td.w1 {
+				}
+
+				.calendar .card .body td.w2 {
+				}
+
+				.calendar .card .body td.w3 {
+				}
+
+				.calendar .card .body td.w4 {
+				}
+
+				.calendar .card .body td.w5 {
+				}
+
+				.calendar .card .body td.w6 {
+				}
+
+				.calendar .card .body td:active, .calendar .card .body td.active {
+					color: white;
+					background-color: #C40000;
+				}
+
+				.calendar .card .body td:nth-child(1) {
+					width: 15%;
+				}
+
+				.calendar .card .body td:nth-child(7) {
+					width: 15%;
+				}
+
+				.calendar .card .body td.pre {
+					background-color: #E9ECED;
+				}
+
+				.calendar .card .body td.suf {
+					background-color: #E9ECED;
+				}
+
+				.calendar .card .body td.first {
+				}
+
+				.calendar .card .body td.today {
+				}
+
+				.calendar .card .body td.value {
+					color: white;
+					background-color: #C40000;
+				}
+
+				.calendar .card .body td.disabled {
+					background-color: #E9ECED;
+					color: #ccc;
+				}
+
+					.calendar .card .body td.disabled:active, .calendar .card .body td.disabled.active {
+						background-color: #E9ECED;
+						color: #ccc;
+					}
+
+				.calendar .card .body td.r1 {
+					line-height: 36px;
+				}
+
+				.calendar .card .body td.r2 {
+					line-height: 18px;
+				}
+
+				.calendar .card .body td.r3 {
+					line-height: 18px;
+				}
+
+				.calendar .card .body td.r4 {
+					line-height: 18px;
+				}
+
+				.calendar .card .body td span {
+					display: block;
+				}
+
+				.calendar .card .body td .l1 {
+					font-size: 12px;
+				}
+
+				.calendar .card .body td .day {
+					font-size: 16px;
+					font-weight: bold;
+				}
+
+				.calendar .card .body td .l2 {
+					font-size: 12px;
+				}
+
+				.calendar .card .body td .l3 {
+					display: none;
+				}
+
+				.calendar .card .body td .l4 {
+					display: none;
+				}
+/*
+				.calendar .card .body .day .zoombox {
+					position: absolute;
+					display: block;
+					color: #000;
+					padding: 6px 0;
+					height: 48px;
+					line-height: 48px;
+					top: -60px;
+					left: 0;
+					background: #fff;
+				}
+
+					.calendar .card .body .day .zoombox::before {
+						content: '';
+						position: absolute;
+						display: block;
+						border: solid #C40000;
+						border-width: 3px 3px 0 3px;
+						top: -3px;
+						width: 100%;
+						height: 60px;
+						left: -3px;
+						border-radius: 10px 10px 0 0;
+						-webkit-border-radius: 10px 10px 0 0;
+					}
+
+					.calendar .card .body .day .zoombox::after {
+						content: '';
+						position: absolute;
+						display: block;
+						border: solid #C40000;
+						border-width: 0 3px 3px 3px;
+						top: 60px;
+						width: 100%;
+						height: 48px;
+						left: -3px;
+						border-radius: 0 0 10px 10px;
+						-webkit-border-radius: 0 0 10px 10px;
+						background: #fff;
+						z-index: 2;
+					}
+
+				.calendar .card .body .day.rowcount2 .zoombox {
+					line-height: 24px;
+				}
+
+				.calendar .card .body .day.rowcount3 .zoombox {
+					line-height: 18px;
+				}
+
+				.calendar .card .body .day.rowcount4 .zoombox {
+					line-height: 12px;
+				}
+
+				.calendar .card .body .day .zoombox .line.l1 {
+					font-size: 18px;
+				}
+*/
+@media all and (min-height: 500px) {
+	.calendar {
+		min-height: 450px;
+	}
+
+		.calendar .card .body td {
+			height: 48px;
+		}
+
+			.calendar .card .body td.r1 {
+				line-height: 48px;
+			}
+
+			.calendar .card .body td.r2 {
+				line-height: 24px;
+			}
+
+			.calendar .card .body td.r3 {
+				line-height: 14px;
+			}
+
+			.calendar .card .body td.r4 {
+				line-height: 12px;
+			}
+
+			.calendar .card .body td .l1 {
+				font-size: 12px;
+			}
+
+			.calendar .card .body td .day {
+				font-size: 16px;
+				font-weight: bold;
+			}
+
+			.calendar .card .body td .l2 {
+				font-size: 12px;
+			}
+
+			.calendar .card .body td .l3 {
+				font-size: 12px;
+				display: block;
+			}
+
+			.calendar .card .body td .l4 {
+				font-size: 12px;
+				display: block;
+			}
+}

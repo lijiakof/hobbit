@@ -3,57 +3,60 @@
 <head>
     <title>hobbit.js</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
-    <link href="../img/ico.png" rel="apple-touch-icon-precomposed" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
     <!--<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta name="apple-mobile-web-app-title" content="hobbit.js">-->
-    <link href="../hobbit.css" rel="stylesheet" />
+
+    <link href="../ui/hobbit.ui.css" rel="stylesheet" />
     <link href="doc.css" rel="stylesheet" />
-    <script src="../zepto.js"></script>
-    <script src="../hobbit.js"></script>
-    <script src="../hobbit.ui.js"></script>
-    <script src="../plugin/dateextend.js"></script>
-    <!--<script src="../plugin/webapp.js"></script>-->
+
+    <script src="../core/zepto.js"></script>
+    <script src="../core/hobbit.js"></script>
+    <script src="../ui/hobbit.ui.js"></script>
+    <script src="doc.js"></script>
 </head>
 <body>
     <div class="page">
         <header>
-            <h1>
+            <div>
                 <span class="logo"></span>
                 hobbit.js
                 <sup class="ver">&beta;1.0</sup>
-            </h1>
+            </div>
         </header>
         <article class="doc">
-            <h4>Fx</h4>
+            <h4>Core</h4>
             <ul class="listview">
-                <li class="arrow"><a href="fx/detect.htm">detect</a></li>
-                <li class="arrow"><a href="fx/os.htm">os</a></li>
-                <li class="arrow"><a href="fx/browser.htm">browser</a></li>
-                <li class="arrow"><a href="fx/exec.htm">exec</a></li>
-                <li class="arrow"><a href="fx/mask.htm">mask</a></li>
-                <li class="arrow"><a href="fx/loader.htm">loader</a></li>
-                <li class="arrow"><a href="fx/dialog.htm">dialog</a></li>
-                <li class="arrow"><a>tips<span class="tip">coming soon</span></a></li>
-                <li class="arrow"><a href="fx/json.htm">json</a></li>
-                <li class="arrow"><a href="fx/url.htm">url</a></li>
-                <li class="arrow"><a href="fx/geo.htm">geo</a></li>
-                <li class="arrow"><a href="fx/loadcss.htm">loadCss</a></li>
-                <li class="arrow"><a href="fx/loadscript.htm">loadScript</a></li>
-                <li class="arrow"><a href="fx/load.htm">load</a></li>
-                <li class="arrow"><a href="fx/submit.htm">submit</a></li>
-                <li class="arrow"><a href="fx/ajax.htm">ajax</a></li>
+                <li class="arrow"><a href="core/detect.htm">detect</a></li>
+                <li class="arrow"><a href="core/os.htm">os</a></li>
+                <li class="arrow"><a href="core/browser.htm">browser</a></li>
+                <li class="arrow"><a href="core/exec.htm">exec</a></li>
+                <li class="arrow"><a href="core/json.htm">json</a></li>
+                <li class="arrow"><a href="core/url.htm">url</a></li>
+                <li class="arrow"><a href="core/geo.htm">geo</a></li>
+                <li class="arrow"><a href="core/loadcss.htm">loadCss</a></li>
+                <li class="arrow"><a href="core/loadscript.htm">loadScript</a></li>
+                <li class="arrow"><a href="core/load.htm">load</a></li>
+                <li class="arrow"><a href="core/submit.htm">submit</a></li>
+                <li class="arrow"><a href="core/ajax.htm">ajax</a></li>
                 <li class="arrow"><a>socket<span class="tip">coming soon</span></a></li>
-                <li class="arrow"><a href="fx/cookie.htm">cookie</a></li>
-                <li class="arrow"><a href="fx/storage.htm">storage</a></li>
-                <li class="arrow"><a href="fx/session.htm">session</a></li>
-                <li class="arrow"><a href="fx/throttle.htm">throttle</a></li>
+                <li class="arrow"><a href="core/cookie.htm">cookie</a></li>
+                <li class="arrow"><a href="core/storage.htm">storage</a></li>
+                <li class="arrow"><a href="core/session.htm">session</a></li>
+                <li class="arrow"><a href="core/throttle.htm">throttle</a></li>
                 <li class="arrow" style="display:none"><a>klass</a></li>
-                <li class="arrow"><a href="fx/tap.htm">tap</a></li>
-                <li class="arrow"><a href="fx/hash.htm">hash<span class="tip">coming soon</span></a></li>
+                <li class="arrow"><a href="core/tap.htm">tap</a></li>
+                <li class="arrow"><a href="core/hash.htm">hash<span class="tip">coming soon</span></a></li>
             </ul>
-            <h4>UI-Forms</h4>
+            <!--<h4>Plugin</h4>
             <ul class="listview">
+                <li class="arrow"><a>touch<span class="tip">coming soon</span></a></li>
+            </ul>-->
+            <h4>UI</h4>
+            <ul class="listview">
+                <li class="arrow"><a href="ui/mask.htm">mask</a></li>
+                <li class="arrow"><a href="ui/loader.htm">loader</a></li>
+                <li class="arrow"><a href="ui/dialog.htm">dialog</a></li>
+                <li class="arrow"><a>tips<span class="tip">coming soon</span></a></li>
                 <li class="arrow"><a href="ui/text.htm">text</a></li>
                 <li class="arrow"><a href="ui/buttons.htm">buttons</a></li>
                 <li class="arrow"><a href="ui/checkbox.htm">checkbox</a></li>
@@ -63,33 +66,27 @@
                 <li class="arrow"><a href="ui/mupselect.htm">mupselect</a></li>
                 <li class="arrow"><a>range<span class="tip">coming soon</span></a></li>
                 <li class="arrow"><a href="ui/form.htm">forms</a></li>
-            </ul>
-            <h4>UI-Container</h4>
-            <ul class="listview">
+                <li class="arrow"><a href="ui/span.htm">span</a></li>
                 <li class="arrow"><a href="ui/panel.htm">panel</a></li>
                 <li class="arrow"><a href="ui/listview.htm">listview</a></li>
                 <li class="arrow"><a href="ui/toolbar.htm">toolbar</a></li>
                 <li class="arrow"><a href="ui/tabs.htm">tabs</a></li>
                 <li class="arrow"><a href="ui/table.htm">table</a></li>
-            </ul>
-            <h4>Plugin-UI</h4>
-            <ul class="listview">
-                <li class="arrow"><a href="">calendar<span class="tip">coming soon</span></a></li>
-                <li class="arrow"><a href="plugin/pager.htm">pager<span class="tip">90%</span></a></li>
-                <li class="arrow"><a>suggestion<span class="tip">coming soon</span></a></li>
+                <li class="arrow"><a href="ui/calendar.htm">calendar<span class="tip">new</span></a></li>
+                <li class="arrow"><a href="ui/pager.htm">pager</a></li>
+                <li class="arrow"><a href="ui/suggestion.htm">suggestion<span class="tip">coming soon</span></a></li>
                 <li class="arrow"><a>validator<span class="tip">coming soon</span></a></li>
                 <li class="arrow" style="display:none"><a>searcher<span class="tip">coming soon</span></a></li>
                 <li class="arrow" style="display:none"><a>lazyload<span class="tip">coming soon</span></a></li>
                 <li class="arrow" style="display:none"><a>bouncytext<span class="tip">coming soon</span></a></li>
                 <li class="arrow" style="display:none"><a>slider<span class="tip">coming soon</span></a></li>
             </ul>
-            <h4>Plugin-Event</h4>
+            <h4>WebApp</h4>
             <ul class="listview">
-                <li class="arrow"><a href="event/touch.htm">touch<span class="tip">coming soon</span></a></li>
-            </ul>
-            <h4>Plugin-WebApp</h4>
-            <ul class="listview">
-            	<li class="arrow"><a>webapp<span class="tip">coming soon</span></a></li>
+            	<li class="arrow"><a>parseDom<span class="tip">coming soon</span></a></li>
+            	<li class="arrow"><a>renderHtml<span class="tip">coming soon</span></a></li>
+            	<li class="arrow"><a>changePage<span class="tip">coming soon</span></a></li>
+            	<li class="arrow"><a>transitions<span class="tip">coming soon</span></a></li>
             </ul>
         </article>
         <footer></footer>

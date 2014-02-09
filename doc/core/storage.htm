@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit storage</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../ui/hobbit.ui.css" rel="stylesheet" />
+    <link href="../doc.css" rel="stylesheet" />
+
+    <script src="../../core/zepto.js"></script>
+    <script src="../../core/hobbit.js"></script>
+    <script src="../../ui/hobbit.ui.js"></script>
+    <script src="../doc.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-btn">
+                <span class="ico ico-back"></span>
+            </div>
+            <div class="header-lable">storage</div>
+            <div class="header-btn right">
+                <span class="ico ico-menu"></span>
+            </div>
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4>$H.storage.set({options}) ⇒ undefined</h4>
+                <p>
+                    描述：向 LocalStorage 中存储；
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>key</td>
+                                <td>string</td>
+                                <td>是</td>
+                            </tr>
+                            <tr>
+                                <td>value</td>
+                                <td>value</td>
+                                <td>是</td>
+                            </tr>
+                            <tr>
+                                <td>expires</td>
+                                <td>number[秒]</td>
+                                <td>否</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：
+                </p>
+                <pre class="doc-code">                    
+                    <script type="text/jscript">
+                        function code() {
+                            $H.storage.set({
+                                key: "storagetest",
+                                value: "测试一下localstroage",
+                                expires: 20
+                            });
+                            $H.dialog.show({
+                                title: "$H.storage.set()",
+                                content: "存储完成",
+                                buttons: [{
+                                    text: "确定",
+                                    callback: function () {
+                                        $H.dialog.close();
+                                    }
+                                }],
+                                mask: true,
+                                scrollable: false
+                            });
+                        }
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+            <section class="doc-section">
+                <h4>$H.storage.get(key) ⇒ string</h4>
+                <p>
+                    描述：获取 localstorage 中的值
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>key</td>
+                                <td>string</td>
+                                <td>是</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：
+                </p>
+                <pre class="doc-code">
+                    <script type="text/jscript">
+                        function code() {
+                            var value = $H.storage.get("storagetest");
+                            $H.dialog.show({
+                                title: "$H.storage.get()",
+                                content: value,
+                                buttons: [{
+                                    text: "确定",
+                                    callback: function () {
+                                        $H.dialog.close();
+                                    }
+                                }],
+                                mask: true,
+                                scrollable: false
+                            });
+                        }
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+            <section class="doc-section">
+                <h4>$H.storage.remove(key) ⇒ undefined</h4>
+                <p>
+                    描述：删除 localstorage 中的值
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width:40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>key</td>
+                                <td>string</td>
+                                <td>是</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：
+                </p>
+                <pre class="doc-code">                                      
+                    <script type="text/jscript">
+                        function code() {
+                            $H.storage.remove("storagetest");
+                            $H.dialog.show({
+                                title: "$H.storage.remove()",
+                                content: "locaStroage 已删除",
+                                buttons: [{
+                                    text: "确定",
+                                    callback: function () {
+                                        $H.dialog.close();
+                                    }
+                                }],
+                                mask: true,
+                                scrollable: false
+                            });
+                        }
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini">运行脚本</a>
+                </div>
+            </section>
+        </article>
+        <footer></footer>
+    </div>
+</body>
+</html>
+
