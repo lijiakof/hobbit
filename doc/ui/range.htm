@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit range</title>
+    <meta name="viewport" content="minimal-ui,width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../ui/hobbit.ui.css" rel="stylesheet" />
+    <link href="../doc.css" rel="stylesheet" />
+
+    <script src="../../core/zepto.js"></script>
+    <script src="../../core/hobbit.js"></script>
+    <script src="../../ui/hobbit.ui.js"></script>
+    <script src="../doc.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-btn">
+                <span class="ico ico-back"></span>
+            </div>
+            <div class="header-lable">range</div>
+            <div class="header-btn right">
+                <span class="ico ico-menu"></span>
+            </div>
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4></h4>
+                <p>
+                    描述：
+                </p>
+                <div class="doc-demo">
+					<input id="range" style="width: 230px" type="range" />
+					
+					<div id="pagex">hehe</div>
+                </div>
+                <pre class="doc-code">                    
+                    <script type="text/jscript">
+                        $(function () {
+                        	var range = $("#range").range({
+                        		max:230,
+                        		//step: 1,
+                        		value:0
+                        	});
+                        	range.on("change", function(){
+                        	    $("#pagex").text(range.val());
+                        	});
+                        });
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                </div>
+            </section>
+        </article>
+        <footer></footer>
+    </div>
+</body>
+</html>
+

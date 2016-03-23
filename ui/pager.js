@@ -12,6 +12,13 @@
                	}
             }, options);
 
+            if (isNaN(options.index)) {
+                options.index = 0;
+            }
+            else {
+                options.index = parseInt(options.index, 10);
+            }
+
             var This = this;
             var pre = $("<div class='pre arrow left'></div>");
             var nxt = $("<div class='nex arrow'></div>");
@@ -52,12 +59,12 @@
 
                 This.trigger("before", [from, to]);
 
-                if (to.index <= 0)
+                if (to.index <= 0 || options.count == 0)
                     pre.addClass("disabled");
                 else
                     pre.removeClass("disabled");
 
-                if (to.index >= options.count - 1)
+                if (to.index >= options.count - 1 || options.count == 0)
                     nxt.addClass("disabled");
                 else
                     nxt.removeClass("disabled");
@@ -73,7 +80,7 @@
             };
 
             var init = function () {
-                This.append(pre).append(cot).append(nxt).touchActive();
+                This.append(pre).append(cot).append(nxt);
                 pre.touchActive();
                 nxt.touchActive();
 
@@ -97,12 +104,12 @@
 
                 change({ index: options.index });
 
-                pre.on("tap", function (state) {
+                pre.tap(function (state) {
                     if (!$(this).hasClass("disabled")) {                         
                         change({ index: options.index - 1 });
                     }
                 });
-                nxt.on("tap", function (state) {
+                nxt.tap(function (state) {
                     if (!$(this).hasClass("disabled")) {
                         change({ index: options.index + 1 });
                     }

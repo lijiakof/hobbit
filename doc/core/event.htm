@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit event</title>
+    <meta name="viewport" content="minimal-ui,width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../ui/hobbit.ui.css" rel="stylesheet" />
+    <link href="../doc.css" rel="stylesheet" />
+
+    <script src="../../core/zepto.js"></script>
+    <script src="../../core/hobbit.js"></script>
+    <script src="../../ui/hobbit.ui.js"></script>
+    <script src="../doc.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-btn">
+                <span class="ico ico-back"></span>
+            </div>
+            <div class="header-lable">hash</div>
+            <div class="header-btn right">
+                <span class="ico ico-menu"></span>
+            </div>
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4>
+                    $H.event.hash(callbck) ⇒ undefine
+                </h4>
+                <p>
+                    描述：锚事件函数
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width: 80px;">参数</td>
+                                <td>类型</td>
+                                <td style="width: 40px;">必需</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+
+                </p>
+                <div id="div1" style="height:50px;border:1px dashed #f00;display:none;">
+                    div1
+                </div>
+                <div id="div2" style="height: 50px; border: 1px dashed #0f0; display: none;">
+                    div2
+                </div>
+                <div id="div3" style="height: 50px; border: 1px dashed #00f; display: none;">
+                    div3
+                </div>
+                <button id="btn1">显示Div1</button>
+                <button id="btn2">显示Div2</button>
+                <button id="btn3">显示Div3</button>
+                <button id="btn4">退回到Div2显示</button>
+                <button id="btn5">退回到Div1显示</button>
+                <button id="btn6">退回到初始状态（都不显示）</button>
+                <button id="btn7">替换当前显示为Div2</button>
+                <button id="btn11">显示Div1，并传值aaa</button>
+                <button id="btn22">显示Div2，并传值bbb</button>
+                <button id="btn33">显示Div3，并传值ccc</button>
+                <button id="btn332">显示Div2，并传值ddd</button>
+                <button id="btn44">退回到Div2，且显示值为bbb</button>
+                <button id="btn55">退回到Div1，且显示值为aaa</button>
+                <button id="btn66">替换当前显示为Div3，且值为eee</button>
+                <button id="btn77">退回到上一次的显示</button>
+                <pre class="doc-code">
+                <script type="text/javascript">
+        $(function () {
+        
+        //获取锚点div2对应的值
+        $H.event.hash.getValue("div2");
+
+        $H.event.hash.on("div1", function (value) {
+            $("#div1").show().html("div1,value=" + value + new Date().getTime());
+        });
+
+        $H.event.hash.on("div2", function (value) {
+            $("#div2").show().html("div2,value=" + value + new Date().getTime());
+        });
+
+        $H.event.hash.on("div3", function (value) {
+            $("#div3").show().html("div3,value=" + value + new Date().getTime());
+        });
+
+        $H.event.hash.on("", function (value) {
+            //alert(value);
+        });
+
+        $("#btn1").tap(function () {
+            $H.event.hash.pushState({ name: "div1" });
+        });
+
+        $("#btn2").tap(function () {
+            $H.event.hash.pushState({ name: "div2" });
+        });
+
+        $("#btn3").tap(function () {
+            $H.event.hash.pushState({ name: "div3" });
+        });
+
+        $("#btn4").tap(function () {
+            $H.event.hash.popState({ name: "div2" });
+        });
+
+        $("#btn5").tap(function () {
+            $H.event.hash.popState({ name: "div1" });
+        });
+
+        $("#btn6").tap(function () {
+            $H.event.hash.popState({ name: "" });
+        });
+
+        $("#btn7").tap(function () {
+            $H.event.hash.replaceState({ name: "div2" });
+        });
+
+        $("#btn11").tap(function () {
+            $H.event.hash.pushState({ name: "div1", value: "aaa" });
+        });
+
+        $("#btn22").tap(function () {
+            $H.event.hash.pushState({ name: "div2", value: "bbb" });
+        });
+
+        $("#btn33").tap(function () {
+            $H.event.hash.pushState({ name: "div3", value: "ccc" });
+        });
+
+        $("#btn332").tap(function () {
+            $H.event.hash.pushState({ name: "div2", value: "ddd" });
+        });
+
+        $("#btn44").tap(function () {
+            $H.event.hash.popState({ name: "div2", value: "bbb" });
+        });
+
+        $("#btn55").tap(function () {
+            $H.event.hash.popState({ name: "div1", value: "aaa" });
+        });
+
+        $("#btn66").tap(function () {
+            $H.event.hash.replaceState({ name: "div3", value: "ccc" });
+        });
+
+        $("#btn77").tap(function () {
+            $H.event.hash.popState();
+        });
+    });
+</script>
+                </pre>
+                <div class="doc-btn-wrap">
+
+                </div>
+            </section>
+        </article>
+        <footer></footer>
+    </div>
+</body>
+</html>

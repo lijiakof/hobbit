@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit forms</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../hobbit.css" rel="stylesheet" />
+    <script src="../../zepto.js"></script>
+    <script src="../../hobbit.js"></script>
+    <script src="../../hobbit.ui.js"></script>
+
+    <link href="../doc.css" rel="stylesheet" />
+    <script src="../doc.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-btn">
+                <span class="ico ico-back"></span>
+            </div>
+            <div class="header-lable">forms</div>
+            <div class="header-btn right">
+                <span class="ico ico-menu"></span>
+            </div>
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4>forms</h4>
+                <div class="doc-demo">
+                    <form>
+                        <ul class="listview">
+                            <li>
+                                <label>
+                                    <span class="name">checkbox</span>
+                                    <span class="value">
+                                        <input type="checkbox" name="checkbox" id="chk-1" />
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span class="name">radio-1</span>
+                                    <span class="value">
+                                        <span class="radio checked">
+                                            <input type="radio" checked="checked" name="radio" id="rad-1" />
+                                        </span>
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span class="name">radio-2</span>
+                                    <span class="value">
+                                        <span class="radio">
+                                            <input type="radio" name="radio" id="rad-2" />
+                                        </span>
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span class="name">switch</span>
+                                    <span class="value">
+                                        <input type="checkbox" checked="checked" name="switch" id="swi-1" />
+                                    </span>
+                                </label>
+                            </li>
+                            <li class="arrow">
+                                <span class="name">select</span>
+                                <select id="sel-1">
+                                    <option value="1">selectA</option>
+                                    <option value="2" selected=selected>selectB</option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>
+                                    <span class="name">text</span>
+                                    <span class="value">
+                                        <input type="text" name="text" placeholder="请输入文字" />
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span class="name">tel</span>
+                                    <span class="value">
+                                        <input type="tel" name="tel" placeholder="请输入手机号" />
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span class="name">password</span>
+                                    <span class="value">
+                                        <input type="password" name="password" placeholder="请输入密码" />
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span class="name">number</span>
+                                    <span class="value">
+                                        <input type="number" name="number" placeholder="请输入数字" />
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <span class="name">email</span>
+                                    <span class="value">
+                                        <input type="email" name="email" placeholder="请输入邮箱" />
+                                    </span>
+                                </label>
+                            </li>
+                        </ul>                        
+                        <input class="btn orange" type="submit" value="submit" />
+                    </form>
+                </div>
+                <pre class="doc-code">                                        
+                    <script type="text/javascript">
+                        $(function () {
+                            var chk = $("#chk-1").checkbox();
+                            $("input[type=radio]").each(function () {
+                                $(this).radio();
+                            });
+                            var sel = $("#sel-1").select();
+                            var swi = $("#swi-1").switcher();
+                        });
+                    </script>
+                </pre>
+            </section>
+        </article>
+
+        <footer></footer>
+    </div>
+</body>
+</html>
+

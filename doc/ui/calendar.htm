@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>hobbit demo</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <meta name="viewport" content="minimal-ui,width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
     <link href="../../ui/hobbit.ui.css" rel="stylesheet" />
     <link href="../doc.css" rel="stylesheet" />
     <link href="../../ui/calendar.css" rel="stylesheet" />
@@ -56,7 +56,6 @@
                 <div class="doc-demo">
                     <input type="text" value="2014-2-14" id="calText" />
                     <button class="btn" id="btn">打开日历</button>
-
                 </div>
                 <div id="calendar1"></div>
                 <pre class="doc-code">
@@ -69,6 +68,7 @@
                         var calendar1 = $("#calendar1").calendar({
                             datasource: $("#calText")
                             , monthcount: 1
+                            , delay: 1
                             //, animate: $H.os.type().indexOf("ios") > -1
                         });
 
@@ -77,6 +77,7 @@
 
                             $H.browser.scrollTop(calendar1);
                         });
+
 
                     });
 </script>

@@ -1,7 +1,7 @@
 ﻿/// <reference path="../core/zepto.js" />
 /// <reference path="../core/hobbit.js" />
 $H.mask = {
-    ui: $("<div>"),
+    ui: [],
     show: function (options) {
         options = $.extend({
             scrollable: true,
@@ -12,7 +12,9 @@ $H.mask = {
         //if ($H.browser.height() > height)
         //    height = $H.browser.height();
 
-        $H.mask.ui.css({
+        $("input").blur();
+
+        var msk = $("<div>").css({
             "background-color": "#333",
             "position": "absolute",
             "top": "0",
@@ -20,67 +22,76 @@ $H.mask = {
             "width": "100%",
             "z-index": "9998",
             "opacity": ".4"
-        }).appendTo($("body"));
+        });
 
-        $H.mask.ui.off("tap");
-        $H.mask.ui.on("tap", options.clickMask);
+        msk.appendTo($("body"));
+        $H.mask.ui.push(msk);
+
+        msk.off("click");
+        msk.on("click", options.clickMask);
 
         if (!options.scrollable)
             $H.browser.discrollable();
 
-        return $H.mask.ui;
+        return msk;
     },
     close: function () {
         if ($H.mask.ui) {
-            $H.mask.ui.empty();
-            $H.mask.ui.remove();
+            var mak = $H.mask.ui.pop();
+            if (mak) {
+                mak.empty();
+                mak.remove();
+            }
         }
         $H.browser.scrollable();
     }
 };
 $H.loader = {
     ui: $("<div>").addClass("loader"),
+    options: {
+        text: "",
+        mask: false,
+        scrollable: true,
+        clickMask: function () { },
+        timeout: -1
+    },
     show: function (options) {
-        options = $.extend({
-            text: "",
-            mask: false,
-            scrollable: true,
-            clickMask: function () { },
-            timeout: -1
-        }, options);
+        $H.loader.options = $.extend($H.loader.options, options);
 
+        $("input").blur();
         $H.loader.ui.empty();
         var text = $("<div>");
         var loading = $("<div>").addClass("loading");
 
-        if (options.mask) {
+        if ($H.loader.options.mask) {
             $H.mask.show({
                 scrollable: true,
-                clickMask: options.clickMask
+                clickMask: $H.loader.options.clickMask
             });
         }
 
         loading.appendTo($H.loader.ui);
         $H.loader.ui.appendTo($("body"));
 
-        if (options.text) {
-            text.addClass("text").html(options.text).appendTo($H.loader.ui);
+        if ($H.loader.options.text) {
+            text.addClass("text").html($H.loader.options.text).appendTo($H.loader.ui);
         }
         $H.loader.ui.css("margin-left", -$H.loader.ui.width() / 2);
 
         //todo; 提炼出int解析方法
         //如果不传timeout，则永久显示
-        var timeout = parseInt(options.timeout, 10);
+        var timeout = parseInt($H.loader.options.timeout, 10);
         if (!isNaN(timeout) && timeout >= 0)
             setTimeout($H.loader.close, timeout * 1000);
 
-        if (!options.scrollable)
+        if (!$H.loader.options.scrollable)
             $H.browser.discrollable();
 
         return $H.loader.ui;
     },
     close: function () {
-        $H.mask.close();
+        if ($H.loader.options.mask)
+            $H.mask.close();
         if ($H.loader.ui) {
             $H.loader.ui.empty();
             $H.loader.ui.remove();
@@ -89,49 +100,49 @@ $H.loader = {
 };
 $H.dialog = {
     ui: $("<div>").addClass("dialog"),
+    options: {
+        title: "",
+        content: "",
+        buttons: null,
+        mask: false,
+        scrollable: false,
+        clickMask: function () { }
+    },
     show: function (options) {
-        options = $.extend({
-            title: "",
-            content: "",
-            buttons: null,
-            mask: false,
-            scrollable: false,
-            clickMask: function () { }
-        }, options);
+        $H.dialog.options = $.extend($H.dialog.options, options);
 
+        $("input textarea").blur();
         $H.dialog.ui.empty();
         var title = $("<div>").addClass("title");
         var content = $("<div>").addClass("content");
         var btns = $("<div>").addClass("btns");
 
-        if (options.mask) {
+        if ($H.dialog.options.mask) {
             $H.mask.show({
                 scrollable: true,
-                clickMask: options.clickMask
+                clickMask: $H.dialog.options.clickMask
             });
         }
 
-        if (options.title) {
-            title.html(options.title);
+        if ($H.dialog.options.title) {
+            title.html($H.dialog.options.title);
             $H.dialog.ui.append(title);
         }
 
         $H.dialog.ui.append(content);
-        if (options.content) {
-            content.html(options.content).css("max-height", $H.browser.height() - 180);
+        if ($H.dialog.options.content) {
+            content.html($H.dialog.options.content).css("max-height", $H.browser.height() - 180);
         }
 
         //btn = {text:"",callback:"",className:"",css:{}}
-        if (options.buttons) {
-            $.each(options.buttons, function (index, item) {
+        if ($H.dialog.options.buttons) {
+            $.each($H.dialog.options.buttons, function (index, item) {
                 var zepBtn = $("<a>").text(item.text);
                 //todo: touchActive
                 zepBtn.on("touchstart mousedown", function () {
                     $(this).addClass("active");
                     var This = $(this);
-                    if ("android,windowsmobile,windowsphone,windowspc".indexOf($H.os.type()) != -1) {
-                        setTimeout(function () { This.removeClass("active"); }, 800);
-                    }
+                    setTimeout(function () { This.removeClass("active"); }, 2e3);
                 }).on("touchcancel touchend mouseup click", function () {
                     $(this).removeClass("active");
                 });
@@ -141,7 +152,7 @@ $H.dialog = {
                 if (item.css)
                     zepBtn.css(item.css);
                 if (item.callback)
-                    zepBtn.on("tap", function () {
+                    zepBtn.on("click", function () {
                         item.callback();
                     });
                 btns.append(zepBtn);
@@ -153,14 +164,15 @@ $H.dialog = {
         $H.dialog.ui.appendTo($("body"));
         $H.dialog.ui.css("margin-top", -$H.dialog.ui.height() / 2);
 
-        if (!options.scrollable)
+        if (!$H.dialog.options.scrollable)
             $H.browser.discrollable();
         //$H.dialog.content.unbind("touchmove", $H.browser.preventEvent);
 
         return $H.dialog.ui;
     },
     close: function () {
-        $H.mask.close();
+        if ($H.dialog.options.mask)
+            $H.mask.close();
         if ($H.dialog.ui) {
             $H.dialog.ui.empty();
             $H.dialog.ui.remove();
@@ -168,6 +180,45 @@ $H.dialog = {
 
         $H.browser.scrollable();
     }
+};
+
+$H.alert = function (msg, callback) {
+    $H.dialog.show({
+        title: "提示",
+        content: msg,
+        buttons: [{
+            text: "确定",
+            callback: function () {
+                if (callback) callback();
+                $H.dialog.close();
+            }
+        }],
+        mask: true,
+        scrollable: false
+    });
+};
+
+$H.confirm = function (msg, ok, cancel) {
+    $H.dialog.show({
+        title: "提示",
+        content: msg,
+        buttons: [{
+            text: "确定",
+            callback: function () {
+                if (ok) ok();
+                $H.dialog.close();
+            }
+        }, {
+            text: "取消",
+            callback: function () {
+                if (cancel) cancel();
+                $H.dialog.close();
+            }
+        }],
+        mask: true,
+        scrollable: false
+    });
+
 };
 
 $.extend($.fn, {
@@ -193,44 +244,44 @@ $.extend($.fn, {
         };
 
         this.on(tap.start, function () {
-            if (!$(this).hasClass("disabled")) {
-                $(this).addClass(className);
-                var This = $(this);
-                if ("android,windowsmobile,windowsphone,windowspc".indexOf($H.os.type()) != -1) {
-                    setTimeout(function () { This.removeClass(className); }, 800);
-                }
+            var $this = $(this);
+            if (!$this.hasClass("disabled")) {
+                $this.addClass(className);
+                setTimeout(function () { $this.removeClass(className); }, 2e3);
             }
         }).on(tap.end, function () {
             $(this).removeClass(className);
         });
+
+        return this;
     }
 });
 
 $.extend($.fn, {
-	mask: function(){
-		
-		this.show = function(){
-			
-		};
-		
-		this.close = function(){
-			
-		};
-	},
-	loader: function(){
-		
-		this.show = function(){};
-		
-		this.close = function(){};
-	},
-	dialog: function(){
-		
-		this.show = function(){};
-		
-		this.close = function() {
-		  
-		};
-	}
+    mask: function () {
+
+        this.show = function () {
+
+        };
+
+        this.close = function () {
+
+        };
+    },
+    loader: function () {
+
+        this.show = function () { };
+
+        this.close = function () { };
+    },
+    dialog: function () {
+
+        this.show = function () { };
+
+        this.close = function () {
+
+        };
+    }
 });
 
 $.extend($.fn, {
@@ -244,7 +295,7 @@ $.extend($.fn, {
                 dom.checked = checked;
             }
 
-            $("input[name=" + dom.name + "]").each(function () {
+            $("input[name='" + dom.name + "']").each(function () {
                 if ($(this)[0].checked)
                     $(this).parent().addClass("checked");
                 else
@@ -268,11 +319,16 @@ $.extend($.fn, {
 
         };
 
+        this.selected = function () {
+            return $("input[name=" + dom.name + "]:checked");
+        };
+
         var init = (function () {
             if (!ui || ui.length == 0) {
                 This.wrap("<span class='radio'></span>");
                 ui = This.parent(".radio");
             }
+            This.transferCssTo(ui);
             This.checked();
             This.disabled();
 
@@ -321,6 +377,7 @@ $.extend($.fn, {
                 ui = This.parent(".checkbox");
             }
 
+            This.transferCssTo(ui);
             This.checked();
             This.disabled();
 
@@ -376,6 +433,77 @@ $.extend($.fn, {
 
             This.on("change", function (e) {
                 This.checked();
+            });
+        })();
+
+        return this;
+    },
+
+    range: function (options) {
+        var This = this;
+        var dom = this[0];
+        var ui = this.parent(".range");
+        var bar = ui.children(".range-bar");
+        var active = ui.children(".range-active");
+
+        options = $.extend({
+            max: This.attr("max") ? This.attr("max") : 100,
+            step: This.attr("step") ? This.attr("step") : 1,
+            value: This.val() ? This.val() : 0
+        }, options);
+
+        this.val = function (val) {
+            if (val !== undefined) {
+                dom.value = val;
+
+                var activeWidth = (val / options.max) * ui.offset().width;
+                active.css({ width: activeWidth });
+                //bar.css({"-webkit-transform": 'translate3d(' + (activeWidth - 110) + 'px,0,0)'});
+                bar.css({ left: activeWidth });
+            }
+
+            return dom.value;
+        };
+
+        var init = (function () {
+            if (!ui || ui.length == 0) {
+                This.wrap("<span class='range'></span>");
+                ui = This.parent(".range");
+            }
+            if (!bar || bar.length == 0) {
+                This.before("<span class='range-bar'></span>");
+                bar = ui.children(".range-bar");
+            }
+            if (!active || active.length == 0) {
+                This.before("<span class='range-active'></span>");
+                active = ui.children(".range-active");
+            }
+
+            This.attr(options);
+            This.val(options.value);
+            This.transferCssTo(ui);
+            var width = ui.offset().width;
+            var left = ui.offset().left;
+            bar.on("touchmove mousemove", function (e) {
+                $H.browser.discrollable();
+                var pageX;
+                if (e.type == "touchmove") {
+                    pageX = e.touches[0].pageX;
+                }
+                else if (e.type == "mousemove") {
+                    pageX = e.pageX;
+                }
+                if (pageX >= left && pageX <= left + width) {
+                    var activeWidth = pageX - left;
+
+                    var value = parseInt((activeWidth / width) * options.max, 10);
+                    This.val(value);
+
+                    This.trigger("change");
+                }
+
+            }).on("touchend mouseup", function () {
+                $H.browser.scrollable();
             });
         })();
 
@@ -528,7 +656,9 @@ $.extend($.fn, {
                 text = $("<span>");
                 ui.append(text);
             }
-            text.html(This.displayText(This.selected()));
+            if (This.selected()) {
+                text.html(This.displayText(This.selected()));
+            }
 
             This.on("change", function () {
                 text.html(This.displayText(This.selected()));
@@ -763,7 +893,7 @@ $.extend($.fn, {
             if (!This.is("tabs")) {
                 This.addClass("tabs");
             };
-            var li = This.find("ul li"),
+            var li = This.find(".ul .li"),
                 num = li.length,
                 width = (100 / num).toFixed(2);
             for (var i = 0; i < num; i++) {
@@ -775,9 +905,9 @@ $.extend($.fn, {
                 };
             };
 
-            This.find("ul li").eq(opts.selected).addClass("selected");
-            This.children("div").hide().eq(opts.selected).show();
-            This.find("ul li").on("click", function (e) {
+            This.find(".ul .li").eq(opts.selected).addClass("selected");
+            This.children("div.content").hide().eq(opts.selected).show();
+            This.find(".ul .li").on("click", function (e) {
                 e.stopPropagation();
                 var index = $(this).index();
                 for (var i = 0; i < opts.disabled.length; i++) {
@@ -786,7 +916,7 @@ $.extend($.fn, {
                     };
                 };
                 $(this).addClass("selected").siblings().removeClass("selected");
-                This.children("div").eq(index).show().siblings("div").hide();
+                This.children("div.content").eq(index).show().siblings("div.content").hide();
                 opts.callback(args);
             });
         };
@@ -794,11 +924,11 @@ $.extend($.fn, {
         this.index = function (index) {
             if (index == undefined) {
                 var index = 0,
-                index = $("li.selected").index();
+                index = $(".ul li.selected").index();
                 return index;
             } else {
-                if (index > -1 && index < This.find("ul").length && index == parseInt(index)) {
-                    This.find("ul li").eq(index).trigger("click");
+                if (index > -1 && index < This.find(".ul").length && index == parseInt(index)) {
+                    This.find(".ul .li").eq(index).trigger("click");
                     opts.callback(args);
                 };
             };
@@ -807,6 +937,105 @@ $.extend($.fn, {
         this.init(opts);
 
         return This;
+    },
+
+    page: function (options) {
+        options = $.extend({
+            url: ""
+        }, options);
+
+        var This = this;
+        var pages = $(".page");
+        var beforePage = {
+            zepto: $(pages.get(0))
+        };
+
+        this.getBeforePage = function () {
+            var page = $(pages.get(0));
+
+            pages.each(function () {
+                if ($(this)[0].style.display == "" ||
+                    $(this)[0].style.display == "block") {
+                    page = $(this);
+                }
+            });
+
+            return page;
+        };
+
+        this.show = function (opts) {
+            opts = $.extend({
+                data: {},
+                scorllTop: 0,
+                before: function () { },
+                success: function () { },
+                complete: function () { },
+                error: function () { }
+            }, opts);
+
+            opts.before(opts.data);
+
+            beforePage = {
+                zepto: this.getBeforePage(),
+                scrolledTop: $(window).scrollTop()
+            };
+
+            var showHtml = function (html) {
+                if (html) {
+                    var doc = $H.parseDom(html);
+
+                    $(doc.head).children().each(function () {
+                        if ($(this).attr("tagName") == "LINK" ||
+                            $(this).attr("tagName") == "META" ||
+                            $(this).attr("tagName") == "TITLE") {
+                            document.head.insertBefore(this, null);
+                        }
+                    });
+
+                    This.append($(doc.body).children());
+
+                    var scriptList = [];
+                    $(doc).find("script").each(function () {
+                        scriptList.push($(this).attr("src"));
+                    });
+                    $H.loadScript({ url: scriptList });
+                }
+
+                $(".page").hide();
+                This.css("display", "");
+                $(window).scrollTop(opts.scorllTop);
+                opts.success(opts.data);
+                opts.complete(opts.data);
+            };
+
+            if (options.url) {
+                $H.ajax({
+                    url: options.url,
+                    type: "GET",
+                    timeout: 15,
+                    success: function (html) {
+                        showHtml(html);
+                    },
+                    error: opts.error
+                });
+            }
+            else {
+                showHtml();
+            }
+        };
+
+        this.close = function (opts) {
+            opts = $.extend({
+                closed: function () { }
+            }, opts);
+
+            This.hide();
+            beforePage.zepto.show();
+            $(window).scrollTop(beforePage.scrolledTop);
+            opts.closed();
+        };
+
+        return this;
     }
 });
 

@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html ng-app>
+<head>
+    <title>angularjs</title>
+    <meta name="viewport" content="minimal-ui,width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../ui/hobbit.ui.css" rel="stylesheet" />
+    <link href="../doc.css" rel="stylesheet" />
+
+    <script src="../../core/zepto.js"></script>
+    <script src="../../core/hobbit.js"></script>
+    <script src="../../core/angular.js"></script>
+    <script src="../../ui/hobbit.ui.js"></script>
+    <script src="../doc.js"></script>
+    <script src="angularController.js"></script>
+    
+    <style>
+    	.listview li{
+    		height:80px;
+    	}
+    	.listview li span{
+    		position: absolute;
+    		line-height: 18px;
+    	}
+    	.listview li .hotelname{
+    		top:10px;
+    		left:6px;
+    		right:20px;
+    		font-weight: bold;
+    		font-size:20px;
+    		line-height: 20px;
+    	}
+    	.listview li .hotelstart{
+    		top:35px;
+    		left:6px;
+    	}
+    	.listview li .hotelarea{
+    		top:55px;
+    		left:6px;
+    	}
+    	.listview li .hotelcomm{
+    		top:35px;
+    		left:100px;
+    		
+    	}
+    	.listview li .hotelprice{
+    		top:30px;
+    		right:30px;
+    		color: #FF9C00;
+    		font-size: 22px;
+    	}
+    	.listview li .hotelcoupon{
+    		top:50px;
+    		right:30px;
+    		color: #FF9C00;
+    	}
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-btn back">
+                <span class="ico ico-back"></span>
+            </div>
+            <div class="header-lable">angular</div>
+            <div class="header-btn right">
+                <span class="ico ico-menu"></span>
+            </div>
+        </header>
+        <article class="doc">
+        	<section class="doc-section">
+	        	<div class="doc-demo" ng-controller="ListCtrl">
+		      		<h1>酒店列表{{listLength()}}</h1>
+				      <ul class="listview">
+				        <li ng-repeat="item in list" class="arrow">
+				          <span class="hotelname etc">{{item.name}}</span>
+				          <span class="hotelstart">{{item.start}}</span>
+				          <span class="hotelarea">{{item.area}}</span>
+				          <span class="hotelcomm">{{item.comm}}</span>
+				          <span class="hotelprice">{{item.price}}</span>
+				          <span class="hotelcoupon">{{item.coupon}}</span>
+				        </li>
+				      </ul>
+					<input class="btn" ng-click="addList()" type="submit" value="已显示{{listLength()}}条，显示更多">
+	    		</div>
+            </section>
+        </article>
+        <footer></footer>
+    </div>
+</body>
+</html>
+

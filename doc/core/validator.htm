@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit validator</title>
+    <meta name="viewport" content="minimal-ui,width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../ui/hobbit.ui.css" rel="stylesheet" />
+    <link href="../doc.css" rel="stylesheet" />
+
+    <script src="../../core/zepto.js"></script>
+    <script src="../../core/hobbit.js"></script>
+    <script src="../../ui/hobbit.ui.js"></script>
+    <script src="../../core/plugins/validator.js"></script>
+    <script src="../doc.js"></script>
+    <style type="text/css">
+        ol li {
+            padding: 3px 0;
+            line-height: 20px;
+        }
+
+        .corr, .err {
+            display: block;
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            margin-top: -10px;
+            text-indent: 20px;
+            overflow: hidden;
+        }
+
+        .corr {
+            background: no-repeat url(http://h5mis.corp.elong.com/bbs/static/image/common/check_right.gif);
+        }
+
+        .err {
+            background: no-repeat url(http://h5mis.corp.elong.com/bbs/static/image/common/check_error.gif);
+        }
+
+        .moneyerr {
+            color: #f00;
+            margin: 0 0 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-btn">
+                <span class="ico ico-back"></span>
+            </div>
+            <div class="header-lable">validator</div>
+            <div class="header-btn right">
+                <span class="ico ico-menu"></span>
+            </div>
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4>
+                    $(selector).validate(options) ⇒ validate result object
+                </h4>
+                <p>
+                    描述：验证
+                </p>
+                <div class="doc-table">
+                    <pre>
+options对象：
+{
+  fixDC: false //是否自动全角字符转为半角
+  trim: false //是否自动清除值头尾空格
+  defaultFilter: {} //默认筛选属性
+  singleMode: false //是否为逐个验证模式，否则为汇总验证模式
+  appendDom : false //是否在元素后面新增DOM节点，还是仅在本元素上添加样式
+  testMode： false //是否为测试模式，测试模式仅返回验证结果，不会改变元素样式，也不会执行任何回调
+  before: function(prop){} //每一个元素验证前回调，入参为prop对象，若返回true则继续验证，反之不再验证该元素
+  after: function(prop,result){} //每一个元素验证后回调，入参为prop和result对象，返回result(修改验证结果)或underfine(使用原验证结果)
+  report： function(result){} //汇总验证回调，singleMode模式不会触发该回调。入参为result对象，无需返回值。
+}
+prop对象：
+{
+  filter: [], //验证筛选项集合
+  target: zep,//被验证的zepto对象
+  val: "",     //被验证对象的value值（非表单元素则使用元素.html()作为其值；若fixDC=true，则会转换全角到半角）
+  isError: true//是否验证错误
+}
+filter对象：
+{
+  msg: "",//验证错误提示语
+  errorClass: "",//验证错误时自动添加的样式类
+  correctClass: "",//验证正确时自动添加的样式类
+  required: true,//是否必填
+  rq: true,//required的缩写
+  min: 0,//最小值
+  max: 0,//最大值
+  minlength: 0,//最小长度
+  minlen: 0,//minlength的缩写
+  maxlength: 0,//最大长度
+  maxlen: 0,//maxlength的缩写
+  equal: "",//是否相等，若值是方法，则与方法返回值比较相等
+  eq: function (value) { },//equal的缩写
+  regex: /^$/,//正则表达式
+  "function": function (value) { },//自定义函数
+  fn: undefined,//function的缩写
+  type: definedType,//预定义好的验证类型
+  mirror: false//验证结果是否取反
+}
+                        
+definedType枚举：//预定义好的验证类型
+{
+  digit //整数
+  int //整数
+  long //整数
+  number //数字
+  money //金额数字
+  double //数字
+  float //数字
+  email //邮箱地址
+  phone //中国手机号码
+  mobile //中国手机号码
+  tel //固定电话
+  telephone //固定电话
+  zip //邮编
+  zipcode //邮编
+  postcode //邮编
+  name //人名(字母、汉字组成，20个字符以内)
+  username //用户名(字母、汉字组成，20个字符以内)
+  realname //真实姓名(字母、汉字组成，20个字符以内)
+  idcard //身份证号码
+  en //纯英文
+  ch //纯中文
+  bankcard //银行卡号
+}
+                                                
+result对象：
+{
+  isError: false,//是否验证出错误（若为汇总验证模式，只要有1个验证错误就会是true）
+  msgs: [],//验证错误信息集合
+  errors: [],//验证错误的对象集合
+  corrects: []//验证正确的对象集合
+}
+                    </pre>
+                </div>
+                <div class="doc-demo">
+                    <ul class="listview" id="loginfieldset">
+                        <li>
+                            <span class="name">用户名：</span>
+                            <span class="value">
+                                <input type="text" name="username" id="loginusername" placeholder="手机/邮箱/用户名"
+                                       data-validate='{"rq":true,"msg":"用户名不能为空","errorClass":"err","correctClass":"corr"}' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">密 &nbsp; 码：</span>
+                            <span class="value">
+                                <input type="password" name="password" id="loginpassword" placeholder="6-20位"
+                                       data-validate='{"rq":true,"minlen":6,"maxlen":20,"msg":"请输入6-20为登录密码","errorClass":"err","correctClass":"corr"}' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">验证码：</span>
+                            <span class="value">
+                                <input type="text" id="vcode" placeholder="5-4等于几？" maxlength="10" />
+                            </span>
+                        </li>
+                        <li>
+                            <label style="display:block;height:100%">
+                                <span class="checkbox" style="left:12px">
+                                    <input type="checkbox" id="remember" name="remember" />
+                                </span>
+                                <span style="margin-left:30px">记住密码</span>
+                            </label>
+                        </li>
+
+                    </ul>
+                    <button class="btn" id="loginbutton">登 录(不焦点，带样式)</button>
+                    <button class="btn" id="but4">验证登录，测试模式</button>
+                    <button class="btn" id="but5">验证登录，逐个验证模式</button>
+                    <button class="btn" id="but1">只验证注册码</button>
+                    <br />
+
+
+                    <ul class="listview" id="regfieldset">
+                        <li>
+                            <span class="name">手机号：</span>
+                            <span class="value">
+                                <input type="text" id="regusername" name="username" placeholder="11位手机号" maxlength="11"
+                                       data-validate='[{"rq":true,"msg":"注册手机号不能为空"},{"type":"mobile","msg":"手机号格式不正确"}]' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">密 &nbsp; 码：</span>
+                            <span class="value">
+                                <input type="password" name="password" id="regpassword" placeholder="6-20位"
+                                       data-validate='{"rq":true,"minlen":6,"maxlen":20,"msg":"请输入6-20位注册密码"}' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">确认密码：</span>
+                            <span class="value">
+                                <input type="password" name="repassword" id="regrepassword" placeholder="6-20位"
+                                       data-validate='#vilters.repassword' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">性 &nbsp; 别</span>
+                            <span class="select" style="text-align:left;text-indent:85px">
+                                <span>请选择</span>
+                                <select id="regsex" name="sex" data-validate='{"rq":true,"msg":"请选择性别"}'>
+                                    <option value="">请选择</option>
+                                    <option>男</option>
+                                    <option>女</option>
+                                </select>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">邮箱地址：</span>
+                            <span class="value">
+                                <input type="text" name="email" id="regemail" placeholder="非必填"
+                                       data-validate='{"type":"email","msg":"邮箱格式不正确"}' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">银行卡1：</span>
+                            <span class="value">
+                                <input type="text" name="bankcard" id="regbankcard1" placeholder="非必填"
+                                       data-validate='{"type":"bankcard","msg":"银行卡号格式不正确"}' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">银行卡2：</span>
+                            <span class="value">
+                                <input type="text" name="bankcard" id="regbankcard2" placeholder="非必填，不能与银行卡1一样"
+                                       data-validate='[{"type":"bankcard","msg":"银行卡号格式不正确"},{"rq":true,"eq":"javascript:$(&apos;#regbankcard1&apos;).val()","mirror":true,"msg":"银行卡2不能与银行卡1一样"}]' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">联系地址：</span>
+                            <span class="value">
+                                <input type="text" name="address" id="regaddress" placeholder="非必填"
+                                       data-validate='{"max":200,"msg":"联系地址最多200个字符"}' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">邮 &nbsp; 编：</span>
+                            <span class="value">
+                                <input type="text" name="postcode" id="regpostcode" placeholder="非必填，6位数字"
+                                       data-validate='#vilters.postcode' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">年 &nbsp; 龄：</span>
+                            <span class="value">
+                                <input type="text" name="age" id="regage" placeholder="非必填，1-100"
+                                       data-validate='#vilters.age' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">身份证号：</span>
+                            <span class="value">
+                                <input type="text" name="idcard" id="regidcard" placeholder="非必填"
+                                       data-validate="#idcard" />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">护照号码：</span>
+                            <span class="value">
+                                <input type="text" name="idcard" id="regidcard" placeholder="非必填"
+                                       data-validate='{"regex":"^1[45][0-9]{7}|G[0-9]{8}|P[0-9]{7}|S[0-9]{7,8}|D[0-9]+$","msg":"护照格式不正确"}' />
+                            </span>
+                        </li>
+                        <li>
+                            <span class="name">现在几点：</span>
+                            <span class="value">
+                                <input type="text" name="timenow" id="timenow" placeholder="非必填，0-23"
+                                       data-validate='{"equal":"javascript:new Date().getHours()","msg":"没有回答正确现在是几点"}' />
+                            </span>
+                        </li>
+                        <li>
+                            <label style="display:block;height:100%">
+                                <span class="checkbox" style="left:12px">
+                                    <input type="checkbox" id="autovalidate" name="autovalidate" />
+                                </span>
+                                <span style="margin-left:30px">启用失去焦点自动验证</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label style="display:block;height:100%">
+                                <span class="checkbox" style="left:12px">
+                                    <input type="checkbox" checked="checked" id="autofocus" name="autofocus" />
+                                </span>
+                                <span style="margin-left:30px">启用验证错误后自动焦点</span>
+                            </label>
+                        </li>
+                    </ul>
+                    <button class="btn" id="regbutton">注 册</button>
+                    <button class="btn" id="but3">验证注册，但关闭自动转换全角功能</button>
+                    <button class="btn" id="but2">全部验证</button>
+                    <br />
+                    <input type="text" id="money" style="width:100px;display:inline" placeholder="金额"
+                           data-validate='[{"type":"money","rq":true,"msg":"必须填写捐款金额!","errorClass":"moneyerr","correctClass":"moneycorr"},{"min":0.01,"msg":"不想活了吧！"}]' />
+                    <p>
+                        <h5>其它一些功能</h5>
+                        <ol>
+                            <li>可以全局设置验证选项，选项有：是否修复全角、是否逐个/汇总验证模式、是否测试模式、验证前/后回调函数、汇总报告回调函数</li>
+                            <li>可以单独修改某一次验证的设置</li>
+                            <li>验证前回调函数如果返回undefine或false，则可实现跳过该对象的验证</li>
+                            <li>验证后回调函数如果返回result对象，会替代原有result对象，进而实现中途修改验证结果</li>
+                            <li>除了可以使用zepto对象的validate方法进行验证，还可以使用静态函数$H.validate(zepto,options)进行验证，例如：要验证全部，最简单的写法是$H.validate()</li>
+                            <li>除了在标签中加data-validate属性标签，还可以使用js动态添加、修改、删除、获取该验证属性，如：$("#vcode").data("validate", { "type": "number", "msg": "验证码无效" })</li>
+                            <li>验证属性可以指定多个子过滤对象，如果验证属性中没有指定msg（错误提示语）、errorClass或correctCalss，则自动使用前一个过滤对象的该值</li>
+                            <li>支持验证动态值/表达式，例如:{"required":"javascript:$H.os.ver()>6"} 或 {"min":"javascript:$(&apos;#abc&apos;).val()"}</li>
+                            <li>对于非表单元素（没有value）的元素，也可以使用该验证框架。验证框架会取其innerHTML作为值去验证</li>
+                            <li>支持很多缩写：required=>rq , minlength=>minlen , equal=>eq , function=>fn</li>
+                            <li>支持外部定义验证属性，如：data-validate="#idcard"</li>
+                            <li>支持全局或单次验证时设置默认基础过滤对象defaultFilter，解决了那些必须的过滤属性每次都要写的烦恼</li>
+                            <li>支持验证错误/正确后是否添加新元素，还是仅在本元素上添加样式</li>
+                        </ol>
+                        <h5>注意事项</h5>
+                        <ol>
+                            <li>如果验证时报错脚本错误：Cannot read property 'mirror' of null，那么请见查验证属性是否书写有误</li>
+                            <li>验证属性里书写过滤对象的json必须是标准JSON格式，即键必须用双引号括起来。如：data-validate='{"type":"email"}'</li>
+                            <li>如果元素属性中的过滤对象中要使用嵌套单引号，请使用&apos;或者改用外部定义方式</li>
+                        </ol>
+                    </p>
+                </div>
+                <pre class="doc-code">
+                <script type="text/javascript">
+                    //预定义验证属性
+                    var idcard = { type: "idcard", msg: "身份证号码不正确" };
+                    var vilters = {
+                        age: { type: "int", min: 1, max: 100, msg: "年龄无效" },
+                        postcode: { type: "postcode", "msg": "邮编格式不正确" },
+                        repassword: [{ rq: true, msg: "请填写确认密码" }, { equal: function () { return $('#regpassword').val() }, msg: "两次输入的密码不一样" }]
+                    }
+
+                    $(function () {
+                        $("#remember").checkbox();
+                        var focus = $("#autofocus").checkbox();
+                        var auto = $("#autovalidate").checkbox();
+                        auto.on("change", function () {
+                            if (auto.checked()) {
+                                $("[data-validate]").on("blur", function () {
+                                    $(this).validate({ report: 0, defaultFilter: { errorClass: "err", correctClass: "corr" } });
+                                });
+                            } else {
+                                $("[data-validate]").off("blur");
+                            }
+                        });
+                        $("#regsex").select();
+
+                        //验证全局设置
+                        $H.validate.globalOptions = $.extend($H.validate.globalOptions, {
+                            fixDC: true,
+                            appendDom: true,
+                            report: function (result) {
+                                if (result.isError) {
+                                    $H.dialog.show({
+                                        title: "提示",
+                                        content: result.msgs.join("<br/>"),
+                                        buttons: [{
+                                            text: "确 定",
+                                            callback: function () {
+                                                if (focus.checked())
+                                                    result.errors[0].target.focus();
+                                                $H.dialog.close();
+                                            }
+                                        }],
+                                        mask: true
+                                    });
+                                }
+                            }
+                        });
+
+                        //js动态添加验证属性
+                        $("#vcode").data("validate", $H.json.stringify(
+                            [
+                                { rq: true, msg: "请填写验证码", errorClass: "err", correctClass: "corr" },
+                                { type: "number", msg: "验证码只能是数字" },
+                                { eq: 1, "msg": "验证码不正确" }
+                            ]
+                        ));
+
+                        //点击登录按钮验证登录信息
+                        $("#loginbutton").tap(function () {
+                            $("#loginfieldset *").validate();
+                        });
+
+                        //点击注册按钮验证注册信息
+                        $("#regbutton").tap(function () {
+                            var result = $("#regfieldset *").validate({
+                                defaultFilter: { errorClass: "err", correctClass: "corr" }
+                            });
+
+                            if (!result.isError) {
+                                alert("验证通过，提交表到到服务器啦");
+                            }
+                        });
+
+                        //只验证一项
+                        $("#but1").tap(function () {
+                            $("#vcode").validate();
+                        });
+
+                        //全都验证
+                        $("#but2").tap(function () {
+                            $H.validate();
+                        });
+
+                        //验证注册但不修改全角
+                        $("#but3").tap(function () {
+                            $("#regfieldset *").validate({ fixDC: false });
+                        });
+
+                        //测试模式验证
+                        $("#but4").tap(function () {
+                            var result = $("#loginfieldset *").validate({ testMode: true });
+                            console.log(result);
+                        });
+
+                        //验证登录，逐个模式，且使用alert作为提示方式
+                        $("#but5").tap(function () {
+                            $("#loginfieldset *").validate({ singleMode: true });
+                        });
+
+                        //验证捐款金额
+                        $("#money").on("blur", function () {
+                            $(this).validate({ report: 0 });
+                        });
+                    });
+</script>
+                </pre>
+            </section>
+        </article>
+        <footer></footer>
+    </div>
+</body>
+</html>

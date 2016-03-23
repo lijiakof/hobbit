@@ -18,10 +18,10 @@ $.extend($.fn, {
             monthcount: 1, //多月日历
             firstday: 0,
             animate: 1,
-            delay: 500,
+            delay: 300,
             onlytag: 1,
             autohide: 1,
-            bgmonth: 1,
+            //bgmonth: 1,
             monthstart: 2,//0不显示，1每月都显示，2仅下月显示
             predatedisabled: 1,
             sufdatedisabled: 1,
@@ -45,14 +45,6 @@ $.extend($.fn, {
                 }
             },
             customtag: {
-                "2014-1-30": ["除夕"],
-                "2014-1-31": ["春节"],
-                "2014-2-14": ["元宵节"],
-                "2014-4-5": ["清明"],
-                "2014-6-2": ["端午节"],
-                "2014-8-2": ["七夕"],
-                "2014-9-8": ["中秋节"],
-
                 "2015-2-18": ["除夕"],
                 "2015-2-19": ["春节"],
                 "2015-3-5": ["元宵节"],
@@ -64,7 +56,7 @@ $.extend($.fn, {
         }, options);
 
         //私有属性
-        var $this = this, cards = {}, value = options.now, crosser, id = this.attr("id") || ("_" + Math.floor(Math.random() * 1e6));
+        var $this = this, cards = {}, value = Date.parseDate(options.now), crosser, id = this.attr("id") || ("_" + Math.floor(Math.random() * 1e6));
         //私有方法
         var div = function (cl, parent, prepend) {
             return prepend ? $("<div>").addClass(cl).prependTo(parent) : $("<div>").addClass(cl).appendTo(parent);
@@ -93,13 +85,13 @@ $.extend($.fn, {
                 //上一月按钮
                 card.head.prev.html(options.lng.prev);
                 if (date > options.mindate)
-                    card.head.prev.on("tap", function (e) { e.preventDefault(); $this.prev(); }).touchActive();
+                    card.head.prev.tap(function (e) { e.preventDefault(); $this.prev(); }).touchActive();
                 else
                     card.head.prev.addClass("disabled");
                 //下一月按钮
                 card.head.next.html(options.lng.next);
                 if (date.add(date.daysInMonth(), 3) < options.maxdate)
-                    card.head.next.on("tap", function (e) { e.preventDefault(); $this.next(); }).touchActive();
+                    card.head.next.tap(function (e) { e.preventDefault(); $this.next(); }).touchActive();
                 else
                     card.head.next.addClass("disabled");
             }
@@ -124,20 +116,20 @@ $.extend($.fn, {
                 item = { "class": ["w" + ((i + options.firstday) % 7)], disabled: !1, date: date, dom: null, tags: [] };
 
                 if (i < pre) {
-                    item.class.push("pre");
+                    item["class"].push("pre");
                     item.disabled = options.predatedisabled;
                 } else if (i >= suf) {
-                    item.class.push("suf");
+                    item["class"].push("suf");
                     item.disabled = options.sufdatedisabled;
                 }
 
                 if (item.disabled || !check(date)) {
-                    item.class.push("disabled");
+                    item["class"].push("disabled");
                     item.disabled = 1;
                 }
 
                 if (date.equal(value, 3))
-                    item.class.push("value");
+                    item["class"].push("value");
 
                 //添加日期内容标记
                 item.tags.push({ text: date.getDate(), "class": "day" });
@@ -165,33 +157,26 @@ $.extend($.fn, {
                     item.tags.shift();
 
                 item.dom = $("<td>");
-                item.class.push("r" + item.tags.length);
-                tmp = [];
-                for (var j = 0; j < item.tags.length && j < 3; j++)
-                    tmp.push(["<span class='line l", j + 1, " ", item.tags[j].class, "'>", item.tags[j].text, "</span>"].join(""));
 
                 if (options.print)
                     item = options.print(item);
 
-                item.dom.addClass(item.class.join(" ")).html(tmp.join("")).attr({ "data-value": date.getTime() }).appendTo(tr);
+                item["class"].push("r" + item.tags.length);
+
+                tmp = [];
+                for (var j = 0; j < item.tags.length && j < 3; j++)
+                    tmp.push(["<span class='line l", j + 1, " ", item.tags[j]["class"], "'>", item.tags[j].text, "</span>"].join(""));
+
+                item.dom.addClass(item["class"].join(" ")).html(tmp.join("")).attr({ "data-value": date.getTime() }).appendTo(tr);
 
                 if (!item.disabled) {
-                    item.dom.on("tap", function () {
-                        cards.actcard[0].body.find(".value").removeClass("value");
+                    item.dom.tap(function () {
+                        $this.find(".value").removeClass("value");
+                        $this.find(".newvalue").removeClass("newvalue");
                         var v = $(this).attr("data-value");
-                        $this.find("td[data-value='" + v + "']").addClass("value");
+                        $this.find("td[data-value='" + v + "']").addClass("value").addClass("newvalue");
                         $this.val(v);
                     }).touchActive();
-                    //    .on("touchstart", function (e) {
-                    //    //e.preventDefault();
-                    //    //$("<span>").addClass("zoombox").css({
-                    //    //    width: $(this).width() - 1
-                    //    //}).html($(this).html()).appendTo($(this));
-                    //    //构建变大的日期
-                    //}).on("touchend", function () {
-                    //    //$(this).children(".zoombox").remove();
-                    //    //回复变大的日期
-                    //});
                 }
             }
 
@@ -236,7 +221,7 @@ $.extend($.fn, {
         //转到指定月份的卡片
         this.switchTo = function (date, buildAll) {
             if (!buildAll && !cards.actcard[0].date.equal(date, 2)) {
-                if (Math.abs(date.date(2) - cards.actcard[0].date.date(2)) < Date.MSINDAY * 32) {//只差一个月,只需构建1个card
+                if (Math.abs(date.diff(cards.actcard[0].date, 2)) <= 1) {//只差一个月,只需构建1个card
                     if (cards.actcard[0].date < date) {//向后
                         //删除前卡片
                         cards.precard.wrap.remove();
@@ -268,15 +253,12 @@ $.extend($.fn, {
                     }
                 }
                 else { //相差多余1个月，需重新构建所有card
-                    cards.precard.wrap.remove();
-                    cards.sufcard.wrap.remove();
-                    for (var i = 0; i < cards.actcard.length; i++)
-                        cards.actcard[i].wrap.remove();
                     buildAll = true;
                 }
             }
 
             if (buildAll) {
+                $this.empty();
                 //构建不可见的日历卡片(上一月)
                 cards.precard = buildCard("precard", date.add(-1, 2));
                 //构建可见日历卡片

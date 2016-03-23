@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>hobbit select</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <link href="../../hobbit.css" rel="stylesheet" />
+    <script src="../../zepto.js"></script>
+    <script src="../../hobbit.js"></script>
+    <script src="../../hobbit.ui.js"></script>
+
+    <link href="../doc.css" rel="stylesheet" />
+    <script src="../doc.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-btn">
+                <span class="ico ico-back"></span>
+            </div>
+            <div class="header-lable">select</div>
+            <div class="header-btn right">
+                <span class="ico ico-menu"></span>
+            </div>
+        </header>
+        <article class="doc">
+            <section class="doc-section">
+                <h4>$(selector).select() ⇒ $</h4>
+                <p>
+                    描述：
+                </p>
+                <div class="doc-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td style="width:80px;">方法成员</td>
+                                <td>类型</td>
+                                <td style="width:80px;">返回类型</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>options</td>
+                                <td>function</td>
+                                <td>object</td>
+                            </tr>
+                            <tr>
+                                <td>selected</td>
+                                <td>function</td>
+                                <td>object</td>
+                            </tr>
+                            <tr>
+                                <td>insert</td>
+                                <td>function</td>
+                                <td>object</td>
+                            </tr>
+                            <tr>
+                                <td>remove</td>
+                                <td>function</td>
+                                <td>object</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    备注：
+                </p>
+                <div class="doc-demo">
+                    <select id="select2" style="border:solid 1px #000; width:100px">
+                        <option value="1">select1</option>
+                        <option value="2" selected=selected>select2</option>
+                        <option value="3">select3</option>
+                        <option value="4">select444444444444444444444444444444444444444</option>
+                    </select>
+                    <ul class="listview">
+                        <li class="arrow">
+                            <span class="name">select</span>
+                            <span class="value">
+                                <select id="select1">
+                                    <option value="1">selectA</option>
+                                    <option value="2" selected="selected">selectB</option>
+                                    <option value="3">selectC</option>
+                                    <option value="4">selectDDDDDDDDDDDDDDDD</option>
+                                </select>
+                            </span>
+                        </li>
+                    </ul>
+                    <select id="select3" class="btn mini">
+                        <option value="1">select1</option>
+                        <option value="2" selected=selected>select22</option>
+                        <option value="3">select333</option>
+                        <option value="4">select444444444444444444444444444444444444444</option>
+                    </select>
+
+                </div>
+                <pre class="doc-code">                                        
+                    <script type="text/javascript">
+                        $(function () {
+                            var sel = $("#select1").select();
+                            var sel2 = $("#select2").select();
+                            var sel3 = $("#select3").select();
+                        });
+                    </script>
+                </pre>
+                <div class="doc-btn-wrap">
+                    <a class="btn inline mini" style="display:none;">运行脚本</a>
+                </div>
+            </section>
+        </article>
+        <footer></footer>
+    </div>
+</body>
+</html>
+

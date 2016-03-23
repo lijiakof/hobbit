@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>hobbit ajax</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+    <meta name="viewport" content="minimal-ui,width=device-width,initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
     <link href="../../ui/hobbit.ui.css" rel="stylesheet" />
     <link href="../doc.css" rel="stylesheet" />
 
@@ -98,26 +98,26 @@
                     备注：
                 </p>
                 <pre class="doc-code">
-                    <script type="text/javascript">
-                        function code(){
-                            $H.ajax({
-                                url: "browser.htm",
-                                type: "GET",
-                                timeout: 15,
-                                beforeSend: function () {
-                                    $H.loader.show();
-                                },
-                                success: function (data) {
-                                    alert(data);
-                                },
-                                error: function (xhr, errorType, error) {
-                                    alert(error);
-                                },
-                                complete: function () {
-                                    $H.loader.close();
-                                }
-                            })
-                        }
+                <script type="text/javascript">
+    function code() {
+        $H.ajax({
+            url: "browser.htm",
+            type: "GET",
+            timeout: 15,
+            beforeSend: function () {
+                $H.loader.show();
+            },
+            success: function (data) {
+                alert(data);
+            },
+            error: function (xhr, errorType, error) {
+                alert(error);
+            },
+            complete: function () {
+                $H.loader.close();
+            }
+        })
+    }
                     </script>
                 </pre>
                 <div class="doc-btn-wrap">

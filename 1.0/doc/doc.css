@@ -1,0 +1,368 @@
+﻿.logo {
+	background: url(img/logo.png) no-repeat center center;
+	background-size: 32px 32px;
+	-webkit-background-size: 32px 32px;
+	height: 32px;
+	width: 32px;
+	margin: 0 0 3px 6px;
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+}
+
+	.logo::after {
+		content: '';
+		width: 28px;
+		height: 28px;
+		border-radius: 19px;
+		border: dashed #fff 1px;
+		animation: logo-loading 5s linear infinite;
+		-webkit-animation: logo-loading 5s linear infinite;
+		position: absolute;
+		top: 1px;
+		left: 1px;
+	}
+
+@-webkit-keyframes logo-loading {
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes logo-loading {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.ver {
+	font-size: 10px;
+	line-height: 10px;
+	font-weight: normal;
+}
+
+.doc .doc-section {
+	overflow: hidden;
+	margin: -6px -6px 6px -6px;
+	background-color: #fff;
+	padding: 0 !important;
+	border: none !important;
+}
+
+.doc h4 {
+	background-color: #ededed;
+	margin: -6px -6px 0 -6px;
+	height: 35px;
+	line-height: 35px;
+	padding: 0 6px;
+	font-size: 14px;
+	border-bottom: solid 1px #fbfbfb;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.doc .doc-section h4 {
+	margin: 0 !important;
+}
+
+.doc .doc-section p {
+	padding: 3px 6px;
+	line-height: 18px;
+	font-size: 14px;
+	margin: 5px 10px 0 10px;
+	border-bottom: solid 1px #C8C7CC;
+}
+
+.doc .doc-table {
+	padding: 0 10px;
+}
+
+	.doc .doc-table table {
+		font-size: 14px;
+		width: 100%;
+		border: none;
+	}
+
+		.doc .doc-table table td {
+			padding: 0 6px;
+			border-right: solid 1px #C8C7CC;
+		}
+
+			.doc .doc-table table td:last-child {
+				border-right: none;
+			}
+
+		.doc .doc-table table thead tr {
+			background-color: #ededed;
+			font-weight: bold;
+			line-height: 30px;
+			border-bottom: 1px solid #C8C7CC;
+		}
+
+		.doc .doc-table table tbody tr {
+			line-height: 24px;
+			vertical-align: text-top;
+			border-bottom: solid 1px #ededed;
+		}
+
+			.doc .doc-table table tbody tr:last-child {
+				border-bottom: 1px solid #C8C7CC;
+			}
+
+.listview li .tip {
+	position: absolute;
+	right: 30px;
+	top: 50%;
+	margin-top: -8px;
+	height: 16px;
+	line-height: 16px;
+	padding: 0 8px;
+	font-size: 12px;
+	color: #fff;
+	background-color: #c40000;
+	border-radius: 8px;
+	text-indent: 0;
+}
+
+.doc .doc-section .doc-code {
+	font: normal 12px/14px Monaco,Consolas, "Lucida Console", monospace;
+	padding: 15px 5px 6px 10px;
+	margin: 18px 10px 10px 10px;
+	display: block;
+	background-color: #EEEEEE;
+	position: relative;
+	border-radius: 4px;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+
+	.doc .doc-section .doc-code::before {
+		content: 'code';
+		width: 50px;
+		height: 20px;
+		line-height: 20px;
+		font-size: 12px;
+		text-align: center;
+		background-color: #EDEDED;
+		border: solid 1px #C8C7CC;
+		border-radius: 6px;
+		position: absolute;
+		top: -10px;
+		left: 10px;
+	}
+
+.doc .doc-section .doc-demo {
+	padding: 15px 6px 6px 6px;
+	margin: 18px 10px 10px 10px;
+	border: solid 1px #C8C7CC;
+	background-color: #fbfbfb;
+	border-radius: 6px;
+	position: relative;
+}
+
+	.doc .doc-section .doc-demo::before {
+		content: 'demo';
+		width: 50px;
+		height: 20px;
+		line-height: 20px;
+		font-size: 12px;
+		position: absolute;
+		top: -10px;
+		left: 10px;
+		background-color: #EDEDED;
+		border: solid 1px #C8C7CC;
+		border-radius: 6px;
+		text-align: center;
+	}
+
+.doc .doc-section .doc-btn-wrap {
+	padding: 2px 8px 15px 8px;
+	text-align: right;
+	border-bottom: solid 1px #808080;
+}
+
+@media screen and (min-width:520px) {
+	.page {
+		width: 300px;
+		height: 533px;
+		margin: 111px auto 0 auto;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: -ms-autohiding-scrollbar;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+
+	body {
+		background: url(img/iphone.jpg) no-repeat center 0;
+	}
+}
+
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+
+*/
+
+pre code {
+	display: block;
+	padding: 0.5em;
+	background: #F0F0F0;
+}
+
+pre code,
+pre .subst,
+pre .tag .title,
+pre .lisp .title,
+pre .clojure .built_in,
+pre .nginx .title {
+	color: black;
+}
+
+pre .string,
+pre .constant,
+pre .parent,
+pre .tag .value,
+pre .rules .value,
+pre .rules .value .number,
+pre .preprocessor,
+pre .pragma,
+pre .haml .symbol,
+pre .ruby .symbol,
+pre .ruby .symbol .string,
+pre .aggregate,
+pre .template_tag,
+pre .django .variable,
+pre .smalltalk .class,
+pre .addition,
+pre .flow,
+pre .stream,
+pre .bash .variable,
+pre .apache .tag,
+pre .apache .cbracket,
+pre .tex .command,
+pre .tex .special,
+pre .erlang_repl .function_or_atom,
+pre .asciidoc .header,
+pre .markdown .header,
+pre .coffeescript .attribute {
+	color: #A31515;
+}
+
+pre .smartquote,
+pre .annotation,
+pre .template_comment,
+pre .diff .header,
+pre .chunk,
+pre .asciidoc .blockquote,
+pre .markdown .blockquote {
+	color: #888;
+}
+
+pre .comment {
+	color: #080;
+}
+
+pre .number,
+pre .date,
+pre .regexp,
+pre .literal,
+pre .hexcolor,
+pre .smalltalk .symbol,
+pre .smalltalk .char,
+pre .go .constant,
+pre .change,
+pre .lasso .variable,
+pre .makefile .variable,
+pre .asciidoc .bullet,
+pre .markdown .bullet,
+pre .asciidoc .link_url,
+pre .markdown .link_url {
+	color: #3c3c3c;
+}
+
+pre .label,
+pre .javadoc,
+pre .ruby .string,
+pre .decorator,
+pre .filter .argument,
+pre .localvars,
+pre .array,
+pre .attr_selector,
+pre .important,
+pre .pseudo,
+pre .pi,
+pre .haml .bullet,
+pre .doctype,
+pre .deletion,
+pre .envvar,
+pre .shebang,
+pre .apache .sqbracket,
+pre .nginx .built_in,
+pre .tex .formula,
+pre .erlang_repl .reserved,
+pre .prompt,
+pre .asciidoc .link_label,
+pre .markdown .link_label,
+pre .vhdl .attribute,
+pre .clojure .attribute,
+pre .asciidoc .attribute,
+pre .lasso .attribute,
+pre .coffeescript .property,
+pre .makefile .phony {
+	color: #88F;
+}
+
+pre .keyword,
+pre .id,
+pre .title,
+pre .built_in,
+pre .aggregate,
+pre .css .tag,
+pre .javadoctag,
+pre .phpdoc,
+pre .yardoctag,
+pre .smalltalk .class,
+pre .winutils,
+pre .bash .variable,
+pre .apache .tag,
+pre .go .typename,
+pre .tex .command,
+pre .asciidoc .strong,
+pre .markdown .strong,
+pre .request,
+pre .status {
+	font-weight: bold;
+}
+
+pre .keyword {
+	color: #00f;
+}
+
+pre .asciidoc .emphasis,
+pre .markdown .emphasis {
+	font-style: italic;
+}
+
+pre .nginx .built_in {
+	font-weight: normal;
+}
+
+pre .coffeescript .javascript,
+pre .javascript .xml,
+pre .lasso .markup,
+pre .tex .formula,
+pre .xml .javascript,
+pre .xml .vbscript,
+pre .xml .css,
+pre .xml .cdata {
+	opacity: 0.5;
+}

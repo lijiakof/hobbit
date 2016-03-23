@@ -2,21 +2,20 @@
 var Hobbit = window.Hobbit = window.$H = (function () {
     $H = function () { };
     $H.config = {};
-    /**
+    /**测试测试
     * @desc 检测设备系统和浏览器的类型及版本。
     *
     * @ua userAgent字符串（非必选，不指定则使用当前浏览器的navigator.userAgent）
     * @return 返回结果是UAI对象，格式为： { os: 系统类型, ov: 系统版本, bs: 浏览器类型, bv: 浏览器版本 }
     *
-    * @备注：该函数依赖$H.storage用于缓存结果，类型为字符串类型（全部类型参见系统类型表），版本为浮点数字类型（忽略第二个点之后的版本号）
+    * @备注：该函数不会读缓存，若频繁调用$H.os.type()、ver()，请使用，类型为字符串类型（全部类型参见系统类型表），版本为浮点数字类型（忽略第二个点之后的版本号）
     */
     $H.detect = function (ua) {
         ua = ua || navigator.userAgent;
         var match = function (k) {
             var t = "unknown", v = 0;
             for (var m, i = 0; i < k.length; i++)
-                //判断版本的通用正则是：\\D*(\\d+[._]?\\d*)?
-                if (m = ua.match(new RegExp("(" + k[i][1] + ")\\D*(\\d+[._]?\\d*)?", "i"))) {
+                if (m = ua.match(new RegExp("(" + k[i][1] + ")[^\\d_.]*(\\d+[._]?\\d*)?", "i"))) {
                     t = k[i][0];
                     v = parseFloat(m[2]);
                     v = isNaN(v) ? 0 : v;
@@ -24,19 +23,19 @@ var Hobbit = window.Hobbit = window.$H = (function () {
                 }
             return { type: t, ver: v };
         };
-        os = match([["android", "Android"], ["iosipad", "iPad"], ["iosipod", "iPod"], ["iosiphone", "iPhone\\sOS"], ["windowsmobile", "Windows\\s?Mobile"], ["windowsphone", "Windows\\s?Phone|WPOS"], ["windowspc", "Windows"], ["symbian", "Series60|Symbian|Nokia"], ["blackberry", "BlackBerry"], ["macpc", "Macintosh|Mac\\s?OS"]]);
-        bs = match([["chrome", "Chrome|CriOS"], ["ie", "MSIE"], ["weixin", "MicroMessenger"], ["miuiyp", "MiuiYellowPage"], ["qq", "QQBrowser"], ["uc", "UCBrowser|UCWEB|JUC|\\sUC\\s"], ["firefox", "Firefox"], ["opera", "Opera"], ["safari", "Mac\\s?OS.*Safari"], ["native", "Android.*WebKit"]]);
-        return { os: os.type, ov: os.ver, bs: bs.type, bv: bs.ver };
+        os = match([["windowsphone", "Windows\\s?Phone|WPOS"], ["android", "Android"], ["iosipad", "iPad"], ["iosipod", "iPod"], ["iosiphone", "iPhone\\sOS"], ["windowsmobile", "Windows\\s?Mobile"], ["windowspc", "Windows"], ["symbian", "Series60|Symbian|Nokia"], ["blackberry", "BlackBerry"], ["macpc", "Macintosh|Mac\\s?OS"]]);
+        bs = match([["chrome", "Chrome|CriOS"], ["ie", "MSIE|IEMobile"], ["weixin", "MicroMessenger"], ["miuiyp", "MiuiYellowPage"], ["qq", "QQBrowser"], ["uc", "UCBrowser|UCWEB|JUC|\\sUC\\s"], ["firefox", "Firefox"], ["opera", "Opera"], ["safari", "Mac\\s?OS.*Safari"], ["native", "Android.*WebKit"]]);
+        return $H.detect.cache = { os: os.type, ov: os.ver, bs: bs.type, bv: bs.ver };
     };
     $H.os = {
-        type: function () { return $H.detect().os; },
-        ver: function () { return $H.detect().ov; },
+        type: function () { return ($H.detect.cache || $H.detect()).os; },
+        ver: function () { return ($H.detect.cache || $H.detect()).ov; },
         online: function () { return navigator.onLine; }
     };
     $H.browser = {
         ua: navigator.userAgent,
-        type: function () { return $H.detect().bs; },
-        ver: function () { return $H.detect().bv; },
+        type: function () { return ($H.detect.cache || $H.detect()).bs; },
+        ver: function () { return ($H.detect.cache || $H.detect()).bv; },
         height: function () { return $(window).height(); },
         width: function () { return $(window).width(); },
         hideAddressBar: function () {
@@ -50,12 +49,12 @@ var Hobbit = window.Hobbit = window.$H = (function () {
         },
         discrollable: function (selector) {
             var zep = selector ? $(selector) : $(window);
-            zep.bind("touchmove", $H.browser.preventEvent);
+            zep.on("touchmove", $H.browser.preventEvent);
             var s = document.body.style; s.overflowX = s.overflowY = "hidden";
         },
         scrollable: function (selector) {
             var zep = selector ? $(selector) : $(window);
-            zep.unbind("touchmove", $H.browser.preventEvent);
+            zep.off("touchmove", $H.browser.preventEvent);
             var s = document.body.style; s.overflowX = s.overflowY = null;
         },
         preventEvent: function (e) {
@@ -64,6 +63,9 @@ var Hobbit = window.Hobbit = window.$H = (function () {
     };
     $H.json = {
         stringify: function (json) {
+            if (typeof json != "object")
+                return json;
+
             var s = null;
             try {
                 s = window.JSON.stringify(json);
@@ -214,7 +216,6 @@ var Hobbit = window.Hobbit = window.$H = (function () {
             return newUrl;
         },
         query: function (href) {
-
             var args = {},
                 queryArr = [],
                 queryArrItem = [],
@@ -243,6 +244,15 @@ var Hobbit = window.Hobbit = window.$H = (function () {
         }
         return (hash & 0x7FFFFFFF);
     };
+    $H.parseDom = function (html) {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, "text/html");
+        if (doc == null) {
+            doc = document.implementation.createHTMLDocument("");
+            doc.documentElement.innerHTML = html;
+        }
+        return doc;
+    };
     $H.geo = function (options) {
         options = $.extend({
             expires: 60,
@@ -262,8 +272,8 @@ var Hobbit = window.Hobbit = window.$H = (function () {
                     options.success(p.coords);
                     options.complete();
                 },
-                function (code, msg) {
-                    options.error(code, msg);
+                function (code) {
+                    options.error(code);
                     //1=PERMISSION_DENIED:表示没有权限使用地理定位API
                     //2=POSITION_UNAVAILABLE:表示无法确定设备的位置，例如一个或多个的用于定位采集程序报告了一个内部错误导致了全部过程的失败
                     //3=TIMEOUT:表示超时
@@ -455,7 +465,7 @@ var Hobbit = window.Hobbit = window.$H = (function () {
             for (var i = 0; i < cks.length; i++) {
                 tmp = cks[i].split("=");
                 if (tmp[0].toUpperCase() == key)
-                    return unescape(tmp[1]);
+                    return decodeURIComponent(tmp[1]);
             }
             return null;
         },
@@ -468,7 +478,7 @@ var Hobbit = window.Hobbit = window.$H = (function () {
                 domain: document.domain
             }, options);
 
-            var ck = [options.key + "=" + escape(options.value)];
+            var ck = [options.key + "=" + encodeURIComponent(options.value)];
             if (!isNaN(options.expires) && options.expires == 0) {//为0时不设定过期时间，浏览器关闭时cookie自动消失
                 var date = new Date();
                 date.setTime(date.getTime() + options.expires * 1000);
@@ -718,77 +728,212 @@ var Hobbit = window.Hobbit = window.$H = (function () {
         return wrapper;
     };
 
-    $H.klass = function (parent, instantProps) {
-        var child, F, i;
-        child = function () {
-            if (child.uber && child.uber.hasOwnProperty("struct"))
-                child.uber.struct.apply(this, arguments);
-            if (child.prototype.hasOwnProperty("struct"))
-                child.prototype.struct.apply(this, arguments);
-        };
-        parent = parent || Object;
-        F = function () { };
-        F.prototype = parent.prototype;
-        child.prototype = new F();
-        child.uber = parent.prototype;
-        child.prototype.constructor = child;
-        for (i in instantProps)
-            if (instantProps.hasOwnProperty(i))
-                child.prototype[i] = instantProps[i];
-        return child;
+    $H.event = {
+        hash: (function () {
+            var callbacks = {};
+            var stateCallback = null;
+            var bufferState = null;
+            var getAllState = function () {
+                var hstr = window.location.href.split("#");
+                return hstr.length > 1 ? hstr[1] : "";
+            };
+            var getCurrentState = function () {
+                var state = getAllState(),
+                    idx = state.lastIndexOf("/"),
+                    name = state.substr(idx == -1 ? 0 : (idx + 1)).split("="),
+                    value = name.length > 1 ? name[1] : "";
+                return { "name": name[0].toLowerCase(), "value": value };
+            };
+            var init = (function () {
+                currentState = getCurrentState();
+
+                $(window).on("hashchange", function () {
+                    currentState = getCurrentState();
+
+                    if (bufferState != null) {
+                        var hash = getAllState() + (bufferState ? ("/" + bufferState) : "");
+                        bufferState = null;
+                        location.hash = hash;
+                    } else {
+                        if (callbacks[currentState.name])
+                            callbacks[currentState.name](currentState.value);
+                    }
+
+                    if (stateCallback) {
+                        stateCallback(currentState.name, currentState.value);
+                        stateCallback = null;
+                    }
+                });
+            })();
+
+            var h = function () { };
+
+            h.on = function (name, callback) {
+                name = (name || "").toLowerCase();
+                callbacks[name] = callback;
+                if (currentState.name == name)
+                    setTimeout(function () {
+                        callback(currentState.value);
+                    }, 0);
+            };
+            h.pushState = function (opt) {
+                if (!opt || !opt.name)
+                    return;
+
+                opt.value = opt.value ? encodeURIComponent(opt.value) : "";
+                if (currentState.name == opt.name.toLowerCase() && currentState.value == opt.value)
+                    return;
+
+                var state = opt.name + (opt.value ? ("=" + opt.value) : "");
+
+                if (opt.callback)
+                    stateCallback = opt.callback;
+                location.hash = getAllState() + "/" + state;
+            };
+
+            h.popState = function (opt) {
+                var states = getAllState().split("/");
+                var len = states.length;
+                if (len == 1)
+                    h.replaceState(opt);
+                else {
+                    if (opt && opt.name != undefined) {
+                        var go = -1, state = (opt.name + (opt.value ? ("=" + opt.value) : "")).toLowerCase();
+                        for (var i = 0; i < len; i++) {
+                            if (state == states[len - i - 1].toLowerCase()) {
+                                go = i;
+                                break;
+                            }
+                        }
+                        if (go == -1)
+                            h.replaceState(opt);
+                        else if (go > 0) {
+                            if (opt.callback)
+                                stateCallback = opt.callback;
+                            history.go(-1 * go);
+                        }
+                    } else {
+                        if (opt.callback)
+                            stateCallback = opt.callback;
+                        history.go(-1);
+                    }
+                }
+            };
+
+            h.replaceState = function (opt) {
+                if (!opt || !opt.name)
+                    return;
+
+                opt.value = opt.value ? encodeURIComponent(opt.value) : "";
+                if (currentState.name == opt.name.toLowerCase() && currentState.value == opt.value)
+                    return;
+
+                var state = opt.name + (opt.value ? ("=" + opt.value) : "");
+                var states = getAllState().split("/");
+                if (states.length == 1) {
+                    if (opt.callback)
+                        stateCallback = opt.callback;
+                    location.replace(location.href.split("#")[0] + (state ? ("#" + state) : ""));
+                } else {
+                    if (opt.callback)
+                        stateCallback = opt.callback;
+                    history.go(-1);
+                    bufferState = state;
+                }
+            };
+
+            h.getValue = function (name) {
+                var state = getAllState();
+                state = state.split("/");
+                name = name.toLowerCase();
+                for (var i = 0, tmp = null; i < state.length; i++) {
+                    tmp = state[i].split('=');
+                    if (name == tmp[0].toLowerCase())
+                        return tmp.length == 2 ? tmp[1] : "";
+                }
+                return null;
+            };
+            return h;
+        })()
     };
 
-    //尝试执行/获取或设置一个对象的方法/属性
-    $H.do = function (options) {
-        var o = $.extend({
-            object: {},
-            member: undefined,
-            arguments: undefined,
-            returnValue: undefined,
-            success: function () { },
-            error: function () { }
-        }, options);
-        if (o.member in o.object && o.object[o.member]) {
-            if ($.isFunction(o.object[o.member]))
-                o.returnValue = o.object[o.member].apply(null, o.arguments);
-            else {
-                if (o.arguments != undefined)
-                    o.object[o.member] = o.arguments;
-                o.returnValue = o.object[o.member];
-            }
-            o = o.success(o) || o;
-        } else
-            o = o.error(o) || o;
-        return o.returnValue;
-    };
+    $H.tongji = function (name) {
 
-    //lazy load
-    $H.lazy = function () {
+        var tjName = name || "ajaxName";
 
+        _hmt.push(['_trackEvent', tjName, 'ajax', '']);
 
-    };
+    }
 
     return $H;
 })();
 
+//数组对象扩展
+$.extend(Array.prototype, {
+    //查找某个对象是否在数组中，支持对象数组
+    idxOf: function (item) {
+        var len = this.length, tmp;
+        if (typeof item == "object")
+            item = $H.json.stringify(item);
+        for (var i = 0 ; i < len; i++) {
+            tmp = this[i];
+            if (typeof tmp == "object")
+                tmp = $H.json.stringify(tmp);
+            if (item == tmp)
+                return i;
+        }
+        return -1;
+    },
+    //返回排重之后的数组
+    unique: function () {
+        var result = [], len = this.length;
+        for (var i = 0; i < len; i++)
+            if (result.idxOf(this[i]) == -1)
+                result.push(this[i]);
+        return result;
+    }
+});
+
 //精简版的tap事件
 (function () {
-    var touchTarget, enable = 'ontouchstart' in document,
-        tap = { start: enable ? 'touchstart' : 'mousedown', end: enable ? 'touchend' : 'mouseup' },
-        cancelTap = function () { touchTarget = undefined; };
-
-    $(document).on(tap.start, function (e) {
-        touchTarget = e.target;
-    }).on(tap.end, function (e) {
-        if (e.target == touchTarget) {
-            setTimeout(function () {
-                $(touchTarget).trigger("tap");
-                cancelTap();
-            }, 0);
-            e.stopPropagation();
-        }
-    }).on('touchcancel', cancelTap);
-    if (!('MSGesture' in window))
-        $(window).on('scroll', cancelTap);
-    $.fn.tap = function (fn) { return this.on("tap", fn); };
+    if ($H.os.type().indexOf("ios") != -1) {//ios
+        var enable = 'ontouchstart' in document,
+            tap = { start: enable ? 'touchstart' : 'mousedown', end: enable ? 'touchend' : 'mouseup', move: enable ? "touchmove" : "mousemove" },
+            tapEvent = function (e) { return e.touches ? e.touches[0] : e; };
+        $.fn.tap = function (callback, continueDefault) {
+            var prevent = function (e) { e.stopPropagation(); if (!continueDefault) e.preventDefault(); };
+            return this.each(function () {
+                var _, touch, dom = this, cancelTap = function () { touch = undefined; };
+                $(dom).on(tap.start, function (e) {
+                    if (!$(dom).attr("disabled")) {
+                        _ = tapEvent(e);
+                        touch = { x1: _.clientX, y1: _.clientY, x2: _.clientX, y2: _.clientY };
+                    }
+                }).on(tap.move, function (e) {
+                    if (touch) {
+                        _ = tapEvent(e);
+                        touch.x2 = _.clientX;
+                        touch.y2 = _.clientY;
+                    }
+                }).on(tap.end, function (e) {
+                    if (touch && Math.abs(touch.x1 - touch.x2) < 10 && Math.abs(touch.y1 - touch.y2) < 10) {
+                        setTimeout(function () { callback.call(dom, e); }, 0);
+                        prevent(e);
+                        cancelTap();
+                    }
+                }).on('touchcancel', cancelTap).click(function (e) { prevent(e); });
+            });
+        };
+    } else {
+        $.fn.tap = function (selector, data, callback, one) {
+            return this.click(selector, data, callback, one);
+        };
+    }
 })();
+
+try {
+    if (window.console && window.console.log) {
+        console.log("%c欢迎加入hobbit-beta1.0：https://github.com/lijiakof/hobbit", "color:#007AFF");
+    }
+} catch (e) {
+}
